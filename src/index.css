@@ -1,0 +1,108 @@
+:root {
+  color-scheme: light dark;
+
+  --background-primary-light: #eff1f5;
+  --background-primary-dark: #1a1e23;
+
+  --text-primary-light: #1d395c;
+  --text-primary-dark: rgba(255, 255, 255, 0.9);
+  --text-secondary-light: #768ba6;
+  --text-secondary-dark: rgba(255, 255, 255, 0.4);
+
+  --text-inverted: #000;
+  --text-link: #4080ff;
+  --text-link-hover: #cb3efc;
+
+  --title-1: 32px;
+  --title-1-lh: 40px;
+  --title-2: 24px;
+  --title-2-lh: 32px;
+  --title-3: 16px;
+  --title-3-lh: 24px;
+  --body-1: 16px;
+  --body-1-lh: 24px;
+  --body-2: 14px;
+  --body-2-lh: 20px;
+  --body-3: 12px;
+  --body-3-lh: 16px;
+  --number-2: 26px;
+
+  --spacing-xxs: 4px;
+  --spacing-xs: 8px;
+  --spacing-s: 16px;
+  --spacing-m: 24px;
+  --spacing-l: 32px;
+  --spacing-xl: 48px;
+  --spacing-xxl: 80px;
+  --spacing-xxxl: 120px;
+
+  --border-radius-full: 100px;
+  --border-radius-s: 4px;
+  --border-radius-m: 8px;
+
+  --animation-fast: 0.15s;
+}
+html {
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--background-primary-dark);
+  font: var(--body-1) / var(--body-1-lh) Helvetica, Arial, sans-serif;
+  color: var(--text-primary-dark);
+}
+a {
+  text-decoration: none;
+  color: var(--text-link);
+}
+a:hover {
+  color: var(--text-link-hover);
+  transition: color 0.25s;
+}
+h1 {
+  margin: 0 0 var(--spacing-m) 0;
+  font-size: var(--title-1);
+  line-height: var(--title-1-lh);
+  font-weight: bold;
+}
+h2 {
+  margin: var(--spacing-m) 0 var(--spacing-s) 0;
+  font-size: var(--title-2);
+  line-height: var(--title-2-lh);
+  font-weight: bold;
+}
+h3 {
+  margin: var(--spacing-m) 0 0 0;
+  font-size: var(--title-3);
+  line-height: var(--title-3-lh);
+  font-weight: bold;
+}
+p {
+  margin: 0 0 var(--spacing-m) 0;
+}
+ul {
+  margin: 0 0 var(--spacing-m) 0;
+}
+li {
+  margin: 0 0 var(--spacing-s) 0;
+}
+abbr {
+  letter-spacing: 0.06em;
+  margin-right: -0.06em;
+  text-decoration: none;
+}
+table {
+  border-spacing: 0;
+}
+td,
+th {
+  vertical-align: baseline;
+}
+
+@media (prefers-color-scheme: light) {
+  body {
+    background: var(--background-primary-light);
+    color: var(--text-primary-light);
+  }
+}
