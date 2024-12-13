@@ -29,7 +29,13 @@ export const homeLoader = async () => {
 
 export const HomeRoute = () => {
   const { expenses } = useLoaderData();
-  return <ExpensesTmp data={expenses} />;
+  return (
+    <>
+      <h1>Все финансы</h1>
+      <h2>Расходы</h2>
+      <ExpensesTmp data={expenses} />
+    </>
+  );
 };
 
 const ExpensesTmp = ({ data }) => {
@@ -37,7 +43,7 @@ const ExpensesTmp = ({ data }) => {
     <ul>
       {data.map((expense) => (
         <li key={expense.id}>
-          {expense.date} - {expense.sum} - {expense.category.name}
+          {expense.date} - {expense.category.name} — {expense.sum}
         </li>
       ))}
     </ul>
