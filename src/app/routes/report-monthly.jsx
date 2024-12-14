@@ -11,6 +11,7 @@ export const MonthlyReportLoader = async ({ params }) => {
         $lte: `${params.year}-${params.month}-28`,
       },
     },
+    sort: "sum:desc",
   });
   const [expensesResponse] = await Promise.all([
     fetch(`${import.meta.env.VITE_STRAPI_API_URL}expenses?${expensesQuery}`),
@@ -36,8 +37,11 @@ export const MonthlyReportRoute = () => {
       <h1>
         {monthName} {year}
       </h1>
-      <h2>Расходы</h2>
+      <h2>Текст для блога</h2>
+      <h3>Расходы</h3>
       <ExpensesTmp data={expenses} />
+      <h3>Доходы</h3>
+      <h3>Итого</h3>
     </>
   );
 };
@@ -48,7 +52,7 @@ const ExpensesTmp = ({ data }) => {
       {data && data.length > 0 ? (
         data.map((expense) => (
           <li key={expense.id}>
-            {expense.category.name} — {expense.sum.toLocaleString("ru-RU")} ₽
+            - {expense.category.name} — {expense.sum.toLocaleString("ru-RU")} ₽
           </li>
         ))
       ) : (
