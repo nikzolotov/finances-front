@@ -2,7 +2,7 @@ import { useLoaderData } from "react-router-dom";
 import qs from "qs";
 
 export const MonthlyReportLoader = async ({ params }) => {
-  const expensesQuery = qs.stringify({
+  const query = qs.stringify({
     fields: ["date", "sum"],
     populate: "category",
     filters: {
@@ -13,20 +13,27 @@ export const MonthlyReportLoader = async ({ params }) => {
     },
     sort: "sum:desc",
   });
-  const [expensesResponse] = await Promise.all([
-    fetch(`${import.meta.env.VITE_STRAPI_API_URL}expenses?${expensesQuery}`),
+
+  const [expensesResponse, incomeResponse] = await Promise.all([
+    fetch(`${import.meta.env.VITE_STRAPI_API_URL}expenses?${query}`),
+    fetch(`${import.meta.env.VITE_STRAPI_API_URL}incomes?${query}`),
   ]);
-  const [expensesData] = await Promise.all([expensesResponse.json()]);
+
+  const [expensesData, incomeData] = await Promise.all([
+    expensesResponse.json(),
+    incomeResponse.json(),
+  ]);
 
   return {
     year: params.year,
     month: params.month,
     expenses: expensesData.data,
+    income: incomeData.data,
   };
 };
 
 export const MonthlyReportRoute = () => {
-  const { year, month, expenses } = useLoaderData();
+  const { year, month, expenses, income } = useLoaderData();
 
   const monthName = new Intl.DateTimeFormat("ru", {
     month: "long",
@@ -41,6 +48,7 @@ export const MonthlyReportRoute = () => {
       <h3>Расходы</h3>
       <ExpensesTmp data={expenses} />
       <h3>Доходы</h3>
+      <ExpensesTmp data={income} />
       <h3>Итого</h3>
     </>
   );
