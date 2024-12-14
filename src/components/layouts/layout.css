@@ -1,3 +1,22 @@
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-s) var(--spacing-m);
+}
+
 main {
   padding: var(--spacing-m);
+}
+
+.avatars {
+  display: flex;
+}
+
+.avatar {
+  display: block;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  margin-left: calc(var(--spacing-xs) * -1);
 }
