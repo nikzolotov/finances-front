@@ -64,6 +64,8 @@ export const MonthlyReportRoute = () => {
       <BlogText
         expenses={expenses}
         income={income}
+        totalIncome={totalIncome}
+        totalExpenses={totalExpenses}
         savings={savings}
         savingsRate={savingsRate}
       />
