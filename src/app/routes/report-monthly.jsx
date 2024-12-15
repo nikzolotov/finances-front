@@ -57,6 +57,7 @@ export const MonthlyReportRoute = () => {
         <Total
           value={((totalIncome - totalExpenses) / totalIncome) * 100}
           title="Процент сохранений"
+          type="percent"
         />
       </div>
       <div className="card">
