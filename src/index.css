@@ -124,7 +124,8 @@ th {
 }
 
 @media (prefers-color-scheme: dark) {
-  .card {
-    background: var(--background-secondary-dark);
+  body {
+    background: var(--background-primary-dark);
+    color: var(--text-primary-dark);
   }
 }
