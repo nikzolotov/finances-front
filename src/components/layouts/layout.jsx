@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 import "./layout.css";
+import logo from "../../assets/logo.svg";
 import nik from "../../assets/nikita.jpg";
 import nastya from "../../assets/nastya.jpg";
 import lev from "../../assets/lev.jpg";
@@ -17,7 +18,9 @@ export const Layout = ({ children }) => {
 const Header = () => {
   return (
     <header>
-      <Link to="/">Finances</Link>
+      <Link to="/">
+        <img className="logo" src={logo} alt="Finances" />
+      </Link>
       <Avatars />
     </header>
   );

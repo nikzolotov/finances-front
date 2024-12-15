@@ -13,6 +13,16 @@ main {
   margin-top: 0;
 }
 
+.capitalize::first-letter {
+  text-transform: capitalize;
+}
+
+.logo {
+  display: block;
+  width: 48px;
+  height: 48px;
+}
+
 .avatars {
   display: flex;
 }

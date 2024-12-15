@@ -47,7 +47,7 @@ export const MonthlyReportRoute = () => {
 
   return (
     <>
-      <h1 className="first">
+      <h1 className="first capitalize">
         {monthName} {year}
       </h1>
       <div className="cards">
