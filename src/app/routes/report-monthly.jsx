@@ -1,6 +1,8 @@
 import { useLoaderData } from "react-router-dom";
 import qs from "qs";
 
+import { Total } from "../../components/total";
+
 export const MonthlyReportLoader = async ({ params }) => {
   const query = qs.stringify({
     fields: ["date", "sum"],
@@ -39,17 +41,34 @@ export const MonthlyReportRoute = () => {
     month: "long",
   }).format(new Date(year, month - 1, 1));
 
+  const totalIncome = income.reduce((acc, expense) => acc + expense.sum, 0);
+  const totalExpenses = expenses.reduce((acc, expense) => acc + expense.sum, 0);
+
   return (
     <>
       <h1>
         {monthName} {year}
       </h1>
-      <h2>Текст для блога</h2>
-      <h3>Расходы</h3>
-      <ExpensesTmp data={expenses} />
-      <h3>Доходы</h3>
-      <ExpensesTmp data={income} />
-      <h3>Итого</h3>
+      <div className="cards">
+        <Total value={totalIncome} title="Доходы" />
+        <Total value={totalExpenses} title="Расходы" />
+        <Total value={totalIncome - totalExpenses} title="Сохранили" />
+        <Total
+          value={((totalIncome - totalExpenses) / totalIncome) * 100}
+          title="Процент сохранений"
+        />
+      </div>
+      <div className="card">
+        <h2>Бюджет</h2>
+      </div>
+      <div className="card">
+        <h2>Текст для блога</h2>
+        <h3>Расходы</h3>
+        <ExpensesTmp data={expenses} />
+        <h3>Доходы</h3>
+        <ExpensesTmp data={income} />
+        <h3>Итого</h3>
+      </div>
     </>
   );
 };

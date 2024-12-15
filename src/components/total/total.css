@@ -1,0 +1,12 @@
+.total__title {
+  margin: 0 0 var(--spacing-xs) 0;
+  font-size: var(--body-1);
+  line-height: var(--body-1-lh);
+  font-weight: 500;
+}
+.total__value {
+  margin: 0;
+  font-size: var(--number-1);
+  line-height: var(--number-1-lh);
+  font-weight: 500;
+}

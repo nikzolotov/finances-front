@@ -3,6 +3,8 @@
 
   --background-primary-light: #eff1f5;
   --background-primary-dark: #1a1e23;
+  --background-secondary-light: #fff;
+  --background-secondary-dark: #262c33;
 
   --text-primary-light: #1d395c;
   --text-primary-dark: rgba(255, 255, 255, 0.9);
@@ -25,7 +27,8 @@
   --body-2-lh: 20px;
   --body-3: 12px;
   --body-3-lh: 16px;
-  --number-2: 26px;
+  --number-1: 24px;
+  --number-1-lh: 32px;
 
   --spacing-xxs: 4px;
   --spacing-xs: 8px;
@@ -37,20 +40,40 @@
   --spacing-xxxl: 120px;
 
   --border-radius-full: 100px;
-  --border-radius-s: 4px;
-  --border-radius-m: 8px;
+  --border-radius-xxs: 4px;
+  --border-radius-xs: 8px;
+  --border-radius-s: 16px;
 
   --animation-fast: 0.15s;
 }
+
+@font-face {
+  font-family: Apercu;
+  src: url(./assets/fonts/apercupro/ApercuPro.woff2) format("woff2"),
+    url(./assets/fonts/apercupro/ApercuPro.woff) format("woff");
+}
+@font-face {
+  font-family: Apercu;
+  font-weight: bold;
+  src: url(./assets/fonts/apercupro/ApercuPro-Bold.woff2) format("woff2"),
+    url(./assets/fonts/apercupro/ApercuPro-Bold.woff) format("woff");
+}
+@font-face {
+  font-family: Apercu;
+  font-weight: 500;
+  src: url(./assets/fonts/apercupro/ApercuPro-Medium.woff2) format("woff2"),
+    url(./assets/fonts/apercupro/ApercuPro-Medium.woff) format("woff");
+}
+
 html {
   -webkit-text-size-adjust: 100%;
 }
 body {
   margin: 0;
   padding: 0;
-  background: var(--background-primary-dark);
-  font: var(--body-1) / var(--body-1-lh) Helvetica, Arial, sans-serif;
-  color: var(--text-primary-dark);
+  background: var(--background-primary-light);
+  font: var(--body-1) / var(--body-1-lh) Apercu, Helvetica, Arial, sans-serif;
+  color: var(--text-primary-light);
 }
 a {
   text-decoration: none;
@@ -70,7 +93,7 @@ h2 {
   margin: var(--spacing-m) 0 var(--spacing-s) 0;
   font-size: var(--title-2);
   line-height: var(--title-2-lh);
-  font-weight: bold;
+  font-weight: 500;
 }
 h3 {
   margin: var(--spacing-m) 0 0 0;
@@ -100,9 +123,8 @@ th {
   vertical-align: baseline;
 }
 
-@media (prefers-color-scheme: light) {
-  body {
-    background: var(--background-primary-light);
-    color: var(--text-primary-light);
+@media (prefers-color-scheme: dark) {
+  .card {
+    background: var(--background-secondary-dark);
   }
 }
