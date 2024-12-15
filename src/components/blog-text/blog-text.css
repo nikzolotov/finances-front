@@ -1,0 +1,27 @@
+.blog-text__title2 {
+  margin-top: 0;
+}
+
+.blog-text__title3 {
+  margin-bottom: var(--spacing-xxs);
+}
+
+.blog-text__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.blog-text__item {
+  margin: 0 0 var(--spacing-xxs) 0;
+}
+
+.blog-text__empty {
+  color: var(--text-secondary-light);
+}
+
+@media (prefers-color-scheme: dark) {
+  .blog-text__empty {
+    color: var(--text-secondary-dark);
+  }
+}

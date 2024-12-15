@@ -2,6 +2,7 @@ import { useLoaderData } from "react-router-dom";
 import qs from "qs";
 
 import { Total } from "../../components/total";
+import { BlogText } from "../../components/blog-text";
 
 export const MonthlyReportLoader = async ({ params }) => {
   const query = qs.stringify({
@@ -46,7 +47,7 @@ export const MonthlyReportRoute = () => {
 
   return (
     <>
-      <h1>
+      <h1 className="first">
         {monthName} {year}
       </h1>
       <div className="cards">
@@ -59,32 +60,9 @@ export const MonthlyReportRoute = () => {
         />
       </div>
       <div className="card">
-        <h2>Бюджет</h2>
+        <h2 className="first">Бюджет</h2>
       </div>
-      <div className="card">
-        <h2>Текст для блога</h2>
-        <h3>Расходы</h3>
-        <ExpensesTmp data={expenses} />
-        <h3>Доходы</h3>
-        <ExpensesTmp data={income} />
-        <h3>Итого</h3>
-      </div>
+      <BlogText expenses={expenses} income={income} />
     </>
-  );
-};
-
-const ExpensesTmp = ({ data }) => {
-  return (
-    <ul>
-      {data && data.length > 0 ? (
-        data.map((expense) => (
-          <li key={expense.id}>
-            - {expense.category.name} — {expense.sum.toLocaleString("ru-RU")} ₽
-          </li>
-        ))
-      ) : (
-        <li>No expenses available</li>
-      )}
-    </ul>
   );
 };

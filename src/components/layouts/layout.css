@@ -6,7 +6,11 @@ header {
 }
 
 main {
-  padding: var(--spacing-m);
+  padding: var(--spacing-m) var(--spacing-xxxl);
+}
+
+.first {
+  margin-top: 0;
 }
 
 .avatars {
