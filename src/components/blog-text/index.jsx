@@ -32,7 +32,8 @@ export const CategoryList = ({ data }) => {
       {data && data.length > 0 ? (
         data.map((expense) => (
           <li className="blog-text__item" key={expense.id}>
-            • {expense.category.name} — {expense.sum.toLocaleString("ru-RU")} ₽
+            • {expense.category.name}&nbsp;—{" "}
+            {expense.sum.toLocaleString("ru-RU")}&nbsp;₽
           </li>
         ))
       ) : (
@@ -46,11 +47,11 @@ export const TotalList = ({ savings, savingsRate }) => {
   return (
     <ul className="blog-text__list">
       <li className="blog-text__item">
-        • Процент сохранений —{" "}
+        • Процент сохранений&nbsp;—{" "}
         {savingsRate.toLocaleString("ru-RU", { maximumFractionDigits: 2 })}%
       </li>
       <li className="blog-text__item">
-        • Cохранили — {savings.toLocaleString("ru-RU")} ₽
+        • Cохранили&nbsp;— {savings.toLocaleString("ru-RU")}&nbsp;₽
       </li>
     </ul>
   );
