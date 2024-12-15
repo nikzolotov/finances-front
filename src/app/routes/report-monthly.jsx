@@ -44,6 +44,8 @@ export const MonthlyReportRoute = () => {
 
   const totalIncome = income.reduce((acc, expense) => acc + expense.sum, 0);
   const totalExpenses = expenses.reduce((acc, expense) => acc + expense.sum, 0);
+  const savings = totalIncome - totalExpenses;
+  const savingsRate = ((totalIncome - totalExpenses) / totalIncome) * 100;
 
   return (
     <>
@@ -53,17 +55,18 @@ export const MonthlyReportRoute = () => {
       <div className="cards">
         <Total value={totalIncome} title="Доходы" />
         <Total value={totalExpenses} title="Расходы" />
-        <Total value={totalIncome - totalExpenses} title="Сохранили" />
-        <Total
-          value={((totalIncome - totalExpenses) / totalIncome) * 100}
-          title="Процент сохранений"
-          type="percent"
-        />
+        <Total value={savings} title="Сохранили" />
+        <Total value={savingsRate} title="Процент сохранений" type="percent" />
       </div>
       <div className="card">
         <h2 className="first">Бюджет</h2>
       </div>
-      <BlogText expenses={expenses} income={income} />
+      <BlogText
+        expenses={expenses}
+        income={income}
+        savings={savings}
+        savingsRate={savingsRate}
+      />
     </>
   );
 };
