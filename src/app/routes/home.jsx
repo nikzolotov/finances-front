@@ -58,17 +58,17 @@ export const HomeRoute = () => {
   );
 
   // Считаем средний инвестиционный доход за последний год
-  const lastYearIncome = income.filter(
+  const lastYearInvestIncome = income.filter(
     (item) =>
       new Date(item.date).getFullYear() === lastDate.getFullYear() &&
       item.category.isInvest
   );
-  const totalLastYearIncome = lastYearIncome.reduce(
+  const totalLastYearInvestIncome = lastYearInvestIncome.reduce(
     (acc, item) => acc + parseFloat(item.sum),
     0
   );
-  const averageLastYearIncome = Math.floor(
-    totalLastYearIncome / (lastDate.getMonth() + 1)
+  const averageLastYearInvestIncome = Math.floor(
+    totalLastYearInvestIncome / (lastDate.getMonth() + 1)
   );
 
   return (
@@ -78,7 +78,10 @@ export const HomeRoute = () => {
         <Total value={Math.floor(totalAssets)} title="Активы" />
         <Total value={Math.floor(totalInvestAssets)} title="Инвестиции" />
         <Total value={0} title="FIRE в месяцах" />
-        <Total value={averageLastYearIncome} title="Инвестиционный доход" />
+        <Total
+          value={averageLastYearInvestIncome}
+          title="Инвестиционный доход"
+        />
       </div>
       <div className="card">
         <h2 className="first">Классы активов</h2>
