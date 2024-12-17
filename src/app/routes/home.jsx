@@ -38,10 +38,11 @@ export const HomeRoute = () => {
   const { expenses, income, asssets } = useLoaderData();
 
   // Активы отсортированы по дате, берём последнюю дату для фильтра
-  const lastDate = asssets[0].date;
+  const lastDateString = asssets[0].date;
+  const lastDate = new Date(lastDateString);
 
   // Суммируем активы за последний месяц
-  const lastAssets = asssets.filter((asset) => asset.date === lastDate);
+  const lastAssets = asssets.filter((asset) => asset.date === lastDateString);
   const totalAssets = lastAssets.reduce(
     (acc, asset) => acc + parseFloat(asset.sum),
     0
@@ -49,11 +50,25 @@ export const HomeRoute = () => {
 
   // Суммируем инвестиционные активы за последний месяц
   const lastInvestAssets = asssets.filter(
-    (asset) => asset.date === lastDate && asset.category.isInvest
+    (asset) => asset.date === lastDateString && asset.category.isInvest
   );
   const totalInvestAssets = lastInvestAssets.reduce(
     (acc, asset) => acc + parseFloat(asset.sum),
     0
+  );
+
+  // Считаем средний инвестиционный доход за последний год
+  const lastYearIncome = income.filter(
+    (item) =>
+      new Date(item.date).getFullYear() === lastDate.getFullYear() &&
+      item.category.isInvest
+  );
+  const totalLastYearIncome = lastYearIncome.reduce(
+    (acc, item) => acc + parseFloat(item.sum),
+    0
+  );
+  const averageLastYearIncome = Math.floor(
+    totalLastYearIncome / (lastDate.getMonth() + 1)
   );
 
   return (
@@ -63,7 +78,7 @@ export const HomeRoute = () => {
         <Total value={Math.floor(totalAssets)} title="Активы" />
         <Total value={Math.floor(totalInvestAssets)} title="Инвестиции" />
         <Total value={0} title="FIRE в месяцах" />
-        <Total value={0} title="Инвестиционный доход" />
+        <Total value={averageLastYearIncome} title="Инвестиционный доход" />
       </div>
       <div className="card">
         <h2 className="first">Классы активов</h2>
