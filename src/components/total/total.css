@@ -10,3 +10,22 @@
   line-height: var(--number-1-lh);
   font-weight: 500;
 }
+
+.total__difference {
+  margin: var(--spacing-xxxs) 0 0 0;
+}
+.total__positive {
+  color: var(--text-green-light);
+}
+.total__negative {
+  color: var(--text-red-light);
+}
+
+@media (prefers-color-scheme: dark) {
+  .total__positive {
+    color: var(--text-green-dark);
+  }
+  .total__negative {
+    color: var(--text-red-dark);
+  }
+}

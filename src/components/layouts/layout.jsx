@@ -16,8 +16,6 @@ export const Layout = ({ children }) => {
 };
 
 const Header = () => {
-  // console.log(parseInt(useParams().month));
-  // console.log(parseInt(useParams().year));
   return (
     <header>
       <Link to="/">

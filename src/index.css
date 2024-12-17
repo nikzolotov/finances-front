@@ -10,6 +10,10 @@
   --text-primary-dark: rgba(255, 255, 255, 0.9);
   --text-secondary-light: #768ba6;
   --text-secondary-dark: rgba(255, 255, 255, 0.4);
+  --text-green-light: #009a67;
+  --text-green-dark: #00bf80;
+  --text-red-light: #ff1a53;
+  --text-red-dark: #e5456d;
 
   --text-inverted: #fff;
   --text-link: #4080ff;
