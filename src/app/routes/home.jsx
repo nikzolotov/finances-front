@@ -37,20 +37,31 @@ export const homeLoader = async ({ params }) => {
 export const HomeRoute = () => {
   const { expenses, income, asssets } = useLoaderData();
 
-  const lastAssets = asssets.filter((asset) => asset.date === asssets[0].date);
+  // Активы отсортированы по дате, берём последнюю дату для фильтра
+  const lastDate = asssets[0].date;
+
+  // Суммируем активы за последний месяц
+  const lastAssets = asssets.filter((asset) => asset.date === lastDate);
   const totalAssets = lastAssets.reduce(
     (acc, asset) => acc + parseFloat(asset.sum),
     0
   );
 
-  console.log(lastAssets, totalAssets);
+  // Суммируем инвестиционные активы за последний месяц
+  const lastInvestAssets = asssets.filter(
+    (asset) => asset.date === lastDate && asset.category.isInvest
+  );
+  const totalInvestAssets = lastInvestAssets.reduce(
+    (acc, asset) => acc + parseFloat(asset.sum),
+    0
+  );
 
   return (
     <>
       <h1>Все финансы</h1>
       <div className="cards">
         <Total value={Math.floor(totalAssets)} title="Активы" />
-        <Total value={0} title="Инвестиции" />
+        <Total value={Math.floor(totalInvestAssets)} title="Инвестиции" />
         <Total value={0} title="FIRE в месяцах" />
         <Total value={0} title="Инвестиционный доход" />
       </div>
