@@ -3,6 +3,7 @@ import qs from "qs";
 
 import { Total } from "../../components/total";
 import { YearLinks } from "../../components/report-links";
+import { calculateTotal, calculateAverage } from "../../utils/calc";
 
 export const homeLoader = async ({ params }) => {
   const query = qs.stringify({
@@ -41,21 +42,15 @@ export const HomeRoute = () => {
   const lastDateString = asssets[0].date;
   const lastDate = new Date(lastDateString);
 
-  // Суммируем активы за последний месяц
+  // Считаем общие активы за последний месяц
   const lastAssets = asssets.filter((asset) => asset.date === lastDateString);
-  const totalAssets = lastAssets.reduce(
-    (acc, asset) => acc + parseFloat(asset.sum),
-    0
-  );
+  const totalAssets = calculateTotal(lastAssets);
 
-  // Суммируем инвестиционные активы за последний месяц
+  // Считаем инвестиционные активы за последний месяц
   const lastInvestAssets = asssets.filter(
     (asset) => asset.date === lastDateString && asset.category.isInvest
   );
-  const totalInvestAssets = lastInvestAssets.reduce(
-    (acc, asset) => acc + parseFloat(asset.sum),
-    0
-  );
+  const totalInvestAssets = calculateTotal(lastInvestAssets);
 
   // Считаем средний инвестиционный доход за последний год
   const lastYearInvestIncome = income.filter(
@@ -63,12 +58,9 @@ export const HomeRoute = () => {
       new Date(item.date).getFullYear() === lastDate.getFullYear() &&
       item.category.isInvest
   );
-  const totalLastYearInvestIncome = lastYearInvestIncome.reduce(
-    (acc, item) => acc + parseFloat(item.sum),
-    0
-  );
-  const averageLastYearInvestIncome = Math.floor(
-    totalLastYearInvestIncome / (lastDate.getMonth() + 1)
+  const averageLastYearInvestIncome = calculateAverage(
+    lastYearInvestIncome,
+    lastDate.getMonth() + 1
   );
 
   return (
@@ -79,7 +71,7 @@ export const HomeRoute = () => {
         <Total value={Math.floor(totalInvestAssets)} title="Инвестиции" />
         <Total value={0} title="FIRE в месяцах" />
         <Total
-          value={averageLastYearInvestIncome}
+          value={Math.floor(averageLastYearInvestIncome)}
           title="Инвестиционный доход"
         />
       </div>

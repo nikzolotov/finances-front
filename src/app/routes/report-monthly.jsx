@@ -3,6 +3,7 @@ import qs from "qs";
 
 import { Total } from "../../components/total";
 import { BlogText } from "../../components/blog-text";
+import { calculateTotal, calculateAverage } from "../../utils/calc";
 
 export const MonthlyReportLoader = async ({ params }) => {
   const query = qs.stringify({
@@ -82,10 +83,11 @@ export const MonthlyReportRoute = () => {
   const totalExpenses = calculateTotal(expenses);
 
   // Считаем средние доходы и расходы в году
-  const totalAnnualIncome = calculateTotal(annualIncome);
-  const totalAnnualExpenses = calculateTotal(annualExpenses);
-  const averageIncome = totalAnnualIncome / (lastDate.getMonth() + 1);
-  const averageExpenses = totalAnnualExpenses / (lastDate.getMonth() + 1);
+  const averageIncome = calculateAverage(annualIncome, lastDate.getMonth() + 1);
+  const averageExpenses = calculateAverage(
+    annualExpenses,
+    lastDate.getMonth() + 1
+  );
 
   // Считаем сколько сохранили
   const savings = totalIncome - totalExpenses;
@@ -129,6 +131,3 @@ export const MonthlyReportRoute = () => {
     </>
   );
 };
-
-const calculateTotal = (items) =>
-  items.reduce((acc, item) => acc + parseFloat(item.sum), 0);

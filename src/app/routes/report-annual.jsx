@@ -3,6 +3,7 @@ import qs from "qs";
 
 import { Total } from "../../components/total";
 import { MonthLinks } from "../../components/report-links";
+import { calculateTotal } from "../../utils/calc";
 
 export const AnnualReportLoader = async ({ params }) => {
   const query = qs.stringify({
@@ -40,15 +41,14 @@ export const AnnualReportLoader = async ({ params }) => {
 export const AnnualReportRoute = () => {
   const { year, expenses, income } = useLoaderData();
 
-  const totalIncome = income.reduce(
-    (acc, income) => acc + parseFloat(income.sum),
-    0
-  );
-  const totalExpenses = expenses.reduce(
-    (acc, expense) => acc + parseFloat(expense.sum),
-    0
-  );
+  // Считаем общие доходы и расходы
+  const totalIncome = calculateTotal(income);
+  const totalExpenses = calculateTotal(expenses);
+
+  // Считаем сколько сохранили
   const savings = totalIncome - totalExpenses;
+
+  // Считаем процент сохранений
   const savingsRate = ((totalIncome - totalExpenses) / totalIncome) * 100;
 
   return (
