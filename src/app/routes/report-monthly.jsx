@@ -15,6 +15,9 @@ export const MonthlyReportLoader = async ({ params }) => {
       },
     },
     sort: "sum:desc",
+    pagination: {
+      pageSize: 100,
+    },
   });
 
   const [expensesResponse, incomeResponse] = await Promise.all([

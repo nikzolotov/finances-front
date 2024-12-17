@@ -4,16 +4,21 @@
   --background-primary-light: #eff1f5;
   --background-primary-dark: #1a1e23;
   --background-secondary-light: #fff;
-  --background-secondary-dark: #262c33;
+  --background-secondary-dark: #22272e;
 
   --text-primary-light: #1d395c;
   --text-primary-dark: rgba(255, 255, 255, 0.9);
   --text-secondary-light: #768ba6;
   --text-secondary-dark: rgba(255, 255, 255, 0.4);
 
-  --text-inverted: #000;
+  --text-inverted: #fff;
   --text-link: #4080ff;
   --text-link-hover: #cb3efc;
+
+  --button-primary-light: #d8deeb;
+  --button-primary-dark: #424d59;
+  --button-primary-hover: #662fff;
+  --button-primary-active: #1d395c;
 
   --title-1: 32px;
   --title-1-lh: 40px;
@@ -30,8 +35,9 @@
   --number-1: 24px;
   --number-1-lh: 32px;
 
-  --spacing-xxs: 4px;
-  --spacing-xs: 8px;
+  --spacing-xxxs: 4px;
+  --spacing-xxs: 8px;
+  --spacing-xs: 12px;
   --spacing-s: 16px;
   --spacing-m: 24px;
   --spacing-l: 32px;
@@ -40,11 +46,13 @@
   --spacing-xxxl: 120px;
 
   --border-radius-full: 100px;
-  --border-radius-xxs: 4px;
-  --border-radius-xs: 8px;
+  --border-radius-xxxs: 4px;
+  --border-radius-xxs: 8px;
+  --border-radius-xs: 12px;
   --border-radius-s: 16px;
 
   --animation-fast: 0.15s;
+  --animation-medium: 0.25s;
 }
 
 @font-face {
@@ -81,7 +89,7 @@ a {
 }
 a:hover {
   color: var(--text-link-hover);
-  transition: color 0.25s;
+  transition: color var(--animation-medium);
 }
 h1 {
   margin: 0 0 var(--spacing-m) 0;
