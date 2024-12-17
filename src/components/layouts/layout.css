@@ -1,7 +1,6 @@
 header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   padding: var(--spacing-s) var(--spacing-m);
 }
 
@@ -49,8 +48,34 @@ main {
   gap: var(--spacing-s);
 }
 
+.breadcrumbs {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0 0 0 var(--spacing-xl);
+  list-style: none;
+  color: var(--text-secondary-light);
+}
+.breadcrumbs__item {
+  margin: 0;
+}
+.breadcrumbs__item:not(:last-child)::after {
+  margin: 0 var(--spacing-xxs);
+  content: ">";
+}
+.breadcrumbs__link {
+  color: var(--text-primary-light);
+}
+
 @media (prefers-color-scheme: dark) {
   .card {
     background: var(--background-secondary-dark);
+  }
+  .breadcrumbs {
+    color: var(--text-secondary-dark);
+  }
+  .breadcrumbs__link {
+    color: var(--text-primary-dark);
   }
 }

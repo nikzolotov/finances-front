@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import "./layout.css";
 import logo from "../../assets/logo.svg";
@@ -16,11 +16,14 @@ export const Layout = ({ children }) => {
 };
 
 const Header = () => {
+  // console.log(parseInt(useParams().month));
+  // console.log(parseInt(useParams().year));
   return (
     <header>
       <Link to="/">
         <img className="logo" src={logo} alt="Finances" />
       </Link>
+      <Breadcrumbs year={useParams().year} month={useParams().month} />
       <Avatars />
     </header>
   );
@@ -33,6 +36,47 @@ const Avatars = () => {
       <Avatar image={nastya} />
       <Avatar image={lev} />
     </div>
+  );
+};
+
+const Breadcrumbs = ({ year, month }) => {
+  const breadcrumbs = [];
+
+  if (year !== undefined) {
+    breadcrumbs.push({
+      title: "Все финансы",
+      link: "/",
+    });
+    breadcrumbs.push({
+      title: year,
+      link: `/report/${year}`,
+    });
+  }
+
+  if (month !== undefined) {
+    const monthName = new Intl.DateTimeFormat("ru", { month: "long" }).format(
+      new Date(year, month - 1)
+    );
+    breadcrumbs.push({
+      title: monthName,
+      link: `/report/${year}/${month}`,
+    });
+  }
+
+  return (
+    <ul className="breadcrumbs">
+      {breadcrumbs.map(({ title, link }, index) => (
+        <li key={index} className="breadcrumbs__item capitalize">
+          {index === breadcrumbs.length - 1 ? (
+            title
+          ) : (
+            <Link to={link} className="breadcrumbs__link">
+              {title}
+            </Link>
+          )}
+        </li>
+      ))}
+    </ul>
   );
 };
 

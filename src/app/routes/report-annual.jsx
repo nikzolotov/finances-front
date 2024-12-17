@@ -53,7 +53,7 @@ export const AnnualReportRoute = () => {
 
   return (
     <>
-      <h1 className="first capitalize">{year} год</h1>
+      <h1 className="first">{year} год</h1>
       <div className="cards">
         <Total value={totalIncome} title="Доходы" />
         <Total value={totalExpenses} title="Расходы" />
