@@ -40,8 +40,14 @@ export const AnnualReportLoader = async ({ params }) => {
 export const AnnualReportRoute = () => {
   const { year, expenses, income } = useLoaderData();
 
-  const totalIncome = income.reduce((acc, expense) => acc + expense.sum, 0);
-  const totalExpenses = expenses.reduce((acc, expense) => acc + expense.sum, 0);
+  const totalIncome = income.reduce(
+    (acc, income) => acc + parseFloat(income.sum),
+    0
+  );
+  const totalExpenses = expenses.reduce(
+    (acc, expense) => acc + parseFloat(expense.sum),
+    0
+  );
   const savings = totalIncome - totalExpenses;
   const savingsRate = ((totalIncome - totalExpenses) / totalIncome) * 100;
 

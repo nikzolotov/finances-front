@@ -1,51 +1,79 @@
 import { useLoaderData } from "react-router-dom";
 import qs from "qs";
 
-export const homeLoader = async () => {
-  const expensesQuery = qs.stringify({
+import { Total } from "../../components/total";
+import { YearLinks } from "../../components/report-links";
+
+export const homeLoader = async ({ params }) => {
+  const query = qs.stringify({
     fields: ["date", "sum"],
     populate: "category",
+    sort: "date:desc",
+    pagination: {
+      pageSize: 10000,
+    },
   });
-  // const tagsQuery = qs.stringify({
-  //   sort: "name:asc",
-  //   filters: {
-  //     isMain: true,
-  //   },
-  // });
-  const [expensesResponse] = await Promise.all([
-    fetch(`${import.meta.env.VITE_STRAPI_API_URL}expenses?${expensesQuery}`),
-    // fetch(`${import.meta.env.VITE_STRAPI_API_URL}tags?${tagsQuery}`),
+
+  const [expensesResponse, incomeResponse, assetsResponse] = await Promise.all([
+    fetch(`${import.meta.env.VITE_STRAPI_API_URL}expenses?${query}`),
+    fetch(`${import.meta.env.VITE_STRAPI_API_URL}incomes?${query}`),
+    fetch(`${import.meta.env.VITE_STRAPI_API_URL}assets?${query}`),
   ]);
-  const [expensesData] = await Promise.all([
+
+  const [expensesData, incomeData, assetsData] = await Promise.all([
     expensesResponse.json(),
-    // tagsResponse.json(),
+    incomeResponse.json(),
+    assetsResponse.json(),
   ]);
+
   return {
+    year: params.year,
     expenses: expensesData.data,
-    // observationsTotal: observationsData.meta.pagination.total,
-    // tags: tagsData.data,
+    income: incomeData.data,
+    asssets: assetsData.data,
   };
 };
 
 export const HomeRoute = () => {
-  const { expenses } = useLoaderData();
+  const { expenses, income, asssets } = useLoaderData();
+
+  const lastAssets = asssets.filter((asset) => asset.date === asssets[0].date);
+  const totalAssets = lastAssets.reduce(
+    (acc, asset) => acc + parseFloat(asset.sum),
+    0
+  );
+
+  console.log(lastAssets, totalAssets);
+
   return (
     <>
       <h1>Все финансы</h1>
-      <h2>Расходы</h2>
-      <ExpensesTmp data={expenses} />
+      <div className="cards">
+        <Total value={Math.floor(totalAssets)} title="Активы" />
+        <Total value={0} title="Инвестиции" />
+        <Total value={0} title="FIRE в месяцах" />
+        <Total value={0} title="Инвестиционный доход" />
+      </div>
+      <div className="card">
+        <h2 className="first">Классы активов</h2>
+      </div>
+      <h2>Годовые отчеты</h2>
+      <YearLinks />
+      <div className="card">
+        <h2 className="first">Инвестиционный доход</h2>
+      </div>
+      <div className="card">
+        <h2 className="first">FIRE в месяцах</h2>
+      </div>
+      <div className="card">
+        <h2 className="first">Процент сохранений</h2>
+      </div>
+      <div className="card">
+        <h2 className="first">Доходы</h2>
+      </div>
+      <div className="card">
+        <h2 className="first">Расходы</h2>
+      </div>
     </>
-  );
-};
-
-const ExpensesTmp = ({ data }) => {
-  return (
-    <ul>
-      {data.map((expense) => (
-        <li key={expense.id}>
-          {expense.date} - {expense.category.name} — {expense.sum}
-        </li>
-      ))}
-    </ul>
   );
 };
