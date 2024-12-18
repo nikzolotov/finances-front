@@ -1,6 +1,14 @@
 import "./total.css";
 
-export const Total = ({ title, value, average, averageYear, type, invert }) => {
+export const Total = ({
+  title,
+  value,
+  yearAgo,
+  average,
+  averageYear,
+  type,
+  invert,
+}) => {
   return (
     <div className="total card">
       <h2 className="total__title">{title}</h2>
@@ -10,11 +18,19 @@ export const Total = ({ title, value, average, averageYear, type, invert }) => {
         })}
         {type === "percent" ? "%" : ""}
       </p>
-      {average !== undefined && (
-        <AverageDifference
+      {yearAgo !== undefined && (
+        <Difference
           value={value}
-          average={average}
-          averageYear={averageYear}
+          comparisonValue={yearAgo}
+          label="чем годом ранее"
+          invert={invert}
+        />
+      )}
+      {average !== undefined && (
+        <Difference
+          value={value}
+          comparisonValue={average}
+          label={`к среднему за ${averageYear}`}
           invert={invert}
         />
       )}
@@ -22,8 +38,8 @@ export const Total = ({ title, value, average, averageYear, type, invert }) => {
   );
 };
 
-const AverageDifference = ({ value, average, averageYear, invert }) => {
-  const difference = (value / average - 1) * 100;
+const Difference = ({ value, comparisonValue, label, invert }) => {
+  const difference = (value / comparisonValue - 1) * 100;
 
   return (
     <p
@@ -37,11 +53,14 @@ const AverageDifference = ({ value, average, averageYear, invert }) => {
           : "total__negative"
       }`}
     >
-      {difference > 0 ? "+" : ""}
-      {difference.toLocaleString("ru-RU", {
-        maximumFractionDigits: 2,
-      })}
-      % к среднему за {averageYear}
+      {formatDifference(difference)} {label}
     </p>
   );
+};
+
+const formatDifference = (difference) => {
+  const sign = difference > 0 ? "+" : "";
+  return `${sign}${difference.toLocaleString("ru-RU", {
+    maximumFractionDigits: 2,
+  })}%`;
 };

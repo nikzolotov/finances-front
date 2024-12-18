@@ -72,7 +72,7 @@ export const HomeRoute = () => {
         <Total value={0} title="FIRE в месяцах" />
         <Total
           value={Math.floor(averageLastYearInvestIncome)}
-          title="Инвестиционный доход"
+          title="Средний инвест. доход"
         />
       </div>
       <div className="card">
