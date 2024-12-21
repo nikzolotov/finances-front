@@ -5,6 +5,17 @@ import { Total } from "../../components/total";
 import { YearLinks } from "../../components/report-links";
 import { calculateTotal, calculateAverage } from "../../utils/calc";
 
+import AreaChart from "../../components/area-chart";
+import BarChart from "../../components/bar-chart";
+
+import assets2 from "./assets.json";
+import assetCategories from "./assets-categories.json";
+import income2 from "./income.json";
+import incomeCategories from "./income-categories.json";
+import expenses2 from "./expenses.json";
+import expenseCategories from "./expenses-categories.json";
+import currencies from "./currencies2.json";
+
 export const homeLoader = async ({ params }) => {
   const query = qs.stringify({
     fields: ["date", "sum"],
@@ -77,6 +88,11 @@ export const HomeRoute = () => {
       </div>
       <div className="card">
         <h2 className="first">Классы активов</h2>
+        <AreaChart
+          data={assets2.assets}
+          series={assetCategories.categories}
+          currencies={currencies.currencies}
+        />
       </div>
       <h2>Годовые отчеты</h2>
       <YearLinks />
@@ -91,9 +107,20 @@ export const HomeRoute = () => {
       </div>
       <div className="card">
         <h2 className="first">Доходы</h2>
+        <BarChart
+          title="Income"
+          data={income2.income}
+          series={incomeCategories.categories}
+        />
       </div>
       <div className="card">
         <h2 className="first">Расходы</h2>
+        {/* <BarChart
+          title="Expenses"
+          data={expenses2.expenses}
+          series={expenseCategories.categories.filter((d) => d.parent === null)}
+          // currencies={currencies.currencies}
+        /> */}
       </div>
     </>
   );
