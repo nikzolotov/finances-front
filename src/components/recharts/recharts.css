@@ -42,6 +42,12 @@
 }
 
 @media (prefers-color-scheme: dark) {
+  .tooltip {
+    background: var(--background-primary-dark);
+  }
+  .tooltip__value {
+    color: var(--text-secondary-dark);
+  }
   .recharts-tooltip-cursor {
     stroke: var(--border-primary-dark);
   }
