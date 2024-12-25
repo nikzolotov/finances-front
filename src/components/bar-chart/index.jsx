@@ -249,9 +249,7 @@ class BarChart extends React.Component {
 
     gBrush.selectAll(".selection").attr("rx", 4);
 
-    function brushing(event) {
-      const selection = event.selection;
-
+    function brushing({ selection }) {
       // Update widths and x of the bars
       const brushScaleF = xBrush.range()[1] / (selection[1] - selection[0]);
 
@@ -277,9 +275,7 @@ class BarChart extends React.Component {
         .attr("opacity", (d) => (fd.includes(d.data.date) ? 1 : 0.2));
     }
 
-    function brushed(event) {
-      const selection = event.selection;
-
+    function brushed({ selection, sourceEvent }) {
       if (!selection) return;
 
       // Update heights and y of the bars
@@ -345,7 +341,7 @@ class BarChart extends React.Component {
         .text((d) => formatDigits.short(d) + " k");
 
       // Snapping
-      if (!event.sourceEvent) return;
+      if (!sourceEvent) return;
 
       const x = selection.map((d) => Math.round(d / xBrushStep) * xBrushStep);
 

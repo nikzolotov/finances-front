@@ -2,14 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import * as d3 from "d3";
 
-class AreaChart extends React.Component {
+class MyAreaChart extends React.Component {
   constructor(props) {
     super(props);
 
     this.series = props.series.map((item) => item.id);
-    this.colors = props.series.map((item) => item.color);
+    // this.colors = props.series.map((item) => item.color);
 
-    this.data = this.parseData(props.data, props.currencies, props.currency);
+    this.data = this.parseData(props.data);
     this.stackedData = d3.stack().keys(this.series)(this.data);
 
     // Vars for update method
@@ -22,11 +22,9 @@ class AreaChart extends React.Component {
     this.draw();
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.currency !== prevProps.currency) {
-      this.update();
-    }
-  }
+  // componentDidUpdate(prevProps) {
+  //   this.update();
+  // }
 
   draw() {
     const { width, height, margin } = this.props,
@@ -46,7 +44,7 @@ class AreaChart extends React.Component {
       ])
       .range([height - margin.bottom, margin.top]);
 
-    const color = d3.scaleOrdinal().domain(this.series).range(this.colors);
+    // const color = d3.scaleOrdinal().domain(this.series).range(this.colors);
 
     // svg groups for elements
     const gX = svg
@@ -54,21 +52,6 @@ class AreaChart extends React.Component {
       .attr("transform", "translate(0," + (height - margin.bottom) + ")");
 
     this.gAreas = svg.append("g");
-
-    // Axes
-    // const xAxis = (g) =>
-    //   g.call(
-    //     d3
-    //       .axisBottom(x)
-    //       .tickSize(0, 0)
-    //       .tickPadding(10)
-    //       .tickFormat((d) => d3.timeFormat("%b %Y")(d))
-    //       .tickValues([x.domain()[0], x.domain()[1]])
-    //   );
-
-    // gX.call(xAxis)
-    //   .selectAll("text")
-    //   .style("text-anchor", (d, i) => (i === 0 ? "start" : "end"));
 
     // assets areas
     this.areaGenerator = d3
@@ -83,44 +66,40 @@ class AreaChart extends React.Component {
       .data(this.stackedData)
       .join("path")
       .attr("d", this.areaGenerator)
-      .attr("fill", (d) => color(d.key));
+      .attr("fill", "#fc0");
+    // .attr("fill", (d) => color(d.key));
   }
 
-  update() {
-    // Redraw graph with new currency
-    this.data = this.parseData(
-      this.props.data,
-      this.props.currencies,
-      this.props.currency
-    );
-    this.stackedData = d3.stack().keys(this.series)(this.data);
+  // update() {
+  //   // Redraw graph with new currency
+  //   this.data = this.parseData(
+  //     this.props.data,
+  //     this.props.currencies,
+  //     this.props.currency
+  //   );
+  //   this.stackedData = d3.stack().keys(this.series)(this.data);
 
-    this.y.domain([
-      0,
-      d3.max(this.stackedData[this.stackedData.length - 1], (d) => d[1]),
-    ]);
+  //   this.y.domain([
+  //     0,
+  //     d3.max(this.stackedData[this.stackedData.length - 1], (d) => d[1]),
+  //   ]);
 
-    this.gAreas
-      .selectAll("path")
-      .data(this.stackedData)
-      .join("path")
-      .transition()
-      .duration(200)
-      .attr("d", this.areaGenerator);
-  }
+  //   this.gAreas
+  //     .selectAll("path")
+  //     .data(this.stackedData)
+  //     .join("path")
+  //     .transition()
+  //     .duration(200)
+  //     .attr("d", this.areaGenerator);
+  // }
 
-  parseData(data, currencies, currency) {
+  parseData(data) {
     return data.map(function (d) {
-      let rate = 1;
-      if (currency !== undefined && currency !== "rub") {
-        rate = currencies.filter((dd) => dd.date === d.date)[0][currency];
-      }
-
       return {
         date: new Date(d.date),
-        estate: +d.estate / rate,
-        stocks: +d.stocks / rate,
-        cash: +d.cash / rate,
+        estate: +d.estate,
+        stocks: +d.stocks,
+        cash: +d.cash,
       };
     });
   }
@@ -138,7 +117,7 @@ class AreaChart extends React.Component {
   }
 }
 
-AreaChart.defaultProps = {
+MyAreaChart.defaultProps = {
   width: 300,
   height: 100,
   margin: {
@@ -150,7 +129,7 @@ AreaChart.defaultProps = {
   duration: 200,
 };
 
-AreaChart.propTypes = {
+MyAreaChart.propTypes = {
   data: PropTypes.array.isRequired,
   width: PropTypes.number,
   height: PropTypes.number,
@@ -158,4 +137,4 @@ AreaChart.propTypes = {
   duration: PropTypes.number,
 };
 
-export default AreaChart;
+export default MyAreaChart;
