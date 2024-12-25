@@ -25,6 +25,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+import "../../components/recharts/recharts.css";
+
 export const homeLoader = async ({ params }) => {
   const query = qs.stringify({
     fields: ["date", "sum"],
@@ -146,7 +148,7 @@ export const HomeRoute = () => {
       </div> */}
       <div className="card">
         <h2 className="first">Классы активов</h2>
-        <div class="card__cutoff" style={{ height: 300 }}>
+        <div className="card__cutoff" style={{ height: 300 }}>
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={assets2.assets} margin={0}>
               <Area
@@ -173,11 +175,11 @@ export const HomeRoute = () => {
                 fillOpacity="1"
                 stroke="none"
               />
+              <XAxis dataKey="date" hide={true} />
               <Tooltip
-                contentStyle={{
-                  background: "rgba(255, 255, 255, 0.9)",
-                  border: "none",
-                }}
+                offset={16}
+                position={{ y: 4 }}
+                content={<CustomTooltip />}
               />
             </AreaChart>
           </ResponsiveContainer>
@@ -212,4 +214,41 @@ export const HomeRoute = () => {
       </div>
     </>
   );
+};
+
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    const date = new Date(label);
+    const monthName = new Intl.DateTimeFormat("ru", {
+      month: "long",
+    }).format(date);
+
+    return (
+      <div className="tooltip">
+        <h3 className="tooltip__title capitalize">
+          {monthName} {date.getFullYear()}
+        </h3>
+        <ul className="tooltip__items">
+          {payload.map((item) => (
+            <li className="tooltip__item">
+              <span className="tooltip__label">
+                <span
+                  className="tooltip__color"
+                  style={{ background: item.fill }}
+                ></span>
+                {item.name}
+              </span>
+              <span className="tooltip__value">
+                {item.value.toLocaleString("ru-RU", {
+                  maximumFractionDigits: 2,
+                })}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
+
+  return null;
 };
