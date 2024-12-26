@@ -5,33 +5,22 @@ import { Total } from "../../components/total";
 import { YearLinks } from "../../components/report-links";
 import { calculateTotal, calculateAverage } from "../../utils/calc";
 
-import MyAreaChart from "../../components/area-chart";
 import BarChart from "../../components/bar-chart";
 
-import assets2 from "./assets.json";
-import assetCategories2 from "./assets-categories.json";
 import income2 from "./income.json";
 import incomeCategories from "./income-categories.json";
 import expenses2 from "./expenses.json";
 import expenseCategories from "./expenses-categories.json";
-import currencies from "./currencies2.json";
 
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
-
+import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { colorScheme1 } from "../../components/recharts/color-schemes";
 import "../../components/recharts/recharts.css";
 
 export const homeLoader = async ({ params }) => {
   const query = qs.stringify({
     fields: ["date", "sum"],
     populate: "category",
-    sort: "date:desc",
+    sort: "date:asc",
     pagination: {
       pageSize: 10000,
     },
@@ -69,7 +58,7 @@ export const HomeRoute = () => {
   const { expenses, income, assets, assetCategories } = useLoaderData();
 
   // Активы отсортированы по дате, берём последнюю дату для фильтра
-  const lastDateString = assets[0].date;
+  const lastDateString = assets[assets.length - 1].date;
   const lastDate = new Date(lastDateString);
 
   // Считаем общие активы за последний месяц
@@ -94,49 +83,18 @@ export const HomeRoute = () => {
   );
 
   // Подготовка данных для постороения графиков d3
-  // Собираем активы в формат {date:"", 1:"", 2:"", ...}, где 1,2 — это id категорий
-
-  const uniqueAssetDates = new Set();
-  const assetsTable = [];
-
-  assets.forEach((asset) => {
-    uniqueAssetDates.add(asset.date);
-  });
-
-  uniqueAssetDates.forEach((date) => {
-    const values = { cat1: 100, cat2: 200, cat3: 150 };
-    // const values = [];
-    // assetCategories.forEach((category) => {
-    //   values.push({
-    //     cat${category}:
-    //   });
-    // });
-
-    assetsTable.push({ date: date, ...values });
-  });
-
-  const tmpData = [
-    { name: "Page A", uv: 2900, pv: 2400, amt: 2400 },
-    { name: "Page B", uv: 500, pv: 1398, amt: 2210 },
-    { name: "Page C", uv: 2800, pv: 9800, amt: 2290 },
-    { name: "Page D", uv: 200, pv: 5800, amt: 2290 },
-    { name: "Page F", uv: 2200, pv: 5800, amt: 2290 },
-    { name: "Page G", uv: 1500, pv: 4300, amt: 2100 },
-    { name: "Page H", uv: 2400, pv: 3400, amt: 2500 },
-    { name: "Page I", uv: 900, pv: 1200, amt: 1800 },
-    { name: "Page J", uv: 1100, pv: 2200, amt: 2000 },
-    { name: "Page K", uv: 3000, pv: 5000, amt: 2600 },
-  ];
+  // Собираем активы в формат {date:"", cat1:"", cat2:"", ...}, где 1,2 — это id категорий
+  const assetsTable = assetsToRechartsData(assets);
 
   return (
     <>
       <h1>Все финансы</h1>
       <div className="cards">
-        <Total value={Math.floor(totalAssets)} title="Активы" />
-        <Total value={Math.floor(totalInvestAssets)} title="Инвестиции" />
+        <Total value={totalAssets} title="Активы" />
+        <Total value={totalInvestAssets} title="Инвестиции" />
         <Total value={0} title="FIRE в месяцах" />
         <Total
-          value={Math.floor(averageLastYearInvestIncome)}
+          value={averageLastYearInvestIncome}
           title="Средний инвест. доход"
         />
       </div>
@@ -150,31 +108,18 @@ export const HomeRoute = () => {
         <h2 className="first">Классы активов</h2>
         <div className="card__cutoff" style={{ height: 300 }}>
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={assets2.assets} margin={0}>
-              <Area
-                type="monotone"
-                dataKey="estate"
-                stackId="1"
-                fill="#0347CE"
-                fillOpacity="1"
-                stroke="none"
-              />
-              <Area
-                type="monotone"
-                dataKey="stocks"
-                stackId="1"
-                fill="#AC54FA"
-                fillOpacity="1"
-                stroke="none"
-              />
-              <Area
-                type="monotone"
-                dataKey="cash"
-                stackId="1"
-                fill="#FFD24A"
-                fillOpacity="1"
-                stroke="none"
-              />
+            <AreaChart data={assetsTable} margin={0}>
+              {assetCategories.map((category) => (
+                <Area
+                  key={category.id}
+                  type="monotone"
+                  dataKey={category.name}
+                  stackId="1"
+                  fill={colorScheme1[category.id - 1]}
+                  fillOpacity="1"
+                  stroke="none"
+                />
+              ))}
               <XAxis dataKey="date" hide={true} />
               <Tooltip
                 offset={16}
@@ -216,6 +161,24 @@ export const HomeRoute = () => {
   );
 };
 
+const assetsToRechartsData = (assets) => {
+  const data = {};
+  assets.forEach((asset) => {
+    const key = asset.date;
+
+    if (!data[key]) {
+      data[key] = {};
+    }
+
+    data[key][asset.category.name] = Number(asset.sum);
+  });
+
+  return Object.entries(data).map(([key, values]) => ({
+    date: key,
+    ...values,
+  }));
+};
+
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     const date = new Date(label);
@@ -230,7 +193,7 @@ const CustomTooltip = ({ active, payload, label }) => {
         </h3>
         <ul className="tooltip__items">
           {payload.map((item) => (
-            <li className="tooltip__item">
+            <li className="tooltip__item" key={item.name}>
               <span className="tooltip__label">
                 <span
                   className="tooltip__color"
@@ -240,7 +203,7 @@ const CustomTooltip = ({ active, payload, label }) => {
               </span>
               <span className="tooltip__value">
                 {item.value.toLocaleString("ru-RU", {
-                  maximumFractionDigits: 2,
+                  maximumFractionDigits: 0,
                 })}
               </span>
             </li>

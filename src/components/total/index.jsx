@@ -14,7 +14,7 @@ export const Total = ({
       <h2 className="total__title">{title}</h2>
       <p className="total__value">
         {value.toLocaleString("ru-RU", {
-          maximumFractionDigits: 2,
+          maximumFractionDigits: type === "percent" ? 2 : 0,
         })}
         {type === "percent" ? "%" : ""}
       </p>
