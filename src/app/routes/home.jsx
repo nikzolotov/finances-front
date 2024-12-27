@@ -111,7 +111,7 @@ export const HomeRoute = () => {
       </div>
       <div className="card">
         <h2 className="first">Классы активов</h2>
-        <div className="card__cutoff" style={{ height: 300 }}>
+        <div className="card__cutoff">
           <AssetsChart data={assets} categories={assetCategories} />
         </div>
       </div>
@@ -119,9 +119,7 @@ export const HomeRoute = () => {
       <YearLinks />
       <div className="card">
         <h2 className="first">Инвестиционный доход</h2>
-        <div style={{ height: 300 }}>
-          <InvestIncomeChart data={income} />
-        </div>
+        <InvestIncomeChart data={income} />
       </div>
       <div className="card">
         <h2 className="first">FIRE в месяцах</h2>
@@ -131,9 +129,7 @@ export const HomeRoute = () => {
       </div>
       <div className="card">
         <h2 className="first">Доходы</h2>
-        <div style={{ height: 300 }}>
-          <IncomeChart data={income} categories={incomeCategories} />
-        </div>
+        <IncomeChart data={income} categories={incomeCategories} />
       </div>
       <div className="card">
         <h2 className="first">Расходы</h2>

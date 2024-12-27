@@ -8,7 +8,7 @@ export const AssetsChart = ({ data, categories }) => {
   const assetsTable = convertCategorizedData(data);
 
   return (
-    <ResponsiveContainer width="100%">
+    <ResponsiveContainer width="100%" height={300}>
       <AreaChart
         data={assetsTable}
         margin={0}

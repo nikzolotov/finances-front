@@ -16,7 +16,7 @@ export const IncomeChart = ({ data, categories }) => {
   const incomeTable = convertCategorizedData(data);
 
   return (
-    <ResponsiveContainer width="100%">
+    <ResponsiveContainer width="100%" height={480}>
       <BarChart
         data={incomeTable}
         margin={{ top: -2, right: 0, bottom: 0, left: 0 }}
