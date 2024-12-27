@@ -5,13 +5,6 @@ import { Total } from "../../components/total";
 import { YearLinks } from "../../components/report-links";
 import { calculateTotal, calculateAverage } from "../../utils/calc";
 
-import BarChart from "../../components/bar-chart";
-
-import income2 from "./income.json";
-import incomeCategories from "./income-categories.json";
-import expenses2 from "./expenses.json";
-import expenseCategories from "./expenses-categories.json";
-
 import {
   AreaChart,
   Area,
@@ -115,12 +108,6 @@ export const HomeRoute = () => {
           title="Средний инвест. доход"
         />
       </div>
-      {/* <div className="card">
-        <MyAreaChart
-          data={assets2.assets}
-          series={assetCategories2.categories}
-        />
-      </div> */}
       <div className="card">
         <h2 className="first">Классы активов</h2>
         <div className="card__cutoff" style={{ height: 300 }}>
@@ -209,7 +196,7 @@ const InvestIncomeGraph = ({ data }) => {
             value === 0 ? "" : `${(value / 1000).toFixed(0)} k`
           }
         />
-        <Tooltip offset={16} position={{ y: 16 }} content={<CustomTooltip />} />
+        <Tooltip offset={16} position={{ y: 4 }} content={<CustomTooltip />} />
         <Line
           type="monotone"
           dataKey="value"
