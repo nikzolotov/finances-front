@@ -1,3 +1,15 @@
+.recharts-cartesian-grid line {
+  stroke: var(--border-secondary-light);
+}
+.recharts-cartesian-axis-line {
+  stroke: var(--border-primary-light);
+}
+.recharts-cartesian-axis-tick-value {
+  font-size: var(--body-2);
+  line-height: var(--body-2-lh);
+  fill: var(--text-secondary-light);
+}
+
 .tooltip {
   padding: var(--spacing-s);
   background: var(--background-secondary-light);
@@ -33,7 +45,7 @@
   color: var(--text-secondary-light);
 }
 
-.recharts-active-dot {
+.recharts-hide-active-dots .recharts-active-dot {
   visibility: hidden;
 }
 
@@ -42,6 +54,15 @@
 }
 
 @media (prefers-color-scheme: dark) {
+  .recharts-cartesian-grid line {
+    stroke: var(--border-secondary-dark);
+  }
+  .recharts-cartesian-axis-line {
+    stroke: var(--border-primary-dark);
+  }
+  .recharts-cartesian-axis-tick-value {
+    fill: var(--text-secondary-dark);
+  }
   .tooltip {
     background: var(--background-primary-dark);
   }

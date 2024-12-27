@@ -9,6 +9,7 @@
   --border-primary-light: rgba(0, 56, 128, 0.2);
   --border-primary-dark: rgba(255, 255, 255, 0.2);
   --border-secondary-light: rgba(0, 56, 128, 0.1);
+  --border-secondary-dark: rgba(255, 255, 255, 0.05);
 
   --text-primary-light: #1d395c;
   --text-primary-dark: rgba(255, 255, 255, 0.9);

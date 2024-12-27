@@ -1,4 +1,4 @@
-export const colorScheme1 = [
+export const assetColors = [
   "#003FBE",
   "#662FFF",
   "#AC54FA",
@@ -14,3 +14,5 @@ export const colorScheme1 = [
   "#003FBE",
   "#662FFF",
 ];
+
+export const investIncomeColor = "#662fff";

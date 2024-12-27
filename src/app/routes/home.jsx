@@ -12,8 +12,21 @@ import incomeCategories from "./income-categories.json";
 import expenses2 from "./expenses.json";
 import expenseCategories from "./expenses-categories.json";
 
-import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer } from "recharts";
-import { colorScheme1 } from "../../components/recharts/color-schemes";
+import {
+  AreaChart,
+  Area,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  ResponsiveContainer,
+} from "recharts";
+import {
+  assetColors,
+  investIncomeColor,
+} from "../../components/recharts/color-schemes";
 import "../../components/recharts/recharts.css";
 
 export const homeLoader = async ({ params }) => {
@@ -83,8 +96,12 @@ export const HomeRoute = () => {
   );
 
   // Подготовка данных для постороения графиков d3
-  // Собираем активы в формат {date:"", cat1:"", cat2:"", ...}, где 1,2 — это id категорий
+  // Собираем активы в формат {date:"", Дом:"", Акции:"", ...}
   const assetsTable = assetsToRechartsData(assets);
+
+  // Собираем инвестиционный доход в формат {date:"", value:""}
+  const investIncome = income.filter((item) => item.category.isInvest);
+  const investIncomeTable = investIncomeToRechartsData(investIncome);
 
   return (
     <>
@@ -107,33 +124,16 @@ export const HomeRoute = () => {
       <div className="card">
         <h2 className="first">Классы активов</h2>
         <div className="card__cutoff" style={{ height: 300 }}>
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={assetsTable} margin={0}>
-              {assetCategories.map((category) => (
-                <Area
-                  key={category.id}
-                  type="monotone"
-                  dataKey={category.name}
-                  stackId="1"
-                  fill={colorScheme1[category.id - 1]}
-                  fillOpacity="1"
-                  stroke="none"
-                />
-              ))}
-              <XAxis dataKey="date" hide={true} />
-              <Tooltip
-                offset={16}
-                position={{ y: 4 }}
-                content={<CustomTooltip />}
-              />
-            </AreaChart>
-          </ResponsiveContainer>
+          <AssetsGraph data={assetsTable} categories={assetCategories} />
         </div>
       </div>
       <h2>Годовые отчеты</h2>
       <YearLinks />
       <div className="card">
         <h2 className="first">Инвестиционный доход</h2>
+        <div style={{ height: 300 }}>
+          <InvestIncomeGraph data={investIncomeTable} />
+        </div>
       </div>
       <div className="card">
         <h2 className="first">FIRE в месяцах</h2>
@@ -161,6 +161,67 @@ export const HomeRoute = () => {
   );
 };
 
+const AssetsGraph = ({ data, categories }) => {
+  return (
+    <ResponsiveContainer width="100%" height="100%">
+      <AreaChart data={data} margin={0} className="recharts-hide-active-dots">
+        {categories.map((category) => (
+          <Area
+            key={category.id}
+            type="monotone"
+            dataKey={category.name}
+            stackId="1"
+            fill={assetColors[category.id - 1]}
+            fillOpacity="1"
+            stroke="none"
+          />
+        ))}
+        <XAxis dataKey="date" hide={true} />
+        <Tooltip offset={16} position={{ y: 4 }} content={<CustomTooltip />} />
+      </AreaChart>
+    </ResponsiveContainer>
+  );
+};
+
+const InvestIncomeGraph = ({ data }) => {
+  return (
+    <ResponsiveContainer width="100%" height="100%">
+      <LineChart data={data} margin={{ top: -2, right: 0, bottom: 0, left: 0 }}>
+        <CartesianGrid vertical={false} />
+        <XAxis
+          dataKey="date"
+          padding={{ left: 16, right: 16 }}
+          tickLine={false}
+          tickMargin={4}
+          minTickGap={0}
+          tickFormatter={(date) => {
+            const dateObject = new Date(date);
+            const month = dateObject.getMonth();
+            const year = dateObject.getFullYear();
+            return month === 0 ? `${year}` : "";
+          }}
+        />
+        <YAxis
+          padding={{ top: 16 }}
+          axisLine={false}
+          tickLine={false}
+          tickFormatter={(value) =>
+            value === 0 ? "" : `${(value / 1000).toFixed(0)} k`
+          }
+        />
+        <Tooltip offset={16} position={{ y: 16 }} content={<CustomTooltip />} />
+        <Line
+          type="monotone"
+          dataKey="value"
+          stroke={investIncomeColor}
+          strokeWidth={2}
+          dot={false}
+        />
+      </LineChart>
+    </ResponsiveContainer>
+  );
+};
+
 const assetsToRechartsData = (assets) => {
   const data = {};
   assets.forEach((asset) => {
@@ -179,6 +240,23 @@ const assetsToRechartsData = (assets) => {
   }));
 };
 
+const investIncomeToRechartsData = (investIncome) => {
+  const data = {};
+  investIncome.forEach((item) => {
+    const key = item.date;
+
+    if (!data[key]) {
+      data[key] = 0;
+    }
+
+    data[key] += Number(item.sum);
+  });
+  return Object.entries(data).map(([key, value]) => ({
+    date: key,
+    value,
+  }));
+};
+
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     const date = new Date(label);
@@ -194,13 +272,15 @@ const CustomTooltip = ({ active, payload, label }) => {
         <ul className="tooltip__items">
           {payload.map((item) => (
             <li className="tooltip__item" key={item.name}>
-              <span className="tooltip__label">
-                <span
-                  className="tooltip__color"
-                  style={{ background: item.fill }}
-                ></span>
-                {item.name}
-              </span>
+              {item.name !== "value" && (
+                <span className="tooltip__label">
+                  <span
+                    className="tooltip__color"
+                    style={{ background: item.fill }}
+                  ></span>
+                  {item.name}
+                </span>
+              )}
               <span className="tooltip__value">
                 {item.value.toLocaleString("ru-RU", {
                   maximumFractionDigits: 0,
