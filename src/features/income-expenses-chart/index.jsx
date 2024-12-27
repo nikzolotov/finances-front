@@ -12,8 +12,13 @@ import { convertCategorizedData } from "../../utils/convert-data";
 import { assetColors } from "../../components/recharts/color-schemes";
 import { ChartTooltip } from "../chart-tooltip";
 
-export const CategoryChart = ({ data, categories }) => {
+import { schemeObservable10, schemeTableau10 } from "d3";
+
+export const CategoryChart = ({ data, categories, colorScheme }) => {
   const incomeTable = convertCategorizedData(data);
+
+  const colors =
+    colorScheme === "income" ? schemeObservable10 : schemeTableau10;
 
   return (
     <ResponsiveContainer width="100%" height={480}>
@@ -49,7 +54,7 @@ export const CategoryChart = ({ data, categories }) => {
             key={category.id}
             dataKey={category.name}
             stackId="1"
-            fill={assetColors[category.id - 1]}
+            fill={colors[category.id - 1]}
           />
         ))}
       </BarChart>

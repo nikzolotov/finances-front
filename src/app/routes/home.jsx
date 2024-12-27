@@ -129,11 +129,19 @@ export const HomeRoute = () => {
       </div>
       <div className="card">
         <h2 className="first">Доходы</h2>
-        <CategoryChart data={income} categories={incomeCategories} />
+        <CategoryChart
+          data={income}
+          categories={incomeCategories}
+          colorScheme="income"
+        />
       </div>
       <div className="card">
         <h2 className="first">Расходы</h2>
-        <CategoryChart data={expenses} categories={expensesCategories} />
+        <CategoryChart
+          data={expenses}
+          categories={expensesCategories}
+          colorScheme="expenses"
+        />
       </div>
     </>
   );
