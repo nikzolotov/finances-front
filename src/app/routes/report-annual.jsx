@@ -1,8 +1,8 @@
 import { useLoaderData } from "react-router-dom";
 import qs from "qs";
 
-import { Total } from "../../components/total";
-import { MonthLinks } from "../../components/report-links";
+import { Total } from "../../features/total";
+import { MonthLinks } from "../../features/report-links";
 import { calculateTotal } from "../../utils/calc";
 
 export const AnnualReportLoader = async ({ params }) => {

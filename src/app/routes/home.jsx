@@ -1,25 +1,11 @@
 import { useLoaderData } from "react-router-dom";
 import qs from "qs";
 
-import { Total } from "../../components/total";
-import { YearLinks } from "../../components/report-links";
+import { Total } from "../../features/total";
+import { YearLinks } from "../../features/report-links";
+import { AssetsChart } from "../../features/assets-chart";
+import { InvestIncomeChart } from "../../features/invest-income-chart";
 import { calculateTotal, calculateAverage } from "../../utils/calc";
-
-import {
-  AreaChart,
-  Area,
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  CartesianGrid,
-  ResponsiveContainer,
-} from "recharts";
-import {
-  assetColors,
-  investIncomeColor,
-} from "../../components/recharts/color-schemes";
 import "../../components/recharts/recharts.css";
 
 export const homeLoader = async ({ params }) => {
@@ -88,14 +74,6 @@ export const HomeRoute = () => {
     lastDate.getMonth() + 1
   );
 
-  // Подготовка данных для постороения графиков d3
-  // Собираем активы в формат {date:"", Дом:"", Акции:"", ...}
-  const assetsTable = assetsToRechartsData(assets);
-
-  // Собираем инвестиционный доход в формат {date:"", value:""}
-  const investIncome = income.filter((item) => item.category.isInvest);
-  const investIncomeTable = investIncomeToRechartsData(investIncome);
-
   return (
     <>
       <h1>Все финансы</h1>
@@ -111,7 +89,7 @@ export const HomeRoute = () => {
       <div className="card">
         <h2 className="first">Классы активов</h2>
         <div className="card__cutoff" style={{ height: 300 }}>
-          <AssetsGraph data={assetsTable} categories={assetCategories} />
+          <AssetsChart data={assets} categories={assetCategories} />
         </div>
       </div>
       <h2>Годовые отчеты</h2>
@@ -119,7 +97,7 @@ export const HomeRoute = () => {
       <div className="card">
         <h2 className="first">Инвестиционный доход</h2>
         <div style={{ height: 300 }}>
-          <InvestIncomeGraph data={investIncomeTable} />
+          <InvestIncomeChart data={income} />
         </div>
       </div>
       <div className="card">
@@ -146,139 +124,4 @@ export const HomeRoute = () => {
       </div>
     </>
   );
-};
-
-const AssetsGraph = ({ data, categories }) => {
-  return (
-    <ResponsiveContainer width="100%" height="100%">
-      <AreaChart data={data} margin={0} className="recharts-hide-active-dots">
-        {categories.map((category) => (
-          <Area
-            key={category.id}
-            type="monotone"
-            dataKey={category.name}
-            stackId="1"
-            fill={assetColors[category.id - 1]}
-            fillOpacity="1"
-            stroke="none"
-          />
-        ))}
-        <XAxis dataKey="date" hide={true} />
-        <Tooltip offset={16} position={{ y: 4 }} content={<CustomTooltip />} />
-      </AreaChart>
-    </ResponsiveContainer>
-  );
-};
-
-const InvestIncomeGraph = ({ data }) => {
-  return (
-    <ResponsiveContainer width="100%" height="100%">
-      <LineChart data={data} margin={{ top: -2, right: 0, bottom: 0, left: 0 }}>
-        <CartesianGrid vertical={false} />
-        <XAxis
-          dataKey="date"
-          padding={{ left: 16, right: 16 }}
-          tickLine={false}
-          tickMargin={4}
-          minTickGap={0}
-          tickFormatter={(date) => {
-            const dateObject = new Date(date);
-            const month = dateObject.getMonth();
-            const year = dateObject.getFullYear();
-            return month === 0 ? `${year}` : "";
-          }}
-        />
-        <YAxis
-          padding={{ top: 16 }}
-          axisLine={false}
-          tickLine={false}
-          tickFormatter={(value) =>
-            value === 0 ? "" : `${(value / 1000).toFixed(0)} k`
-          }
-        />
-        <Tooltip offset={16} position={{ y: 4 }} content={<CustomTooltip />} />
-        <Line
-          type="monotone"
-          dataKey="value"
-          stroke={investIncomeColor}
-          strokeWidth={2}
-          dot={false}
-        />
-      </LineChart>
-    </ResponsiveContainer>
-  );
-};
-
-const assetsToRechartsData = (assets) => {
-  const data = {};
-  assets.forEach((asset) => {
-    const key = asset.date;
-
-    if (!data[key]) {
-      data[key] = {};
-    }
-
-    data[key][asset.category.name] = Number(asset.sum);
-  });
-
-  return Object.entries(data).map(([key, values]) => ({
-    date: key,
-    ...values,
-  }));
-};
-
-const investIncomeToRechartsData = (investIncome) => {
-  const data = {};
-  investIncome.forEach((item) => {
-    const key = item.date;
-
-    if (!data[key]) {
-      data[key] = 0;
-    }
-
-    data[key] += Number(item.sum);
-  });
-  return Object.entries(data).map(([key, value]) => ({
-    date: key,
-    value,
-  }));
-};
-
-const CustomTooltip = ({ active, payload, label }) => {
-  if (active && payload && payload.length) {
-    const date = new Date(label);
-    const monthName = new Intl.DateTimeFormat("ru", {
-      month: "long",
-    }).format(date);
-
-    return (
-      <div className="tooltip">
-        <h3 className="tooltip__title capitalize">
-          {monthName} {date.getFullYear()}
-        </h3>
-        <ul className="tooltip__items">
-          {payload.map((item) => (
-            <li className="tooltip__item" key={item.name}>
-              {item.name !== "value" && (
-                <span className="tooltip__label">
-                  <span
-                    className="tooltip__color"
-                    style={{ background: item.fill }}
-                  ></span>
-                  {item.name}
-                </span>
-              )}
-              <span className="tooltip__value">
-                {item.value.toLocaleString("ru-RU", {
-                  maximumFractionDigits: 0,
-                })}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
-  }
-
-  return null;
 };
