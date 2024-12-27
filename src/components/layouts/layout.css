@@ -8,6 +8,11 @@ main {
   padding: var(--spacing-m) var(--spacing-xxxl);
 }
 
+footer {
+  padding: var(--spacing-xl) var(--spacing-xxxl);
+  color: var(--text-secondary-light);
+}
+
 .first {
   margin-top: 0;
 }
@@ -75,6 +80,9 @@ main {
 }
 
 @media (prefers-color-scheme: dark) {
+  footer {
+    color: var(--text-secondary-dark);
+  }
   .card {
     background: var(--background-secondary-dark);
   }
