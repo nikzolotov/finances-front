@@ -5,7 +5,7 @@ import { Total } from "../../features/total";
 import { YearLinks } from "../../features/report-links";
 import { AssetsChart } from "../../features/assets-chart";
 import { InvestIncomeChart } from "../../features/invest-income-chart";
-import { IncomeChart } from "../../features/income-chart";
+import { CategoryChart } from "../../features/income-expenses-chart";
 import { calculateTotal, calculateAverage } from "../../utils/calc";
 import "../../components/recharts/recharts.css";
 
@@ -129,15 +129,11 @@ export const HomeRoute = () => {
       </div>
       <div className="card">
         <h2 className="first">Доходы</h2>
-        <IncomeChart data={income} categories={incomeCategories} />
+        <CategoryChart data={income} categories={incomeCategories} />
       </div>
       <div className="card">
         <h2 className="first">Расходы</h2>
-        {/* <BarChart
-          title="Expenses"
-          data={expenses2.expenses}
-          series={expenseCategories.categories.filter((d) => d.parent === null)}
-        /> */}
+        <CategoryChart data={expenses} categories={expensesCategories} />
       </div>
     </>
   );

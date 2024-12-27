@@ -10,9 +10,9 @@ import {
 
 import { convertCategorizedData } from "../../utils/convert-data";
 import { assetColors } from "../../components/recharts/color-schemes";
-import { ChartTooltip } from "../../features/chart-tooltip";
+import { ChartTooltip } from "../chart-tooltip";
 
-export const IncomeChart = ({ data, categories }) => {
+export const CategoryChart = ({ data, categories }) => {
   const incomeTable = convertCategorizedData(data);
 
   return (
