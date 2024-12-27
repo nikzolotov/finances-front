@@ -16,7 +16,7 @@ export const InvestIncomeChart = ({ data }) => {
   const investIncomeTable = investIncomeToRechartsData(investIncome);
 
   return (
-    <ResponsiveContainer width="100%" height="100%">
+    <ResponsiveContainer width="100%">
       <LineChart
         data={investIncomeTable}
         margin={{ top: -2, right: 0, bottom: 0, left: 0 }}
@@ -27,7 +27,6 @@ export const InvestIncomeChart = ({ data }) => {
           padding={{ left: 16, right: 16 }}
           tickLine={false}
           tickMargin={4}
-          minTickGap={0}
           tickFormatter={(date) => {
             const dateObject = new Date(date);
             const month = dateObject.getMonth();
@@ -40,7 +39,7 @@ export const InvestIncomeChart = ({ data }) => {
           axisLine={false}
           tickLine={false}
           tickFormatter={(value) =>
-            value === 0 ? "" : `${(value / 1000).toFixed(0)} k`
+            value === 0 ? "" : `${(value / 1000).toFixed(0)}K`
           }
         />
         <Tooltip offset={16} position={{ y: 4 }} content={<ChartTooltip />} />

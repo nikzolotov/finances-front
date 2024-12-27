@@ -5,6 +5,7 @@ import { Total } from "../../features/total";
 import { YearLinks } from "../../features/report-links";
 import { AssetsChart } from "../../features/assets-chart";
 import { InvestIncomeChart } from "../../features/invest-income-chart";
+import { IncomeChart } from "../../features/income-chart";
 import { calculateTotal, calculateAverage } from "../../utils/calc";
 import "../../components/recharts/recharts.css";
 
@@ -23,31 +24,52 @@ export const homeLoader = async ({ params }) => {
     incomeResponse,
     assetsResponse,
     assetCategoriesResponse,
+    incomeCategoriesResponse,
+    expensesCategoriesResponse,
   ] = await Promise.all([
     fetch(`${import.meta.env.VITE_STRAPI_API_URL}expenses?${query}`),
     fetch(`${import.meta.env.VITE_STRAPI_API_URL}incomes?${query}`),
     fetch(`${import.meta.env.VITE_STRAPI_API_URL}assets?${query}`),
     fetch(`${import.meta.env.VITE_STRAPI_API_URL}asset-categories`),
+    fetch(`${import.meta.env.VITE_STRAPI_API_URL}income-categories`),
+    fetch(`${import.meta.env.VITE_STRAPI_API_URL}expense-categories`),
   ]);
 
-  const [expensesData, incomeData, assetsData, assetCategoriesData] =
-    await Promise.all([
-      expensesResponse.json(),
-      incomeResponse.json(),
-      assetsResponse.json(),
-      assetCategoriesResponse.json(),
-    ]);
+  const [
+    expensesData,
+    incomeData,
+    assetsData,
+    assetCategoriesData,
+    incomeCategoriesData,
+    expensesCategoriesData,
+  ] = await Promise.all([
+    expensesResponse.json(),
+    incomeResponse.json(),
+    assetsResponse.json(),
+    assetCategoriesResponse.json(),
+    incomeCategoriesResponse.json(),
+    expensesCategoriesResponse.json(),
+  ]);
 
   return {
     expenses: expensesData.data,
     income: incomeData.data,
     assets: assetsData.data,
     assetCategories: assetCategoriesData.data,
+    incomeCategories: incomeCategoriesData.data,
+    expensesCategories: expensesCategoriesData.data,
   };
 };
 
 export const HomeRoute = () => {
-  const { expenses, income, assets, assetCategories } = useLoaderData();
+  const {
+    expenses,
+    income,
+    assets,
+    assetCategories,
+    incomeCategories,
+    expensesCategories,
+  } = useLoaderData();
 
   // Активы отсортированы по дате, берём последнюю дату для фильтра
   const lastDateString = assets[assets.length - 1].date;
@@ -74,6 +96,7 @@ export const HomeRoute = () => {
     lastDate.getMonth() + 1
   );
 
+  // console.log(incomeCategories);
   return (
     <>
       <h1>Все финансы</h1>
@@ -108,11 +131,9 @@ export const HomeRoute = () => {
       </div>
       <div className="card">
         <h2 className="first">Доходы</h2>
-        {/* <BarChart
-          title="Income"
-          data={income2.income}
-          series={incomeCategories.categories}
-        /> */}
+        <div style={{ height: 300 }}>
+          <IncomeChart data={income} categories={incomeCategories} />
+        </div>
       </div>
       <div className="card">
         <h2 className="first">Расходы</h2>

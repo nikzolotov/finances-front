@@ -14,8 +14,11 @@
   visibility: hidden;
 }
 
-.recharts-tooltip-cursor {
+.recharts-curve.recharts-tooltip-cursor {
   stroke: var(--border-primary-light);
+}
+.recharts-rectangle.recharts-tooltip-cursor {
+  fill: none;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -31,7 +34,7 @@
   .recharts-active-dot .recharts-dot {
     stroke: var(--background-secondary-dark);
   }
-  .recharts-tooltip-cursor {
+  .recharts-curve.recharts-tooltip-cursor {
     stroke: var(--border-primary-dark);
   }
   .recharts-area {

@@ -1,13 +1,14 @@
 import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer } from "recharts";
+
+import { convertCategorizedData } from "../../utils/convert-data";
 import { assetColors } from "../../components/recharts/color-schemes";
 import { ChartTooltip } from "../../features/chart-tooltip";
 
 export const AssetsChart = ({ data, categories }) => {
-  // Собираем активы в формат {date:"", Дом:"", Акции:"", ...}
-  const assetsTable = assetsToRechartsData(data);
+  const assetsTable = convertCategorizedData(data);
 
   return (
-    <ResponsiveContainer width="100%" height="100%">
+    <ResponsiveContainer width="100%">
       <AreaChart
         data={assetsTable}
         margin={0}
@@ -29,22 +30,4 @@ export const AssetsChart = ({ data, categories }) => {
       </AreaChart>
     </ResponsiveContainer>
   );
-};
-
-const assetsToRechartsData = (assets) => {
-  const data = {};
-  assets.forEach((asset) => {
-    const key = asset.date;
-
-    if (!data[key]) {
-      data[key] = {};
-    }
-
-    data[key][asset.category.name] = Number(asset.sum);
-  });
-
-  return Object.entries(data).map(([key, values]) => ({
-    date: key,
-    ...values,
-  }));
 };

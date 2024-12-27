@@ -14,7 +14,11 @@ export const ChartTooltip = ({ active, payload, label }) => {
         </h3>
         <ul className="tooltip__items">
           {payload.map((item) => (
-            <li className="tooltip__item" key={item.name}>
+            <li
+              className="tooltip__item"
+              key={item.name}
+              style={{ display: item.value === 0 ? "none" : undefined }}
+            >
               {item.name !== "value" && (
                 <span className="tooltip__label">
                   <span
