@@ -11,6 +11,7 @@ export const Layout = ({ children }) => {
     <>
       <Header />
       <main>{children}</main>
+      <Footer />
     </>
   );
 };
@@ -24,6 +25,14 @@ const Header = () => {
       <Breadcrumbs year={useParams().year} month={useParams().month} />
       <Avatars />
     </header>
+  );
+};
+
+const Footer = () => {
+  return (
+    <footer>
+      <p>Семейный бюджет v0.1</p>
+    </footer>
   );
 };
 
