@@ -21,6 +21,12 @@
   fill: none;
 }
 
+.recharts-label-list .recharts-label {
+  font-size: var(--body-2);
+  line-height: var(--body-2-lh);
+  fill: var(--text-primary-light);
+}
+
 @media (prefers-color-scheme: dark) {
   .recharts-cartesian-grid line {
     stroke: var(--border-secondary-dark);

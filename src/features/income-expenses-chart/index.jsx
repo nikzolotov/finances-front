@@ -5,17 +5,17 @@ import {
   YAxis,
   Tooltip,
   CartesianGrid,
+  LabelList,
   ResponsiveContainer,
 } from "recharts";
 
 import { convertCategorizedData } from "../../utils/convert-data";
-import { assetColors } from "../../components/recharts/color-schemes";
 import { ChartTooltip } from "../chart-tooltip";
 
 import { schemeObservable10, schemeTableau10 } from "d3";
 
 export const CategoryChart = ({ data, categories, colorScheme }) => {
-  const incomeTable = convertCategorizedData(data);
+  const dataTable = convertCategorizedData(data);
 
   const colors =
     colorScheme === "income" ? schemeObservable10 : schemeTableau10;
@@ -23,8 +23,9 @@ export const CategoryChart = ({ data, categories, colorScheme }) => {
   return (
     <ResponsiveContainer width="100%" height={480}>
       <BarChart
-        data={incomeTable}
+        data={dataTable}
         margin={{ top: -2, right: 0, bottom: 0, left: 0 }}
+        barCategoryGap="20%"
       >
         <CartesianGrid vertical={false} />
         <XAxis
@@ -49,13 +50,24 @@ export const CategoryChart = ({ data, categories, colorScheme }) => {
         />
 
         <Tooltip offset={28} position={{ y: 4 }} content={<ChartTooltip />} />
-        {categories.map((category) => (
+        {categories.map((category, index) => (
           <Bar
             key={category.id}
             dataKey={category.name}
             stackId="1"
             fill={colors[category.id - 1]}
-          />
+            // activeBar={{ stroke: "white", strokeWidth: 2 }}
+          >
+            <LabelList
+              position="top"
+              offset={8}
+              valueAccessor={(entry) =>
+                index === categories.length - 1
+                  ? (entry.value[1] / 1000).toFixed(0)
+                  : null
+              }
+            />
+          </Bar>
         ))}
       </BarChart>
     </ResponsiveContainer>
