@@ -43,6 +43,9 @@
   .recharts-curve.recharts-tooltip-cursor {
     stroke: var(--border-primary-dark);
   }
+  .recharts-label-list .recharts-label {
+    fill: var(--text-primary-dark);
+  }
   .recharts-area {
     opacity: 0.9;
   }

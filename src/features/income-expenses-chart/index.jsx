@@ -56,7 +56,6 @@ export const CategoryChart = ({ data, categories, colorScheme }) => {
             dataKey={category.name}
             stackId="1"
             fill={colors[category.id - 1]}
-            // activeBar={{ stroke: "white", strokeWidth: 2 }}
           >
             <LabelList
               position="top"
