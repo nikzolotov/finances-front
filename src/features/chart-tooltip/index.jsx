@@ -12,7 +12,11 @@ export const ChartTooltip = ({ active, payload, label }) => {
         <h3 className="tooltip__title capitalize">
           {monthName} {date.getFullYear()}
         </h3>
-        <ul className="tooltip__items">
+        <ul
+          className={`tooltip__items${
+            payload.length > 10 ? " tooltip__items--long" : ""
+          }`}
+        >
           {payload.map((item) => (
             <li
               className="tooltip__item"

@@ -33,6 +33,19 @@
   color: var(--text-secondary-light);
 }
 
+.tooltip__items--long {
+  font-size: var(--body-2);
+  line-height: var(--body-2-lh);
+}
+.tooltip__items--long .tooltip__item {
+  margin-top: 0;
+}
+.tooltip__items--long .tooltip__color {
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+}
+
 @media (prefers-color-scheme: dark) {
   .tooltip {
     background: var(--background-primary-dark);
