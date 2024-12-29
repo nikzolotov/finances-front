@@ -130,6 +130,7 @@ export const HomeRoute = () => {
       <div className="cards">
         <Total value={totalAssets} title="Активы">
           <Difference
+            type="absolute"
             value={totalAssets}
             comparisonValue={monthAgoTotalAssets}
             label="чем месяцем ранее"

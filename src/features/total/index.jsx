@@ -21,9 +21,13 @@ export const Difference = ({
   label,
   labelNoData,
   invert,
+  type,
 }) => {
   if (comparisonValue !== 0) {
-    const difference = (value / comparisonValue - 1) * 100;
+    const difference =
+      type === "absolute"
+        ? value - comparisonValue
+        : (value / comparisonValue - 1) * 100;
 
     return (
       <p
@@ -37,16 +41,21 @@ export const Difference = ({
             : "total__negative"
         }`}
       >
-        {formatDifference(difference)} {label}
+        {formatDifference(difference, type)} {label}
       </p>
     );
   }
   return <p className="total__difference total__empty">{labelNoData}</p>;
 };
 
-const formatDifference = (difference) => {
+const formatDifference = (difference, type) => {
   const sign = difference > 0 ? "+" : "";
-  return `${sign}${difference.toLocaleString("ru-RU", {
-    maximumFractionDigits: 2,
-  })}%`;
+
+  if (type === "absolute") {
+    return `${sign}${(difference / 1000).toFixed(0)}K`;
+  } else {
+    return `${sign}${difference.toLocaleString("ru-RU", {
+      maximumFractionDigits: 2,
+    })}%`;
+  }
 };
