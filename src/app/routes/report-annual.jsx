@@ -3,7 +3,9 @@ import qs from "qs";
 
 import { Total, Difference } from "../../features/total";
 import { MonthLinks } from "../../features/report-links";
+import { AnnualBudgetChart } from "../../features/annual-budget-chart";
 import { calculateTotal } from "../../utils/calc";
+import "../../components/recharts/recharts.css";
 
 export const AnnualReportLoader = async ({ params }) => {
   const query = qs.stringify({
@@ -15,7 +17,7 @@ export const AnnualReportLoader = async ({ params }) => {
         $lte: `${params.year}-12-28`,
       },
     },
-    sort: "sum:desc",
+    // sort: "sum:desc",
     pagination: {
       pageSize: 1000,
     },
@@ -30,7 +32,7 @@ export const AnnualReportLoader = async ({ params }) => {
         $lte: `${params.year - 1}-12-28`,
       },
     },
-    sort: "sum:desc",
+    // sort: "sum:desc",
     pagination: {
       pageSize: 1000,
     },
@@ -114,6 +116,7 @@ export const AnnualReportRoute = () => {
       <MonthLinks year={year} />
       <div className="card">
         <h2 className="first">Бюджет</h2>
+        <AnnualBudgetChart data={expenses} />
       </div>
     </>
   );

@@ -11,12 +11,36 @@ import {
 
 import { schemeTableau10 } from "d3";
 
-export const MonthlyBudgetChart = ({ data }) => {
-  const dataTable = data.map((item) => ({
-    id: item.category.id,
-    name: item.category.name,
-    sum: item.sum,
-  }));
+export const AnnualBudgetChart = ({ data }) => {
+  // const dataTable = data.map((item) => ({
+  //   id: item.category.id,
+  //   name: item.category.name,
+  //   sum: item.sum,
+  // }));
+
+  const dataTable = data
+    .reduce((acc, item) => {
+      const categoryIndex = acc.findIndex(
+        (category) => category.id === item.category.id
+      );
+      if (categoryIndex === -1) {
+        acc.push({
+          id: item.category.id,
+          name: item.category.name,
+          sum: item.sum,
+          count: 1,
+        });
+      } else {
+        acc[categoryIndex].sum += item.sum;
+        acc[categoryIndex].count += 1;
+      }
+      return acc;
+    }, [])
+    .map((category) => ({
+      id: category.id,
+      name: category.name,
+      sum: category.sum / category.count,
+    }));
 
   return (
     <ResponsiveContainer width="100%" height={480}>
