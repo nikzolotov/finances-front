@@ -1,14 +1,14 @@
 import "./total.css";
 
-export const Total = ({ title, value, type, children }) => {
+export const Total = ({ title, value, percent = false, children }) => {
   return (
     <div className="total card">
       <h2 className="total__title">{title}</h2>
       <p className="total__value">
         {value.toLocaleString("ru-RU", {
-          maximumFractionDigits: type === "percent" ? 2 : 0,
+          maximumFractionDigits: percent ? 2 : 0,
         })}
-        {type === "percent" ? "%" : ""}
+        {percent ? "%" : ""}
       </p>
       {children}
     </div>
@@ -19,13 +19,14 @@ export const Difference = ({
   value,
   comparisonValue,
   label,
-  labelNoData,
-  invert,
-  type,
+  labelNoData = "Нет данных",
+  invert = false,
+  absolute = false,
+  percent = false,
 }) => {
-  if (comparisonValue !== 0) {
+  if (comparisonValue !== 0 && !Number.isNaN(comparisonValue)) {
     const difference =
-      type === "absolute"
+      absolute || percent
         ? value - comparisonValue
         : (value / comparisonValue - 1) * 100;
 
@@ -41,17 +42,17 @@ export const Difference = ({
             : "total__negative"
         }`}
       >
-        {formatDifference(difference, type)} {label}
+        {formatDifference(difference, absolute)} {label}
       </p>
     );
   }
   return <p className="total__difference total__empty">{labelNoData}</p>;
 };
 
-const formatDifference = (difference, type) => {
+const formatDifference = (difference, absolute) => {
   const sign = difference > 0 ? "+" : "";
 
-  if (type === "absolute") {
+  if (absolute) {
     return `${sign}${(difference / 1000).toFixed(0)}K`;
   } else {
     return `${sign}${difference.toLocaleString("ru-RU", {

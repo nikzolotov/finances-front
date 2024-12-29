@@ -194,7 +194,7 @@ export const MonthlyReportRoute = () => {
             labelNoData="Нет данных за предыдущий год"
           />
         </Total>
-        <Total value={savingsRate} title="Процент сохранений" type="percent" />
+        <Total value={savingsRate} title="Процент сохранений" percent />
       </div>
       <div className="card">
         <h2 className="first">Бюджет</h2>

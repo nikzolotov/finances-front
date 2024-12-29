@@ -75,18 +75,22 @@ export const AnnualReportRoute = () => {
   const totalIncome = calculateTotal(income);
   const totalExpenses = calculateTotal(expenses);
 
-  // Считаем общие доходы и расходы в прошлом году для сравнения
+  // Считаем общие доходы и расходы год назад для сравнения
   const yearAgoTotalIncome = calculateTotal(yearAgoIncome);
   const yearAgoTotalExpenses = calculateTotal(yearAgoExpenses);
 
   // Считаем сколько сохранили
   const savings = totalIncome - totalExpenses;
 
-  // Считаем сколько сохранили в прошлом году для сравнения
+  // Считаем сколько сохранили год назад для сравнения
   const yearAgoSavings = yearAgoTotalIncome - yearAgoTotalExpenses;
 
   // Считаем процент сохранений
   const savingsRate = ((totalIncome - totalExpenses) / totalIncome) * 100;
+
+  // Считаем процент сохранений год назад
+  const yearAgoSavingsRate =
+    ((yearAgoTotalIncome - yearAgoTotalExpenses) / yearAgoTotalIncome) * 100;
 
   return (
     <>
@@ -100,7 +104,7 @@ export const AnnualReportRoute = () => {
             labelNoData="Нет данных за предыдущий год"
           />
         </Total>
-        <Total value={totalExpenses} title="Расходы" invert>
+        <Total value={totalExpenses} title="Расходы">
           <Difference
             value={totalExpenses}
             comparisonValue={yearAgoTotalExpenses}
@@ -117,7 +121,15 @@ export const AnnualReportRoute = () => {
             labelNoData="Нет данных за предыдущий год"
           />
         </Total>
-        <Total value={savingsRate} title="Процент сохранений" type="percent" />
+        <Total value={savingsRate} title="Процент сохранений" percent>
+          <Difference
+            value={savingsRate}
+            comparisonValue={yearAgoSavingsRate}
+            label="чем годом ранее"
+            labelNoData="Нет данных за предыдущий год"
+            percent
+          />
+        </Total>
       </div>
       <div className="card">
         <h2 className="first">Денежные потоки</h2>
