@@ -102,6 +102,17 @@ export const HomeRoute = () => {
   );
   const totalInvestAssets = calculateTotal(lastInvestAssets);
 
+  // Считаем инвестиционные активы за предыдущий месяц для сравнения
+  const monthAgoInvestAssets = assets.filter((asset) => {
+    const assetDate = new Date(asset.date);
+    return (
+      assetDate.getFullYear() === monthAgoDate.getFullYear() &&
+      assetDate.getMonth() === monthAgoDate.getMonth() &&
+      asset.category.isInvest
+    );
+  });
+  const monthAgoTotalInvestAssets = calculateTotal(monthAgoInvestAssets);
+
   // Считаем средний инвестиционный доход за последний год
   const lastYearInvestIncome = income.filter(
     (item) =>
@@ -122,7 +133,11 @@ export const HomeRoute = () => {
           monthAgo={monthAgoTotalAssets}
           title="Активы"
         />
-        <Total value={totalInvestAssets} title="Инвестиции" />
+        <Total
+          value={totalInvestAssets}
+          monthAgo={monthAgoTotalInvestAssets}
+          title="Инвестиции"
+        />
         <Total value={0} title="FIRE в месяцах" />
         <Total
           value={averageLastYearInvestIncome}
