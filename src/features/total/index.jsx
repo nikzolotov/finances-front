@@ -1,9 +1,11 @@
+import { Children } from "react";
 import "./total.css";
 
 export const Total = ({
   title,
   value,
   yearAgo,
+  monthAgo,
   average,
   averageYear,
   type,
@@ -24,6 +26,15 @@ export const Total = ({
           comparisonValue={yearAgo}
           label="чем годом ранее"
           labelNoData="за предыдущий год"
+          invert={invert}
+        />
+      )}
+      {monthAgo !== undefined && (
+        <Difference
+          value={value}
+          comparisonValue={monthAgo}
+          label="чем в прошлом месяце"
+          labelNoData="за предыдущий месяц"
           invert={invert}
         />
       )}

@@ -23,41 +23,41 @@ export const homeLoader = async ({ params }) => {
     expensesResponse,
     incomeResponse,
     assetsResponse,
-    assetCategoriesResponse,
-    incomeCategoriesResponse,
     expensesCategoriesResponse,
+    incomeCategoriesResponse,
+    assetCategoriesResponse,
   ] = await Promise.all([
     fetch(`${import.meta.env.VITE_STRAPI_API_URL}expenses?${query}`),
     fetch(`${import.meta.env.VITE_STRAPI_API_URL}incomes?${query}`),
     fetch(`${import.meta.env.VITE_STRAPI_API_URL}assets?${query}`),
-    fetch(`${import.meta.env.VITE_STRAPI_API_URL}asset-categories`),
-    fetch(`${import.meta.env.VITE_STRAPI_API_URL}income-categories`),
     fetch(`${import.meta.env.VITE_STRAPI_API_URL}expense-categories`),
+    fetch(`${import.meta.env.VITE_STRAPI_API_URL}income-categories`),
+    fetch(`${import.meta.env.VITE_STRAPI_API_URL}asset-categories`),
   ]);
 
   const [
     expensesData,
     incomeData,
     assetsData,
-    assetCategoriesData,
-    incomeCategoriesData,
     expensesCategoriesData,
+    incomeCategoriesData,
+    assetCategoriesData,
   ] = await Promise.all([
     expensesResponse.json(),
     incomeResponse.json(),
     assetsResponse.json(),
-    assetCategoriesResponse.json(),
-    incomeCategoriesResponse.json(),
     expensesCategoriesResponse.json(),
+    incomeCategoriesResponse.json(),
+    assetCategoriesResponse.json(),
   ]);
 
   return {
     expenses: expensesData.data,
     income: incomeData.data,
     assets: assetsData.data,
-    assetCategories: assetCategoriesData.data,
-    incomeCategories: incomeCategoriesData.data,
     expensesCategories: expensesCategoriesData.data,
+    incomeCategories: incomeCategoriesData.data,
+    assetCategories: assetCategoriesData.data,
   };
 };
 
@@ -66,18 +66,35 @@ export const HomeRoute = () => {
     expenses,
     income,
     assets,
-    assetCategories,
-    incomeCategories,
     expensesCategories,
+    incomeCategories,
+    assetCategories,
   } = useLoaderData();
 
   // Активы отсортированы по дате, берём последнюю дату для фильтра
   const lastDateString = assets[assets.length - 1].date;
   const lastDate = new Date(lastDateString);
 
+  // Формируем дату на месяц назад
+  const monthAgoDate = new Date(
+    lastDate.getFullYear(),
+    lastDate.getMonth() - 1,
+    "1"
+  );
+
   // Считаем общие активы за последний месяц
   const lastAssets = assets.filter((asset) => asset.date === lastDateString);
   const totalAssets = calculateTotal(lastAssets);
+
+  // Считаем общие активы за предыдущий месяц для сравнения
+  const monthAgoAssets = assets.filter((asset) => {
+    const assetDate = new Date(asset.date);
+    return (
+      assetDate.getFullYear() === monthAgoDate.getFullYear() &&
+      assetDate.getMonth() === monthAgoDate.getMonth()
+    );
+  });
+  const monthAgoTotalAssets = calculateTotal(monthAgoAssets);
 
   // Считаем инвестиционные активы за последний месяц
   const lastInvestAssets = lastAssets.filter(
@@ -96,12 +113,15 @@ export const HomeRoute = () => {
     lastDate.getMonth() + 1
   );
 
-  // console.log(incomeCategories);
   return (
     <>
       <h1>Все финансы</h1>
       <div className="cards">
-        <Total value={totalAssets} title="Активы" />
+        <Total
+          value={totalAssets}
+          monthAgo={monthAgoTotalAssets}
+          title="Активы"
+        />
         <Total value={totalInvestAssets} title="Инвестиции" />
         <Total value={0} title="FIRE в месяцах" />
         <Total
