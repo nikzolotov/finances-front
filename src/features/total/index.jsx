@@ -1,16 +1,6 @@
-import { Children } from "react";
 import "./total.css";
 
-export const Total = ({
-  title,
-  value,
-  yearAgo,
-  monthAgo,
-  average,
-  averageYear,
-  type,
-  invert,
-}) => {
+export const Total = ({ title, value, type, children }) => {
   return (
     <div className="total card">
       <h2 className="total__title">{title}</h2>
@@ -20,37 +10,18 @@ export const Total = ({
         })}
         {type === "percent" ? "%" : ""}
       </p>
-      {yearAgo !== undefined && (
-        <Difference
-          value={value}
-          comparisonValue={yearAgo}
-          label="чем годом ранее"
-          labelNoData="за предыдущий год"
-          invert={invert}
-        />
-      )}
-      {monthAgo !== undefined && (
-        <Difference
-          value={value}
-          comparisonValue={monthAgo}
-          label="чем в прошлом месяце"
-          labelNoData="за предыдущий месяц"
-          invert={invert}
-        />
-      )}
-      {average !== undefined && (
-        <Difference
-          value={value}
-          comparisonValue={average}
-          label={`к среднему за ${averageYear}`}
-          invert={invert}
-        />
-      )}
+      {children}
     </div>
   );
 };
 
-const Difference = ({ value, comparisonValue, label, labelNoData, invert }) => {
+export const Difference = ({
+  value,
+  comparisonValue,
+  label,
+  labelNoData,
+  invert,
+}) => {
   if (comparisonValue !== 0) {
     const difference = (value / comparisonValue - 1) * 100;
 
@@ -70,9 +41,7 @@ const Difference = ({ value, comparisonValue, label, labelNoData, invert }) => {
       </p>
     );
   }
-  return (
-    <p className="total__difference total__empty">Нет данных {labelNoData}</p>
-  );
+  return <p className="total__difference total__empty">{labelNoData}</p>;
 };
 
 const formatDifference = (difference) => {

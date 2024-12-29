@@ -1,7 +1,7 @@
 import { useLoaderData } from "react-router-dom";
 import qs from "qs";
 
-import { Total } from "../../features/total";
+import { Total, Difference } from "../../features/total";
 import { YearLinks } from "../../features/report-links";
 import { AssetsChart } from "../../features/assets-chart";
 import { InvestIncomeChart } from "../../features/invest-income-chart";
@@ -128,21 +128,26 @@ export const HomeRoute = () => {
     <>
       <h1>Все финансы</h1>
       <div className="cards">
-        <Total
-          value={totalAssets}
-          monthAgo={monthAgoTotalAssets}
-          title="Активы"
-        />
-        <Total
-          value={totalInvestAssets}
-          monthAgo={monthAgoTotalInvestAssets}
-          title="Инвестиции"
-        />
+        <Total value={totalAssets} title="Активы">
+          <Difference
+            value={totalAssets}
+            comparisonValue={monthAgoTotalAssets}
+            label="чем месяцем ранее"
+          />
+        </Total>
+        <Total value={totalInvestAssets} title="Инвестиции">
+          <Difference
+            value={totalInvestAssets}
+            comparisonValue={monthAgoTotalInvestAssets}
+            label="чем месяцем ранее"
+          />
+        </Total>
         <Total value={0} title="FIRE в месяцах" />
-        <Total
-          value={averageLastYearInvestIncome}
-          title="Средний инвест. доход"
-        />
+        <Total value={averageLastYearInvestIncome} title="Инвестиционный доход">
+          <p className="total__difference total__empty">
+            Средний за {lastDate.getFullYear()} год
+          </p>
+        </Total>
       </div>
       <div className="card">
         <h2 className="first">Классы активов</h2>

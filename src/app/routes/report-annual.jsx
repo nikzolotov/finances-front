@@ -1,7 +1,7 @@
 import { useLoaderData } from "react-router-dom";
 import qs from "qs";
 
-import { Total } from "../../features/total";
+import { Total, Difference } from "../../features/total";
 import { MonthLinks } from "../../features/report-links";
 import { calculateTotal } from "../../utils/calc";
 
@@ -87,17 +87,23 @@ export const AnnualReportRoute = () => {
     <>
       <h1 className="first">{year} год</h1>
       <div className="cards">
-        <Total
-          value={totalIncome}
-          yearAgo={yearAgoTotalIncome}
-          title="Доходы"
-        />
-        <Total
-          value={totalExpenses}
-          yearAgo={yearAgoTotalExpenses}
-          title="Расходы"
-          invert
-        />
+        <Total value={totalIncome} title="Доходы">
+          <Difference
+            value={totalIncome}
+            comparisonValue={yearAgoTotalIncome}
+            label="чем годом ранее"
+            labelNoData="Нет данных за предыдущий год"
+          />
+        </Total>
+        <Total value={totalExpenses} title="Расходы" invert>
+          <Difference
+            value={totalExpenses}
+            comparisonValue={yearAgoTotalExpenses}
+            label="чем годом ранее"
+            labelNoData="Нет данных за предыдущий год"
+            invert
+          />
+        </Total>
         <Total value={savings} title="Сохранили" />
         <Total value={savingsRate} title="Процент сохранений" type="percent" />
       </div>

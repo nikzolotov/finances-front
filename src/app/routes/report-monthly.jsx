@@ -1,7 +1,7 @@
 import { useLoaderData } from "react-router-dom";
 import qs from "qs";
 
-import { Total } from "../../features/total";
+import { Total, Difference } from "../../features/total";
 import { BlogText } from "../../features/blog-text";
 import { MonthlyBudgetChart } from "../../features/monthly-budget-chart";
 import { calculateTotal, calculateAverage } from "../../utils/calc";
@@ -144,21 +144,36 @@ export const MonthlyReportRoute = () => {
         {monthName} {year}
       </h1>
       <div className="cards">
-        <Total
-          value={totalIncome}
-          yearAgo={yearAgoTotalIncome}
-          average={averageIncome}
-          averageYear={year}
-          title="Доходы"
-        />
-        <Total
-          value={totalExpenses}
-          yearAgo={yearAgoTotalExpenses}
-          average={averageExpenses}
-          averageYear={year}
-          title="Расходы"
-          invert
-        />
+        <Total value={totalIncome} title="Доходы">
+          <Difference
+            value={totalIncome}
+            comparisonValue={yearAgoTotalIncome}
+            label="чем годом ранее"
+            labelNoData="за предыдущий год"
+          />
+          <Difference
+            value={totalIncome}
+            comparisonValue={averageIncome}
+            label={`к среднему за ${year}`}
+            labelNoData="за предыдущий год"
+          />
+        </Total>
+        <Total value={totalExpenses} title="Расходы">
+          <Difference
+            value={totalExpenses}
+            comparisonValue={yearAgoTotalExpenses}
+            label="чем годом ранее"
+            labelNoData="за предыдущий год"
+            invert
+          />
+          <Difference
+            value={totalExpenses}
+            comparisonValue={averageExpenses}
+            label={`к среднему за ${year}`}
+            labelNoData="за предыдущий год"
+            invert
+          />
+        </Total>
         <Total value={savings} title="Сохранили" />
         <Total value={savingsRate} title="Процент сохранений" type="percent" />
       </div>
