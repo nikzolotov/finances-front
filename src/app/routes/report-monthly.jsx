@@ -30,7 +30,7 @@ export const MonthlyReportLoader = async ({ params }) => {
         $lte: `${params.year}-12-28`,
       },
     },
-    sort: "date:desc",
+    sort: "date:asc",
     pagination: {
       pageSize: 1000,
     },
@@ -113,7 +113,7 @@ export const MonthlyReportRoute = () => {
 
   // Записи отсортированы по дате. Берём последнюю дату, чтобы узнать общее количество месяцев,
   // за которые есть записи. Это понадобится для расчёта средних значений
-  const lastDate = new Date(annualIncome[0].date);
+  const lastDate = new Date(annualIncome[annualIncome.length - 1].date);
 
   // Считаем общие доходы и расходы за месяц
   const totalIncome = calculateTotal(income);

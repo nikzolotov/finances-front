@@ -21,29 +21,61 @@ export const AnnualReportLoader = async ({ params }) => {
     },
   });
 
-  const [expensesResponse, incomeResponse] = await Promise.all([
+  const yearAgoQuery = qs.stringify({
+    fields: ["date", "sum"],
+    populate: "category",
+    filters: {
+      date: {
+        $gte: `${params.year - 1}-01-01`,
+        $lte: `${params.year - 1}-12-28`,
+      },
+    },
+    sort: "sum:desc",
+    pagination: {
+      pageSize: 1000,
+    },
+  });
+
+  const [
+    expensesResponse,
+    incomeResponse,
+    yearAgoExpensesResponse,
+    yearAgoIncomeResponse,
+  ] = await Promise.all([
     fetch(`${import.meta.env.VITE_STRAPI_API_URL}expenses?${query}`),
     fetch(`${import.meta.env.VITE_STRAPI_API_URL}incomes?${query}`),
+    fetch(`${import.meta.env.VITE_STRAPI_API_URL}expenses?${yearAgoQuery}`),
+    fetch(`${import.meta.env.VITE_STRAPI_API_URL}incomes?${yearAgoQuery}`),
   ]);
 
-  const [expensesData, incomeData] = await Promise.all([
-    expensesResponse.json(),
-    incomeResponse.json(),
-  ]);
+  const [expensesData, incomeData, yearAgoExpensesData, yearAgoIncomeData] =
+    await Promise.all([
+      expensesResponse.json(),
+      incomeResponse.json(),
+      yearAgoExpensesResponse.json(),
+      yearAgoIncomeResponse.json(),
+    ]);
 
   return {
     year: params.year,
     expenses: expensesData.data,
     income: incomeData.data,
+    yearAgoExpenses: yearAgoExpensesData.data,
+    yearAgoIncome: yearAgoIncomeData.data,
   };
 };
 
 export const AnnualReportRoute = () => {
-  const { year, expenses, income } = useLoaderData();
+  const { year, expenses, income, yearAgoExpenses, yearAgoIncome } =
+    useLoaderData();
 
   // Считаем общие доходы и расходы
   const totalIncome = calculateTotal(income);
   const totalExpenses = calculateTotal(expenses);
+
+  // Считаем общие доходы и расходы в прошлом году
+  const yearAgoTotalIncome = calculateTotal(yearAgoIncome);
+  const yearAgoTotalExpenses = calculateTotal(yearAgoExpenses);
 
   // Считаем сколько сохранили
   const savings = totalIncome - totalExpenses;
@@ -55,8 +87,17 @@ export const AnnualReportRoute = () => {
     <>
       <h1 className="first">{year} год</h1>
       <div className="cards">
-        <Total value={totalIncome} title="Доходы" />
-        <Total value={totalExpenses} title="Расходы" />
+        <Total
+          value={totalIncome}
+          yearAgo={yearAgoTotalIncome}
+          title="Доходы"
+        />
+        <Total
+          value={totalExpenses}
+          yearAgo={yearAgoTotalExpenses}
+          title="Расходы"
+          invert
+        />
         <Total value={savings} title="Сохранили" />
         <Total value={savingsRate} title="Процент сохранений" type="percent" />
       </div>
