@@ -3,7 +3,9 @@ import qs from "qs";
 
 import { Total } from "../../features/total";
 import { BlogText } from "../../features/blog-text";
+import { MonthlyBudgetChart } from "../../features/monthly-budget-chart";
 import { calculateTotal, calculateAverage } from "../../utils/calc";
+import "../../components/recharts/recharts.css";
 
 export const MonthlyReportLoader = async ({ params }) => {
   const query = qs.stringify({
@@ -15,7 +17,7 @@ export const MonthlyReportLoader = async ({ params }) => {
         $lte: `${params.year}-${params.month}-28`,
       },
     },
-    sort: "sum:desc",
+    // sort: "sum:desc",
     pagination: {
       pageSize: 100,
     },
@@ -162,6 +164,7 @@ export const MonthlyReportRoute = () => {
       </div>
       <div className="card">
         <h2 className="first">Бюджет</h2>
+        <MonthlyBudgetChart data={expenses} />
       </div>
       <BlogText
         expenses={expenses}
