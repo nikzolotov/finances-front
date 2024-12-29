@@ -48,7 +48,6 @@ export const CategoryChart = ({ data, categories, colorScheme }) => {
             value === 0 ? "" : `${(value / 1000).toFixed(0)}K`
           }
         />
-
         <Tooltip offset={28} position={{ y: 4 }} content={<ChartTooltip />} />
         {categories.map((category, index) => (
           <Bar
