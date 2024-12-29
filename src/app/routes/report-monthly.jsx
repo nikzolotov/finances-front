@@ -144,6 +144,14 @@ export const MonthlyReportRoute = () => {
   // Считаем процент сохранений
   const savingsRate = ((totalIncome - totalExpenses) / totalIncome) * 100;
 
+  // Считаем процент сохранений год назад
+  const yearAgoSavingsRate =
+    ((yearAgoTotalIncome - yearAgoTotalExpenses) / yearAgoTotalIncome) * 100;
+
+  // Считаем средний процент сохранений в году
+  const averageSavingsRate =
+    ((averageIncome - averageExpenses) / averageIncome) * 100;
+
   return (
     <>
       <h1 className="first capitalize">
@@ -161,7 +169,7 @@ export const MonthlyReportRoute = () => {
             value={totalIncome}
             comparisonValue={averageIncome}
             label={`к среднему за ${year}`}
-            labelNoData="Нет данных за предыдущий год"
+            labelNoData="Недостаточно средних данных"
           />
         </Total>
         <Total value={totalExpenses} title="Расходы">
@@ -176,7 +184,7 @@ export const MonthlyReportRoute = () => {
             value={totalExpenses}
             comparisonValue={averageExpenses}
             label={`к среднему за ${year}`}
-            labelNoData="Нет данных за предыдущий год"
+            labelNoData="Недостаточно средних данных"
             invert
           />
         </Total>
@@ -191,10 +199,25 @@ export const MonthlyReportRoute = () => {
             value={savings}
             comparisonValue={averageSavings}
             label={`к среднему за ${year}`}
-            labelNoData="Нет данных за предыдущий год"
+            labelNoData="Недостаточно средних данных"
           />
         </Total>
-        <Total value={savingsRate} title="Процент сохранений" percent />
+        <Total value={savingsRate} title="Процент сохранений" percent>
+          <Difference
+            value={savingsRate}
+            comparisonValue={yearAgoSavingsRate}
+            label="чем годом ранее"
+            labelNoData="Нет данных за предыдущий год"
+            percent
+          />
+          <Difference
+            value={savingsRate}
+            comparisonValue={averageSavingsRate}
+            label={`к среднему за ${year}`}
+            labelNoData="Недостаточно средних данных"
+            percent
+          />
+        </Total>
       </div>
       <div className="card">
         <h2 className="first">Бюджет</h2>
