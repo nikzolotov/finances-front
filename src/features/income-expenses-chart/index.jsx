@@ -8,14 +8,13 @@ import {
   LabelList,
   ResponsiveContainer,
 } from "recharts";
-
-import { convertCategorizedData } from "../../utils/convert-data";
-import { ChartTooltip } from "../chart-tooltip";
-
 import { schemeObservable10, schemeTableau10 } from "d3";
 
+import { convertCategorizedTimeline } from "../../utils/convert-data";
+import { ChartTooltip } from "../chart-tooltip";
+
 export const CategoryChart = ({ data, categories, colorScheme }) => {
-  const dataTable = convertCategorizedData(data);
+  const convertedData = convertCategorizedTimeline(data);
 
   const colors =
     colorScheme === "income" ? schemeObservable10 : schemeTableau10;
@@ -23,7 +22,7 @@ export const CategoryChart = ({ data, categories, colorScheme }) => {
   return (
     <ResponsiveContainer width="100%" height={480}>
       <BarChart
-        data={dataTable}
+        data={convertedData}
         margin={{ top: -2, right: 0, bottom: 0, left: 0 }}
         barCategoryGap="20%"
       >

@@ -7,18 +7,19 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
-import { investIncomeColor } from "../../components/recharts/color-schemes";
+
+import { convertTotalsTimeline } from "../../utils/convert-data";
 import { ChartTooltip } from "../../features/chart-tooltip";
+import { investIncomeColor } from "../../components/recharts/color-schemes";
 
 export const InvestIncomeChart = ({ data }) => {
-  // Собираем инвестиционный доход в формат {date:"", value:""}
-  const investIncome = data.filter((item) => item.category.isInvest);
-  const investIncomeTable = investIncomeToRechartsData(investIncome);
+  const filteredData = data.filter((item) => item.category.isInvest);
+  const convertedData = convertTotalsTimeline(filteredData);
 
   return (
     <ResponsiveContainer width="100%" height={300}>
       <LineChart
-        data={investIncomeTable}
+        data={convertedData}
         margin={{ top: -2, right: 0, bottom: 0, left: 0 }}
       >
         <CartesianGrid vertical={false} />
@@ -53,21 +54,4 @@ export const InvestIncomeChart = ({ data }) => {
       </LineChart>
     </ResponsiveContainer>
   );
-};
-
-const investIncomeToRechartsData = (investIncome) => {
-  const data = {};
-  investIncome.forEach((item) => {
-    const key = item.date;
-
-    if (!data[key]) {
-      data[key] = 0;
-    }
-
-    data[key] += Number(item.sum);
-  });
-  return Object.entries(data).map(([key, value]) => ({
-    date: key,
-    value,
-  }));
 };

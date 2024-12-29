@@ -8,53 +8,29 @@ import {
   LabelList,
   ResponsiveContainer,
 } from "recharts";
-
 import { schemeTableau10 } from "d3";
 
-export const AnnualBudgetChart = ({ data }) => {
-  // const dataTable = data.map((item) => ({
-  //   id: item.category.id,
-  //   name: item.category.name,
-  //   sum: item.sum,
-  // }));
+import { convertCategoriesAverages } from "../../utils/convert-data";
 
-  const dataTable = data
-    .reduce((acc, item) => {
-      const categoryIndex = acc.findIndex(
-        (category) => category.id === item.category.id
-      );
-      if (categoryIndex === -1) {
-        acc.push({
-          id: item.category.id,
-          name: item.category.name,
-          sum: item.sum,
-          count: 1,
-        });
-      } else {
-        acc[categoryIndex].sum += item.sum;
-        acc[categoryIndex].count += 1;
-      }
-      return acc;
-    }, [])
-    .map((category) => ({
-      id: category.id,
-      name: category.name,
-      sum: category.sum / category.count,
-    }));
+export const AnnualBudgetChart = ({ data }) => {
+  const convertedData = convertCategoriesAverages(data);
 
   return (
-    <ResponsiveContainer width="100%" height={480}>
+    <ResponsiveContainer width="100%" height={560}>
       <BarChart
-        data={dataTable}
+        data={convertedData}
         margin={{ top: -2, right: 0, bottom: 0, left: 0 }}
         barCategoryGap="20%"
       >
         <CartesianGrid vertical={false} />
         <XAxis
           dataKey="name"
+          height={130}
           padding={{ left: 16, right: 16 }}
           tickLine={false}
           tickMargin={4}
+          angle={45}
+          textAnchor="start"
         />
         <YAxis
           padding={{ top: 16 }}

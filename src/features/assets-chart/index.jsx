@@ -1,16 +1,16 @@
 import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer } from "recharts";
 
-import { convertCategorizedData } from "../../utils/convert-data";
+import { convertCategorizedTimeline } from "../../utils/convert-data";
 import { assetColors } from "../../components/recharts/color-schemes";
 import { ChartTooltip } from "../../features/chart-tooltip";
 
 export const AssetsChart = ({ data, categories }) => {
-  const assetsTable = convertCategorizedData(data);
+  const convertedData = convertCategorizedTimeline(data);
 
   return (
     <ResponsiveContainer width="100%" height={300}>
       <AreaChart
-        data={assetsTable}
+        data={convertedData}
         margin={0}
         className="recharts-hide-active-dots"
       >
