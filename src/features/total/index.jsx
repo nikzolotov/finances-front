@@ -23,6 +23,7 @@ export const Total = ({
           value={value}
           comparisonValue={yearAgo}
           label="чем годом ранее"
+          labelNoData="за предыдущий год"
           invert={invert}
         />
       )}
@@ -38,23 +39,28 @@ export const Total = ({
   );
 };
 
-const Difference = ({ value, comparisonValue, label, invert }) => {
-  const difference = (value / comparisonValue - 1) * 100;
+const Difference = ({ value, comparisonValue, label, labelNoData, invert }) => {
+  if (comparisonValue !== 0) {
+    const difference = (value / comparisonValue - 1) * 100;
 
+    return (
+      <p
+        className={`total__difference ${
+          difference > 0
+            ? invert
+              ? "total__negative"
+              : "total__positive"
+            : invert
+            ? "total__positive"
+            : "total__negative"
+        }`}
+      >
+        {formatDifference(difference)} {label}
+      </p>
+    );
+  }
   return (
-    <p
-      className={`total__difference ${
-        difference > 0
-          ? invert
-            ? "total__negative"
-            : "total__positive"
-          : invert
-          ? "total__positive"
-          : "total__negative"
-      }`}
-    >
-      {formatDifference(difference)} {label}
-    </p>
+    <p className="total__difference total__empty">Нет данных {labelNoData}</p>
   );
 };
 

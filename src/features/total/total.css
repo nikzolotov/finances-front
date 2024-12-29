@@ -20,6 +20,9 @@
 .total__negative {
   color: var(--text-red-light);
 }
+.total__empty {
+  color: var(--text-secondary-light);
+}
 
 @media (prefers-color-scheme: dark) {
   .total__positive {
@@ -27,5 +30,8 @@
   }
   .total__negative {
     color: var(--text-red-dark);
+  }
+  .total__empty {
+    color: var(--text-secondary-dark);
   }
 }

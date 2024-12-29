@@ -151,7 +151,7 @@ export const MonthlyReportRoute = () => {
         />
         <Total
           value={totalExpenses}
-          yearAgo={yearAgoTotalIncome}
+          yearAgo={yearAgoTotalExpenses}
           average={averageExpenses}
           averageYear={year}
           title="Расходы"
