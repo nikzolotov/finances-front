@@ -149,13 +149,13 @@ export const MonthlyReportRoute = () => {
             value={totalIncome}
             comparisonValue={yearAgoTotalIncome}
             label="чем годом ранее"
-            labelNoData="за предыдущий год"
+            labelNoData="Нет данных за предыдущий год"
           />
           <Difference
             value={totalIncome}
             comparisonValue={averageIncome}
             label={`к среднему за ${year}`}
-            labelNoData="за предыдущий год"
+            labelNoData="Нет данных за предыдущий год"
           />
         </Total>
         <Total value={totalExpenses} title="Расходы">
@@ -163,14 +163,14 @@ export const MonthlyReportRoute = () => {
             value={totalExpenses}
             comparisonValue={yearAgoTotalExpenses}
             label="чем годом ранее"
-            labelNoData="за предыдущий год"
+            labelNoData="Нет данных за предыдущий год"
             invert
           />
           <Difference
             value={totalExpenses}
             comparisonValue={averageExpenses}
             label={`к среднему за ${year}`}
-            labelNoData="за предыдущий год"
+            labelNoData="Нет данных за предыдущий год"
             invert
           />
         </Total>
