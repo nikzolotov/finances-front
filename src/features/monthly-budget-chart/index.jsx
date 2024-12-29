@@ -1,6 +1,7 @@
 import {
   BarChart,
   Bar,
+  Rectangle,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -10,18 +11,23 @@ import {
 
 import { schemeTableau10 } from "d3";
 
-export const MonthlyBudgetChart = ({ data, categories }) => {
-  // const dataTable = data;
+export const MonthlyBudgetChart = ({ data }) => {
+  const dataTable = data.map((item) => ({
+    id: item.category.id,
+    name: item.category.name,
+    sum: item.sum,
+  }));
+
   return (
     <ResponsiveContainer width="100%" height={480}>
       <BarChart
-        data={data}
+        data={dataTable}
         margin={{ top: -2, right: 0, bottom: 0, left: 0 }}
         barCategoryGap="20%"
       >
         <CartesianGrid vertical={false} />
         <XAxis
-          dataKey="category[name]"
+          dataKey="name"
           padding={{ left: 16, right: 16 }}
           tickLine={false}
           tickMargin={4}
@@ -34,7 +40,7 @@ export const MonthlyBudgetChart = ({ data, categories }) => {
             value === 0 ? "" : `${(value / 1000).toFixed(0)}K`
           }
         />
-        <Bar dataKey="sum" fill={schemeTableau10[0]}>
+        <Bar dataKey="sum" shape={CustomBar}>
           <LabelList
             position="top"
             offset={8}
@@ -44,4 +50,10 @@ export const MonthlyBudgetChart = ({ data, categories }) => {
       </BarChart>
     </ResponsiveContainer>
   );
+};
+
+// Кастомный бар для того, чтобы прочитать цвет из данных
+// Напрямую передать category.id в <Bar> не получилось
+const CustomBar = (props) => {
+  return <Rectangle {...props} fill={schemeTableau10[props.id - 1]} />;
 };
