@@ -75,12 +75,15 @@ export const AnnualReportRoute = () => {
   const totalIncome = calculateTotal(income);
   const totalExpenses = calculateTotal(expenses);
 
-  // Считаем общие доходы и расходы в прошлом году
+  // Считаем общие доходы и расходы в прошлом году для сравнения
   const yearAgoTotalIncome = calculateTotal(yearAgoIncome);
   const yearAgoTotalExpenses = calculateTotal(yearAgoExpenses);
 
   // Считаем сколько сохранили
   const savings = totalIncome - totalExpenses;
+
+  // Считаем сколько сохранили в прошлом году для сравнения
+  const yearAgoSavings = yearAgoTotalIncome - yearAgoTotalExpenses;
 
   // Считаем процент сохранений
   const savingsRate = ((totalIncome - totalExpenses) / totalIncome) * 100;
@@ -106,7 +109,14 @@ export const AnnualReportRoute = () => {
             invert
           />
         </Total>
-        <Total value={savings} title="Сохранили" />
+        <Total value={savings} title="Сохранили">
+          <Difference
+            value={savings}
+            comparisonValue={yearAgoSavings}
+            label="чем годом ранее"
+            labelNoData="Нет данных за предыдущий год"
+          />
+        </Total>
         <Total value={savingsRate} title="Процент сохранений" type="percent" />
       </div>
       <div className="card">
