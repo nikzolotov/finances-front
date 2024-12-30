@@ -245,8 +245,8 @@ export const MonthlyReportRoute = () => {
         <BudgetChart data={expenses} budgetData={expensesBudget} />
       </div>
       <BlogText
-        expenses={expenses}
-        income={income}
+        expenses={expenses.sort((a, b) => b.sum - a.sum)}
+        income={income.sort((a, b) => b.sum - a.sum)}
         totalIncome={totalIncome}
         totalExpenses={totalExpenses}
         savings={savings}
