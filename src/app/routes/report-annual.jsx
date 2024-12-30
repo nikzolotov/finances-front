@@ -3,7 +3,7 @@ import qs from "qs";
 
 import { Total, Difference } from "../../features/total";
 import { MonthLinks } from "../../features/report-links";
-import { AnnualBudgetChart } from "../../features/annual-budget-chart";
+import { BudgetChart } from "../../features/budget-chart";
 import { calculateTotal } from "../../utils/calc";
 import "../../components/recharts/recharts.css";
 
@@ -17,9 +17,23 @@ export const AnnualReportLoader = async ({ params }) => {
         $lte: `${params.year}-12-28`,
       },
     },
-    // sort: "sum:desc",
+    sort: "category.id:asc",
     pagination: {
       pageSize: 1000,
+    },
+  });
+
+  const budgetQuery = qs.stringify({
+    fields: ["year", "sum"],
+    populate: "category",
+    filters: {
+      year: {
+        $eq: params.year,
+      },
+    },
+    sort: "category.id:asc",
+    pagination: {
+      pageSize: 100,
     },
   });
 
@@ -32,7 +46,6 @@ export const AnnualReportLoader = async ({ params }) => {
         $lte: `${params.year - 1}-12-28`,
       },
     },
-    // sort: "sum:desc",
     pagination: {
       pageSize: 1000,
     },
@@ -40,27 +53,38 @@ export const AnnualReportLoader = async ({ params }) => {
 
   const [
     expensesResponse,
+    expensesBudgetResponse,
     incomeResponse,
     yearAgoExpensesResponse,
     yearAgoIncomeResponse,
   ] = await Promise.all([
     fetch(`${import.meta.env.VITE_STRAPI_API_URL}expenses?${query}`),
+    fetch(
+      `${import.meta.env.VITE_STRAPI_API_URL}expense-budgets?${budgetQuery}`
+    ),
     fetch(`${import.meta.env.VITE_STRAPI_API_URL}incomes?${query}`),
     fetch(`${import.meta.env.VITE_STRAPI_API_URL}expenses?${yearAgoQuery}`),
     fetch(`${import.meta.env.VITE_STRAPI_API_URL}incomes?${yearAgoQuery}`),
   ]);
 
-  const [expensesData, incomeData, yearAgoExpensesData, yearAgoIncomeData] =
-    await Promise.all([
-      expensesResponse.json(),
-      incomeResponse.json(),
-      yearAgoExpensesResponse.json(),
-      yearAgoIncomeResponse.json(),
-    ]);
+  const [
+    expensesData,
+    expensesBudgetData,
+    incomeData,
+    yearAgoExpensesData,
+    yearAgoIncomeData,
+  ] = await Promise.all([
+    expensesResponse.json(),
+    expensesBudgetResponse.json(),
+    incomeResponse.json(),
+    yearAgoExpensesResponse.json(),
+    yearAgoIncomeResponse.json(),
+  ]);
 
   return {
     year: params.year,
     expenses: expensesData.data,
+    expensesBudget: expensesBudgetData.data,
     income: incomeData.data,
     yearAgoExpenses: yearAgoExpensesData.data,
     yearAgoIncome: yearAgoIncomeData.data,
@@ -68,8 +92,14 @@ export const AnnualReportLoader = async ({ params }) => {
 };
 
 export const AnnualReportRoute = () => {
-  const { year, expenses, income, yearAgoExpenses, yearAgoIncome } =
-    useLoaderData();
+  const {
+    year,
+    expenses,
+    expensesBudget,
+    income,
+    yearAgoExpenses,
+    yearAgoIncome,
+  } = useLoaderData();
 
   // Считаем общие доходы и расходы
   const totalIncome = calculateTotal(income);
@@ -138,7 +168,7 @@ export const AnnualReportRoute = () => {
       <MonthLinks year={year} />
       <div className="card">
         <h2 className="first">Бюджет</h2>
-        <AnnualBudgetChart data={expenses} />
+        <BudgetChart data={expenses} budgetData={expensesBudget} annual />
       </div>
     </>
   );

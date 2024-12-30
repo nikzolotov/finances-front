@@ -29,7 +29,7 @@ export const TimelineTooltip = ({ active, payload, label }) => {
   return null;
 };
 
-export const CategoryTooltip = ({ active, payload, label }) => {
+export const CategoryTooltip = ({ active, payload, label, annual }) => {
   if (active && payload && payload.length) {
     const sumItem = payload.filter((item) => item.dataKey === "sum")[0];
     const budgetItem = payload.filter((item) => item.dataKey === "budget")[0];
@@ -48,7 +48,7 @@ export const CategoryTooltip = ({ active, payload, label }) => {
           <TooltipLine
             key="sum"
             item={{
-              name: "Факт",
+              name: annual ? "Среднее" : "Факт",
               value: sumItem.value,
               fill: sumColor,
             }}

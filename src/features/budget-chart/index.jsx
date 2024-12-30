@@ -10,12 +10,17 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-import { convertCategories } from "../../utils/convert-data";
+import {
+  convertCategories,
+  convertCategoriesAverages,
+} from "../../utils/convert-data";
 import { budgetColor } from "../../components/recharts/color-schemes";
-import { CategoryTooltip } from "../../features/chart-tooltip";
+import { CategoryTooltip } from "../chart-tooltip";
 
-export const MonthlyBudgetChart = ({ data, budgetData }) => {
-  const convertedData = convertCategories(data, budgetData);
+export const BudgetChart = ({ data, budgetData, annual = false }) => {
+  const convertedData = annual
+    ? convertCategoriesAverages(data, budgetData)
+    : convertCategories(data, budgetData);
 
   return (
     <ResponsiveContainer width="100%" height={560}>
@@ -62,7 +67,7 @@ export const MonthlyBudgetChart = ({ data, budgetData }) => {
           />
         </Bar>
         <Bar xAxisId={1} dataKey="budget" shape={CustomBudgetBar} />
-        <Tooltip offset={16} content={<CategoryTooltip />} />
+        <Tooltip offset={16} content={<CategoryTooltip annual={annual} />} />
       </BarChart>
     </ResponsiveContainer>
   );

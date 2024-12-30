@@ -49,6 +49,7 @@ export const convertTotalsTimeline = (data) => {
  * Конвертирует данные из Strapi в формат для графиков Recharts
  * Возвращает массив с категориями, суммами и бюджетами
  * @param {Array<{date:string, category:{name:string}, sum:number}>} data - данные из Strapi
+ * @param {Array<{year:string, category:{name:string}, sum:number}>} budgetData - данные из Strapi
  * @returns {Array<{id:number, name:string, sum:number}>} - данные в формате для Recharts
  */
 export const convertCategories = (data, budgetData) => {
@@ -66,9 +67,10 @@ export const convertCategories = (data, budgetData) => {
  * Конвертирует данные из Strapi в формат для графиков Recharts
  * Возвращает массив с категориями и средними суммами
  * @param {Array<{date:string, category:{name:string}, sum:number}>} data - данные из Strapi
+ * @param {Array<{year:string, category:{name:string}, sum:number}>} budgetData - данные из Strapi
  * @returns {Array<{id:number, name:string, sum:number}>} - данные в формате для Recharts
  */
-export const convertCategoriesAverages = (data) => {
+export const convertCategoriesAverages = (data, budgetData) => {
   return data
     .reduce((acc, item) => {
       const categoryIndex = acc.findIndex(
@@ -91,5 +93,8 @@ export const convertCategoriesAverages = (data) => {
       id: category.id,
       name: category.name,
       sum: category.sum / category.count,
+      budget: budgetData.filter(
+        (budgetItem) => budgetItem.category.id === category.id
+      )[0].sum,
     }));
 };
