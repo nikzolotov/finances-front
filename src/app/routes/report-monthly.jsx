@@ -173,6 +173,10 @@ export const MonthlyReportRoute = () => {
   const averageSavingsRate =
     ((averageIncome - averageExpenses) / averageIncome) * 100;
 
+  // Сортируем расходы и доходы для текста блога
+  const sortedExpenses = [...expenses].sort((a, b) => b.sum - a.sum);
+  const sortedIncome = [...income].sort((a, b) => b.sum - a.sum);
+
   return (
     <>
       <h1 className="first capitalize">
@@ -245,8 +249,8 @@ export const MonthlyReportRoute = () => {
         <BudgetChart data={expenses} budgetData={expensesBudget} />
       </div>
       <BlogText
-        expenses={expenses.sort((a, b) => b.sum - a.sum)}
-        income={income.sort((a, b) => b.sum - a.sum)}
+        expenses={sortedExpenses}
+        income={sortedIncome}
         totalIncome={totalIncome}
         totalExpenses={totalExpenses}
         savings={savings}
