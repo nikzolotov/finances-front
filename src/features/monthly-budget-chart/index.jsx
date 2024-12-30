@@ -6,14 +6,16 @@ import {
   YAxis,
   CartesianGrid,
   LabelList,
+  Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { schemeTableau10 } from "d3";
 
 import { convertCategories } from "../../utils/convert-data";
+import { budgetColor } from "../../components/recharts/color-schemes";
+import { CategoryTooltip } from "../../features/chart-tooltip";
 
-export const MonthlyBudgetChart = ({ data }) => {
-  const convertedData = convertCategories(data);
+export const MonthlyBudgetChart = ({ data, budgetData }) => {
+  const convertedData = convertCategories(data, budgetData);
 
   return (
     <ResponsiveContainer width="100%" height={560}>
@@ -24,6 +26,7 @@ export const MonthlyBudgetChart = ({ data }) => {
       >
         <CartesianGrid vertical={false} />
         <XAxis
+          xAxisId={0}
           dataKey="name"
           height={130}
           padding={{ left: 16, right: 16 }}
@@ -31,6 +34,12 @@ export const MonthlyBudgetChart = ({ data }) => {
           tickMargin={4}
           angle={45}
           textAnchor="start"
+        />
+        <XAxis
+          xAxisId={1}
+          dataKey="name"
+          padding={{ left: 16, right: 16 }}
+          hide
         />
         <YAxis
           padding={{ top: 16 }}
@@ -40,7 +49,8 @@ export const MonthlyBudgetChart = ({ data }) => {
             value === 0 ? "" : `${(value / 1000).toFixed(0)}K`
           }
         />
-        <Bar dataKey="sum" shape={CustomBar}>
+
+        <Bar xAxisId={0} dataKey="sum" shape={CustomBar}>
           <LabelList
             position="top"
             offset={8}
@@ -51,13 +61,20 @@ export const MonthlyBudgetChart = ({ data }) => {
             }
           />
         </Bar>
+        <Bar xAxisId={1} dataKey="budget" shape={CustomBudgetBar} />
+        <Tooltip offset={16} content={<CategoryTooltip />} />
       </BarChart>
     </ResponsiveContainer>
   );
 };
 
-// Кастомный бар для того, чтобы прочитать цвет из данных
-// Напрямую передать category.id в <Bar> не получилось
+// Кастомные бары, чтобы использовать данные для выбора цвета
 const CustomBar = (props) => {
-  return <Rectangle {...props} fill={schemeTableau10[props.id - 1]} />;
+  const fill = props.sum > props.budget ? budgetColor[1] : budgetColor[0];
+  return <Rectangle {...props} fill={fill} />;
+};
+
+const CustomBudgetBar = (props) => {
+  const opacity = props.sum > props.budget ? 1 : 0.2;
+  return <Rectangle {...props} fill={budgetColor[0]} fillOpacity={opacity} />;
 };

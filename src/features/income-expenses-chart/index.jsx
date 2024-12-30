@@ -11,7 +11,7 @@ import {
 import { schemeObservable10, schemeTableau10 } from "d3";
 
 import { convertCategorizedTimeline } from "../../utils/convert-data";
-import { ChartTooltip } from "../chart-tooltip";
+import { TimelineTooltip } from "../chart-tooltip";
 
 export const CategoryChart = ({ data, categories, colorScheme }) => {
   const convertedData = convertCategorizedTimeline(data);
@@ -47,7 +47,7 @@ export const CategoryChart = ({ data, categories, colorScheme }) => {
             value === 0 ? "" : `${(value / 1000).toFixed(0)}K`
           }
         />
-        <Tooltip offset={28} position={{ y: 4 }} content={<ChartTooltip />} />
+        <Tooltip offset={28} content={<TimelineTooltip />} />
         {categories.map((category, index) => (
           <Bar
             key={category.id}

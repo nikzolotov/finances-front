@@ -9,7 +9,7 @@ import {
 } from "recharts";
 
 import { convertTotalsTimeline } from "../../utils/convert-data";
-import { ChartTooltip } from "../../features/chart-tooltip";
+import { TimelineTooltip } from "../../features/chart-tooltip";
 import { investIncomeColor } from "../../components/recharts/color-schemes";
 
 export const InvestIncomeChart = ({ data }) => {
@@ -43,7 +43,11 @@ export const InvestIncomeChart = ({ data }) => {
             value === 0 ? "" : `${(value / 1000).toFixed(0)}K`
           }
         />
-        <Tooltip offset={16} position={{ y: 4 }} content={<ChartTooltip />} />
+        <Tooltip
+          offset={16}
+          position={{ y: 4 }}
+          content={<TimelineTooltip />}
+        />
         <Line
           type="monotone"
           dataKey="value"

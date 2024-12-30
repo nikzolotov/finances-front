@@ -2,7 +2,7 @@ import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer } from "recharts";
 
 import { convertCategorizedTimeline } from "../../utils/convert-data";
 import { assetColors } from "../../components/recharts/color-schemes";
-import { ChartTooltip } from "../../features/chart-tooltip";
+import { TimelineTooltip } from "../../features/chart-tooltip";
 
 export const AssetsChart = ({ data, categories }) => {
   const convertedData = convertCategorizedTimeline(data);
@@ -26,7 +26,11 @@ export const AssetsChart = ({ data, categories }) => {
           />
         ))}
         <XAxis dataKey="date" hide={true} />
-        <Tooltip offset={16} position={{ y: 4 }} content={<ChartTooltip />} />
+        <Tooltip
+          offset={16}
+          position={{ y: 4 }}
+          content={<TimelineTooltip />}
+        />
       </AreaChart>
     </ResponsiveContainer>
   );

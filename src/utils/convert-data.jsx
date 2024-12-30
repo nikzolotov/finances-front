@@ -47,15 +47,18 @@ export const convertTotalsTimeline = (data) => {
 
 /**
  * Конвертирует данные из Strapi в формат для графиков Recharts
- * Возвращает массив с категориями и суммами
+ * Возвращает массив с категориями, суммами и бюджетами
  * @param {Array<{date:string, category:{name:string}, sum:number}>} data - данные из Strapi
  * @returns {Array<{id:number, name:string, sum:number}>} - данные в формате для Recharts
  */
-export const convertCategories = (data) => {
+export const convertCategories = (data, budgetData) => {
   return data.map((item) => ({
     id: item.category.id,
     name: item.category.name,
     sum: item.sum,
+    budget: budgetData.filter(
+      (budgetItem) => budgetItem.category.id === item.category.id
+    )[0].sum,
   }));
 };
 

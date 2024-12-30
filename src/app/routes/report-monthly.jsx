@@ -17,7 +17,21 @@ export const MonthlyReportLoader = async ({ params }) => {
         $lte: `${params.year}-${params.month}-28`,
       },
     },
-    // sort: "sum:desc",
+    sort: "category.id:asc",
+    pagination: {
+      pageSize: 100,
+    },
+  });
+
+  const budgetQuery = qs.stringify({
+    fields: ["year", "sum"],
+    populate: "category",
+    filters: {
+      year: {
+        $eq: params.year,
+      },
+    },
+    sort: "category.id:asc",
     pagination: {
       pageSize: 100,
     },
@@ -47,7 +61,6 @@ export const MonthlyReportLoader = async ({ params }) => {
         $lte: `${params.year - 1}-${params.month}-28`,
       },
     },
-    sort: "sum:desc",
     pagination: {
       pageSize: 100,
     },
@@ -55,6 +68,7 @@ export const MonthlyReportLoader = async ({ params }) => {
 
   const [
     expensesResponse,
+    expensesBudgetResponse,
     incomeResponse,
     annualExpensesResponse,
     annualIncomeResponse,
@@ -62,6 +76,9 @@ export const MonthlyReportLoader = async ({ params }) => {
     yearAgoIncomeResponse,
   ] = await Promise.all([
     fetch(`${import.meta.env.VITE_STRAPI_API_URL}expenses?${query}`),
+    fetch(
+      `${import.meta.env.VITE_STRAPI_API_URL}expense-budgets?${budgetQuery}`
+    ),
     fetch(`${import.meta.env.VITE_STRAPI_API_URL}incomes?${query}`),
     fetch(`${import.meta.env.VITE_STRAPI_API_URL}expenses?${annualQuery}`),
     fetch(`${import.meta.env.VITE_STRAPI_API_URL}incomes?${annualQuery}`),
@@ -71,6 +88,7 @@ export const MonthlyReportLoader = async ({ params }) => {
 
   const [
     expensesData,
+    expensesBudgetData,
     incomeData,
     annualExpensesData,
     annualIncomeData,
@@ -78,6 +96,7 @@ export const MonthlyReportLoader = async ({ params }) => {
     yearAgoIncomeData,
   ] = await Promise.all([
     expensesResponse.json(),
+    expensesBudgetResponse.json(),
     incomeResponse.json(),
     annualExpensesResponse.json(),
     annualIncomeResponse.json(),
@@ -89,6 +108,7 @@ export const MonthlyReportLoader = async ({ params }) => {
     year: params.year,
     month: params.month,
     expenses: expensesData.data,
+    expensesBudget: expensesBudgetData.data,
     income: incomeData.data,
     annualExpenses: annualExpensesData.data,
     annualIncome: annualIncomeData.data,
@@ -102,6 +122,7 @@ export const MonthlyReportRoute = () => {
     year,
     month,
     expenses,
+    expensesBudget,
     income,
     annualExpenses,
     annualIncome,
@@ -221,7 +242,7 @@ export const MonthlyReportRoute = () => {
       </div>
       <div className="card">
         <h2 className="first">Бюджет</h2>
-        <MonthlyBudgetChart data={expenses} />
+        <MonthlyBudgetChart data={expenses} budgetData={expensesBudget} />
       </div>
       <BlogText
         expenses={expenses}
