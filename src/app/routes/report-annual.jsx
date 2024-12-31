@@ -3,6 +3,7 @@ import qs from "qs";
 
 import { Total, Difference } from "../../features/total";
 import { MonthLinks } from "../../features/report-links";
+import { MoneyFlowChart } from "../../features/money-flow-chart";
 import { BudgetChart } from "../../features/budget-chart";
 import { calculateTotal } from "../../utils/calc";
 import "../../components/recharts/recharts.css";
@@ -163,6 +164,7 @@ export const AnnualReportRoute = () => {
       </div>
       <div className="card">
         <h2 className="first">Денежные потоки</h2>
+        <MoneyFlowChart income={income} expenses={expenses} />
       </div>
       <h2>Месячные отчеты</h2>
       <MonthLinks year={year} />

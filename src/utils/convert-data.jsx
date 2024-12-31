@@ -1,3 +1,5 @@
+import { calculateTotal } from "./calc";
+
 /**
  * Конвертирует данные из Strapi в формат для графиков Recharts
  * Возвращает таблицу с датами, категориями и суммами
@@ -97,4 +99,92 @@ export const convertCategoriesAverages = (data, budgetData) => {
         (budgetItem) => budgetItem.category.id === category.id
       )[0].sum,
     }));
+};
+
+/**
+ * Конвертирует данные из Strapi в формат для Sankey
+ * @param {Array<{date:string, category:{name:string}, sum:number}>} income - данные из Strapi
+ * @param {Array<{date:string, category:{name:string}, sum:number}>} expenses - данные из Strapi
+ * @returns {Object<{nodes:[], links:[]}>} - данные в формате для Sankey
+ */
+export const convertAnnualSankey = (income, expenses) => {
+  const incomeTotals = income.reduce((acc, item) => {
+    const categoryIndex = acc.findIndex(
+      (category) => category.name === item.category.name
+    );
+    if (categoryIndex === -1) {
+      acc.push({
+        name: item.category.name,
+        sum: item.sum,
+      });
+    } else {
+      acc[categoryIndex].sum += item.sum;
+    }
+    // Удаляем нулевые категории, из-за них Sankey падает
+    if (acc[categoryIndex] !== undefined && acc[categoryIndex].sum === 0) {
+      acc.splice(categoryIndex, 1);
+    }
+    return acc;
+  }, []);
+
+  const expensesTotals = expenses.reduce((acc, item) => {
+    const categoryIndex = acc.findIndex(
+      (category) => category.name === item.category.name
+    );
+    if (categoryIndex === -1) {
+      acc.push({
+        name: item.category.name,
+        sum: item.sum,
+      });
+    } else {
+      acc[categoryIndex].sum += item.sum;
+    }
+    // Удаляем нулевые категории, из-за них Sankey падает
+    if (acc[categoryIndex] !== undefined && acc[categoryIndex].sum === 0) {
+      acc.splice(categoryIndex, 1);
+    }
+    return acc;
+  }, []);
+
+  const totalIncome = calculateTotal(incomeTotals);
+  const totalExpenses = calculateTotal(expensesTotals);
+  const totalSavings = totalIncome - totalExpenses;
+
+  return {
+    nodes: [
+      ...incomeTotals,
+      {
+        name: "Доходы",
+      },
+      {
+        name: "Расходы",
+      },
+      ...expensesTotals,
+      {
+        name: "Сохранения",
+      },
+    ],
+    links: [
+      ...incomeTotals.map((item) => ({
+        source: incomeTotals.indexOf(item),
+        target: incomeTotals.length,
+        value: item.sum,
+      })),
+      {
+        source: incomeTotals.length,
+        target: incomeTotals.length + 1,
+        value: totalExpenses,
+      },
+      ...expensesTotals.map((item) => ({
+        source: incomeTotals.length + 1,
+        target: incomeTotals.length + 2 + expensesTotals.indexOf(item),
+        value: item.sum,
+      })),
+      {
+        source: incomeTotals.length,
+        target: incomeTotals.length + expensesTotals.length + 2,
+        value: totalSavings,
+      },
+    ],
+  };
 };
