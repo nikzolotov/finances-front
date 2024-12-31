@@ -22,3 +22,5 @@ export const budgetColor = [
   "rgba(172,84,250,1)", // #AC54FA
   "rgba(255,210,74,1)", // #FFD24A
 ];
+
+export const sankeyColor = ["#AC54FA"];

@@ -1,6 +1,7 @@
 import { Sankey, Layer, Rectangle, ResponsiveContainer } from "recharts";
 
 import { convertAnnualSankey } from "../../utils/convert-data";
+import { sankeyColor } from "../../components/recharts/color-schemes";
 
 export const MoneyFlowChart = ({ income, expenses }) => {
   const convertedData = convertAnnualSankey(income, expenses);
@@ -15,13 +16,21 @@ export const MoneyFlowChart = ({ income, expenses }) => {
         margin={{
           left: 0,
           right: 220,
-          top: 16,
-          bottom: 48,
+          top: 8,
+          bottom: 24,
         }}
-        link={{ stroke: "#AC54FA" }}
+        link={{ stroke: sankeyColor[0] }}
         iterations={50}
         sort={false}
-      ></Sankey>
+        // link={{ stroke: "url(#linkGradient)" }}
+      >
+        {/* <defs>
+          <linearGradient id={"linkGradient"}>
+            <stop offset="0%" stopColor="rgba(0, 136, 254, 1)" />
+            <stop offset="100%" stopColor="rgba(0, 197, 159, 1)" />
+          </linearGradient>
+        </defs> */}
+      </Sankey>
     </ResponsiveContainer>
   );
 };
@@ -34,18 +43,21 @@ const SankeyNode = ({ x, y, width, height, index, payload }) => {
         y={y}
         width={width}
         height={height}
-        fill="#AC54FA"
+        fill={sankeyColor[0]}
         fillOpacity="1"
       />
       <text
+        className="recharts-sankey-label"
         textAnchor={"start"}
         x={x + width + 6}
         y={y + height / 2 + 4}
-        fontSize="14"
-        fill="#333"
       >
         {payload.name}
-        <tspan> {`${payload.value}`}</tspan>
+        <tspan className="recharts-sankey-label__value" dx="0.5em">
+          {`${payload.value.toLocaleString("ru-RU", {
+            maximumFractionDigits: 0,
+          })}`}
+        </tspan>
       </text>
     </Layer>
   );

@@ -161,7 +161,7 @@ export const convertAnnualSankey = (income, expenses) => {
       },
       ...expensesTotals,
       {
-        name: "Сохранения",
+        name: "Сохранили",
       },
     ],
     links: [

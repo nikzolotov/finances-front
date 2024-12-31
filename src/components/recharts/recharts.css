@@ -21,10 +21,15 @@
   fill: none;
 }
 
-.recharts-label-list .recharts-label {
+.recharts-label-list .recharts-label,
+.recharts-sankey-label {
   font-size: var(--body-2);
   line-height: var(--body-2-lh);
   fill: var(--text-primary-light);
+}
+
+.recharts-sankey-label__value {
+  fill: var(--text-secondary-light);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -43,8 +48,12 @@
   .recharts-curve.recharts-tooltip-cursor {
     stroke: var(--border-primary-dark);
   }
-  .recharts-label-list .recharts-label {
+  .recharts-label-list .recharts-label,
+  .recharts-sankey-label {
     fill: var(--text-primary-dark);
+  }
+  .recharts-sankey-label__value {
+    fill: var(--text-secondary-dark);
   }
   .recharts-area {
     opacity: 0.9;
