@@ -55,7 +55,7 @@ export const BudgetChart = ({ data, budgetData, annual = false }) => {
           }
         />
 
-        <Bar xAxisId={0} dataKey="sum" shape={CustomBar}>
+        <Bar xAxisId={0} dataKey="sum" shape={ExpenseBar}>
           <LabelList
             position="top"
             offset={8}
@@ -66,7 +66,7 @@ export const BudgetChart = ({ data, budgetData, annual = false }) => {
             }
           />
         </Bar>
-        <Bar xAxisId={1} dataKey="budget" shape={CustomBudgetBar} />
+        <Bar xAxisId={1} dataKey="budget" shape={BudgetBar} />
         <Tooltip offset={16} content={<CategoryTooltip annual={annual} />} />
       </BarChart>
     </ResponsiveContainer>
@@ -74,12 +74,12 @@ export const BudgetChart = ({ data, budgetData, annual = false }) => {
 };
 
 // Кастомные бары, чтобы использовать данные для выбора цвета
-const CustomBar = (props) => {
+const ExpenseBar = (props) => {
   const fill = props.sum > props.budget ? budgetColor[1] : budgetColor[0];
   return <Rectangle {...props} fill={fill} />;
 };
 
-const CustomBudgetBar = (props) => {
+const BudgetBar = (props) => {
   const opacity = props.sum > props.budget ? 1 : 0.2;
   return <Rectangle {...props} fill={budgetColor[0]} fillOpacity={opacity} />;
 };

@@ -1,7 +1,9 @@
+/* Grid & Axis */
 .recharts-cartesian-grid line {
   stroke: var(--border-secondary-light);
 }
-.recharts-cartesian-axis-line {
+.recharts-cartesian-axis-line,
+.recharts-reference-line-line {
   stroke: var(--border-primary-light);
 }
 .recharts-cartesian-axis-tick-value {
@@ -10,10 +12,15 @@
   fill: var(--text-secondary-light);
 }
 
+/* Shapes */
+.recharts-bg-bar {
+  fill: var(--background-tertiary-light);
+}
+
+/* Hover effects */
 .recharts-hide-active-dots .recharts-active-dot {
   visibility: hidden;
 }
-
 .recharts-curve.recharts-tooltip-cursor {
   stroke: var(--border-primary-light);
 }
@@ -21,41 +28,65 @@
   fill: none;
 }
 
-.recharts-label-list .recharts-label,
+/*  Labels */
+.recharts-label,
 .recharts-sankey-label {
   font-size: var(--body-2);
   line-height: var(--body-2-lh);
   fill: var(--text-primary-light);
 }
-
+.recharts-positive {
+  fill: var(--text-green-light);
+}
+.recharts-negative {
+  fill: var(--text-red-light);
+}
 .recharts-sankey-label__value {
   fill: var(--text-secondary-light);
 }
 
 @media (prefers-color-scheme: dark) {
+  /* Grid & Axis */
   .recharts-cartesian-grid line {
     stroke: var(--border-secondary-dark);
   }
-  .recharts-cartesian-axis-line {
+  .recharts-cartesian-axis-line,
+  .recharts-reference-line-line {
     stroke: var(--border-primary-dark);
   }
   .recharts-cartesian-axis-tick-value {
     fill: var(--text-secondary-dark);
   }
+
+  /* Shapes */
+  .recharts-bg-bar {
+    fill: var(--background-tertiary-dark);
+  }
+  .recharts-area,
+  .recharts-bar-rectangle {
+    opacity: 0.9;
+  }
+
+  /* Hover effects */
   .recharts-active-dot .recharts-dot {
     stroke: var(--background-secondary-dark);
   }
   .recharts-curve.recharts-tooltip-cursor {
     stroke: var(--border-primary-dark);
   }
-  .recharts-label-list .recharts-label,
+
+  /*  Labels */
+  .recharts-label,
   .recharts-sankey-label {
     fill: var(--text-primary-dark);
   }
+  .recharts-positive {
+    fill: var(--text-green-dark);
+  }
+  .recharts-negative {
+    fill: var(--text-red-dark);
+  }
   .recharts-sankey-label__value {
     fill: var(--text-secondary-dark);
-  }
-  .recharts-area {
-    opacity: 0.9;
   }
 }

@@ -49,6 +49,56 @@ export const convertTotalsTimeline = (data) => {
 
 /**
  * Конвертирует данные из Strapi в формат для графиков Recharts
+ * Возвращает массив с датами, общими суммами доходов, расходов и процентами сбережений
+ * @param {Array<{date:string, category:{name:string}, sum:number}>} income - данные из Strapi
+ * @param {Array<{date:string, category:{name:string}, sum:number}>} expenses - данные из Strapi
+ * @returns {Array<{date:string, income:number, expenses:number, savingsRate:number}>} - данные в формате для Recharts
+ */
+export const convertSavingsTimeline = (income, expenses) => {
+  const convertedIncome = convertTotalsTimeline(income);
+  const convertedExpenses = convertTotalsTimeline(expenses);
+
+  const combinedData = {};
+
+  convertedIncome.forEach((item) => {
+    if (!combinedData[item.date]) {
+      combinedData[item.date] = {
+        date: item.date,
+        income: 0,
+        expenses: 0,
+        savings: 0,
+        savingsRate: 0,
+      };
+    }
+    combinedData[item.date].income = item.value;
+  });
+
+  convertedExpenses.forEach((item) => {
+    if (!combinedData[item.date]) {
+      combinedData[item.date] = {
+        date: item.date,
+        income: 0,
+        expenses: 0,
+        savings: 0,
+        savingsRate: 0,
+      };
+    }
+    combinedData[item.date].expenses = item.value * -1; // расходы на графике отрицательные
+  });
+
+  Object.values(combinedData).forEach((entry) => {
+    entry.savings = entry.income - entry.expenses * -1;
+    entry.savingsRate =
+      entry.income !== 0
+        ? ((entry.income - entry.expenses * -1) / entry.income) * 100
+        : 0;
+  });
+
+  return Object.values(combinedData);
+};
+
+/**
+ * Конвертирует данные из Strapi в формат для графиков Recharts
  * Возвращает массив с категориями, суммами и бюджетами
  * @param {Array<{date:string, category:{name:string}, sum:number}>} data - данные из Strapi
  * @param {Array<{year:string, category:{name:string}, sum:number}>} budgetData - данные из Strapi

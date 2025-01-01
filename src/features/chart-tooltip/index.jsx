@@ -1,4 +1,7 @@
-import { budgetColor } from "../../components/recharts/color-schemes";
+import {
+  budgetColor,
+  savingsColor,
+} from "../../components/recharts/color-schemes";
 import "./chart-tooltip.css";
 
 export const TimelineTooltip = ({ active, payload, label }) => {
@@ -21,6 +24,60 @@ export const TimelineTooltip = ({ active, payload, label }) => {
           {payload.map((item) => (
             <TooltipLine key={item.name} item={item} hideEmpty />
           ))}
+        </ul>
+      </div>
+    );
+  }
+
+  return null;
+};
+
+export const SavingsTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    const date = new Date(label);
+    const monthName = new Intl.DateTimeFormat("ru", {
+      month: "long",
+    }).format(date);
+
+    const incomeItem = payload.filter((item) => item.dataKey === "income")[0];
+    const expensesItem = payload.filter(
+      (item) => item.dataKey === "expenses"
+    )[0];
+    const savingsItem = payload.filter((item) => item.dataKey === "savings")[0];
+
+    const savingsColorValue =
+      savingsItem.value >= 0 ? savingsColor[0] : savingsColor[1];
+
+    return (
+      <div className="tooltip">
+        <h3 className="tooltip__title capitalize">
+          {monthName} {date.getFullYear()}
+        </h3>
+        <ul className="tooltip__items">
+          <TooltipLine
+            key="income"
+            item={{
+              name: incomeItem.name,
+              value: incomeItem.value,
+              fillClass: "tooltip__bg-bar", // чтобы цвет менялся в зависимости от темы
+            }}
+          />
+          <TooltipLine
+            key="expenses"
+            item={{
+              name: expensesItem.name,
+              value: expensesItem.value,
+              fillClass: "tooltip__bg-bar", // чтобы цвет менялся в зависимости от темы
+            }}
+          />
+          <TooltipLine
+            key="savings"
+            item={{
+              name: savingsItem.name,
+              value: savingsItem.value,
+              fill: savingsColorValue,
+            }}
+          />
         </ul>
       </div>
     );
@@ -89,7 +146,7 @@ const TooltipLine = ({ item, hideEmpty = false }) => {
       {item.name !== "value" && (
         <span className="tooltip__label">
           <span
-            className="tooltip__color"
+            className={`tooltip__color ${item.fillClass}`}
             style={{ background: item.fill, opacity: item.opacity }}
           ></span>
           {item.name}

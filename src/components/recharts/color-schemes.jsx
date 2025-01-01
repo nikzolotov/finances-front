@@ -17,6 +17,8 @@ export const assetColors = [
 
 export const investIncomeColor = "#662fff";
 
+export const savingsColor = ["#00B278", "#FF3366"];
+
 // Исползую rgba, чтобы использовать цвета в градиентах
 export const budgetColor = [
   "rgba(172,84,250,1)", // #AC54FA
