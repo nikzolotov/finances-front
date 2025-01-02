@@ -130,13 +130,18 @@ export const MonthlyReportRoute = () => {
     yearAgoIncome,
   } = useLoaderData();
 
+  const date = new Date(year, month - 1, 1);
+
   const monthName = new Intl.DateTimeFormat("ru", {
     month: "long",
-  }).format(new Date(year, month - 1, 1));
+  }).format(date);
 
   // Записи отсортированы по дате. Берём последнюю дату, чтобы узнать общее количество месяцев,
   // за которые есть записи. Это понадобится для расчёта средних значений
-  const lastDate = new Date(annualIncome[annualIncome.length - 1].date);
+  const lastDate =
+    annualIncome.length > 0
+      ? new Date(annualIncome[annualIncome.length - 1].date)
+      : date;
 
   // Считаем общие доходы и расходы за месяц
   const totalIncome = calculateTotal(income);
