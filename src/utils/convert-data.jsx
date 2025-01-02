@@ -141,14 +141,17 @@ export const convertCategoriesAverages = (data, budgetData) => {
       }
       return acc;
     }, [])
-    .map((category) => ({
-      id: category.id,
-      name: category.name,
-      sum: category.sum / category.count,
-      budget: budgetData.filter(
-        (budgetItem) => budgetItem.category.id === category.id
-      )[0].sum,
-    }));
+    .map((category) => {
+      const budgetItem = budgetData.find(
+        (item) => item.category.id === category.id
+      );
+      return {
+        id: category.id,
+        name: category.name,
+        sum: category.sum / category.count,
+        budget: budgetItem ? budgetItem.sum : 0,
+      };
+    });
 };
 
 /**

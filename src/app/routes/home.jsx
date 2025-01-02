@@ -73,8 +73,10 @@ export const HomeRoute = () => {
   } = useLoaderData();
 
   // Активы отсортированы по дате, берём последнюю дату для фильтра
-  const lastDateString = assets[assets.length - 1].date;
-  const lastDate = new Date(lastDateString);
+  const lastDate =
+    expenses.length > 0
+      ? new Date(expenses[expenses.length - 1].date)
+      : new Date();
 
   // Формируем дату на месяц назад
   const monthAgoDate = new Date(
@@ -84,7 +86,9 @@ export const HomeRoute = () => {
   );
 
   // Считаем общие активы за последний месяц
-  const lastAssets = assets.filter((asset) => asset.date === lastDateString);
+  const lastAssets = assets.filter(
+    (asset) => asset.date === lastDate.toISOString().slice(0, 10)
+  );
   const totalAssets = calculateTotal(lastAssets);
 
   // Считаем общие активы за предыдущий месяц для сравнения
