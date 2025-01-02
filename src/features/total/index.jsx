@@ -1,11 +1,13 @@
 import "./total.css";
 
 export const Total = ({ title, value, percent = false, children }) => {
+  const updatedValue = Number.isNaN(value) ? 0 : value;
+
   return (
     <div className="total card">
       <h2 className="total__title">{title}</h2>
       <p className="total__value">
-        {value.toLocaleString("ru-RU", {
+        {updatedValue.toLocaleString("ru-RU", {
           maximumFractionDigits: percent ? 2 : 0,
         })}
         {percent ? "%" : ""}

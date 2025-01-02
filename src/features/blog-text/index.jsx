@@ -42,11 +42,16 @@ export const CategoryList = ({ data }) => {
 };
 
 export const TotalList = ({ savings, savingsRate }) => {
+  const updatedSavingsRate = Number.isNaN(savingsRate) ? 0 : savingsRate;
+
   return (
     <ul className="blog-text__list">
       <li className="blog-text__item">
         Процент сохранений&nbsp;—{" "}
-        {savingsRate.toLocaleString("ru-RU", { maximumFractionDigits: 2 })}%
+        {updatedSavingsRate.toLocaleString("ru-RU", {
+          maximumFractionDigits: 2,
+        })}
+        %
       </li>
       <li className="blog-text__item">
         Cохранили&nbsp;— {savings.toLocaleString("ru-RU")}&nbsp;₽
