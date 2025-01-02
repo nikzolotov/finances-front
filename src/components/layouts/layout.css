@@ -79,6 +79,17 @@ footer {
   color: var(--text-primary-light);
 }
 
+.error-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  padding: var(--spacing-m);
+  background-color: var(--background-secondary-light);
+  border-radius: var(--border-radius-s);
+  font-family: "SF Mono", "PT Mono", monospace;
+}
+
 @media (prefers-color-scheme: dark) {
   footer {
     color: var(--text-secondary-dark);
@@ -91,5 +102,8 @@ footer {
   }
   .breadcrumbs__link {
     color: var(--text-primary-dark);
+  }
+  .error-text {
+    background-color: var(--background-secondary-dark);
   }
 }

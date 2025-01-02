@@ -1,5 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
 import { AppRoot } from "./routes/root";
+import { ErrorRoute } from "./routes/error";
 import { HomeRoute, homeLoader } from "./routes/home";
 import { AnnualReportRoute, AnnualReportLoader } from "./routes/report-annual";
 import {
@@ -11,6 +13,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <AppRoot />,
+    errorElement: <ErrorRoute />,
     children: [
       {
         path: "",
