@@ -141,13 +141,18 @@ const TooltipLine = ({ item, hideEmpty = false }) => {
   return (
     <li
       className="tooltip__item"
-      style={{ display: hideEmpty && item.value === 0 ? "none" : undefined }}
+      style={{ display: hideEmpty && item.value === 0 ? "none" : "" }}
     >
       {item.name !== "value" && (
         <span className="tooltip__label">
           <span
-            className={`tooltip__color ${item.fillClass}`}
-            style={{ background: item.fill, opacity: item.opacity }}
+            className={
+              "tooltip__color" + (item.fillClass ? " " + item.fillClass : "")
+            }
+            style={{
+              background: item.fill,
+              opacity: item.opacity,
+            }}
           ></span>
           {item.name}
         </span>

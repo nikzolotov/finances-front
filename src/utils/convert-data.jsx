@@ -1,4 +1,4 @@
-import { calculateTotal } from "./calc";
+import { calculateTotal, calculateMonthsDiff } from "./calc";
 
 /**
  * Конвертирует данные из Strapi в формат для графиков Recharts
@@ -45,6 +45,66 @@ export const convertTotalsTimeline = (data) => {
     date: key,
     value,
   }));
+};
+
+export const convertFIRETimeline = (assets, expenses) => {
+  const newData = {};
+
+  // Считаем первую дату, за которую есть расходы
+  // Она понадобится для расчёта средних значений для первых месяцев
+  const firstDateString = expenses.reduce((earliest, item) => {
+    return new Date(item.date) < new Date(earliest) ? item.date : earliest;
+  }, expenses[0]?.date || null);
+  const firstDate = new Date(firstDateString);
+
+  // Формируем пустой объект с датами
+  expenses.forEach((item) => {
+    const key = item.date;
+
+    if (!newData[key]) {
+      newData[key] = { averageExpensesLTM: 0, months: 0 };
+    }
+  });
+
+  Object.entries(newData).forEach(([key, item]) => {
+    // Считаем средние расходы за 12 месяцев, предшествующих текущему
+    const twelveMonthsAgo = new Date(key);
+    twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
+    const twelveMonthsAgoString = twelveMonthsAgo.toISOString().slice(0, 10);
+
+    const expensesLTM = expenses.filter(
+      (expense) => expense.date >= twelveMonthsAgoString && expense.date < key
+    );
+    let monthsDifference = Math.min(
+      12,
+      calculateMonthsDiff(firstDate, new Date(key))
+    );
+
+    // Если нет данных за предыдущие месяцы, считаем, что предудущие расходы равны последнему месяцу
+    if (expensesLTM.length > 0) {
+      item.averageExpensesLTM = calculateTotal(expensesLTM) / monthsDifference;
+    } else {
+      const monthExpenses = expenses.filter((expense) => expense.date === key);
+      item.averageExpensesLTM = calculateTotal(monthExpenses);
+    }
+
+    // Считаем общую сумму инвестиционных активов за текущий месяц,
+    // делим на средние расходы за 12 месяцев
+    // и получаем количество месячных расходов, которые покрываает капитал
+    const monthAssets = assets.filter(
+      (asset) => asset.date === key && asset.category.isInvest
+    );
+    item.months = Math.round(
+      calculateTotal(monthAssets) / item.averageExpensesLTM
+    );
+  });
+
+  const result = Object.entries(newData).map(([key, values]) => ({
+    date: key,
+    ...values,
+  }));
+
+  return result;
 };
 
 /**

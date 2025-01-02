@@ -16,3 +16,15 @@ export const calculateAverage = (items, number) => {
   const total = calculateTotal(items);
   return number ? total / number : total / items.length;
 };
+
+/**
+ * Calculates the number of months between two dates.
+ * @param {Date} d1 - The first date.
+ * @param {Date} d2 - The second date.
+ * @returns {number} The number of months between the two dates.
+ */
+export const calculateMonthsDiff = (d1, d2) => {
+  const months =
+    (d2.getFullYear() - d1.getFullYear()) * 12 + d2.getMonth() - d1.getMonth();
+  return months <= 0 ? 0 : months;
+};

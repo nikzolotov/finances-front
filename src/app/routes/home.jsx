@@ -5,6 +5,7 @@ import { Total, Difference } from "../../features/total";
 import { YearLinks } from "../../features/report-links";
 import { AssetsChart } from "../../features/assets-chart";
 import { InvestIncomeChart } from "../../features/invest-income-chart";
+import { FIREChart } from "../../features/fire-chart";
 import { SavingsChart } from "../../features/savings-chart";
 import { CategoryChart } from "../../features/income-expenses-chart";
 import { calculateTotal, calculateAverage } from "../../utils/calc";
@@ -169,6 +170,7 @@ export const HomeRoute = () => {
       </div>
       <div className="card">
         <h2 className="first">FIRE в месяцах</h2>
+        <FIREChart assets={assets} expenses={expenses} />
       </div>
       <div className="card">
         <h2 className="first">Процент сохранений</h2>
