@@ -9,17 +9,14 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-import { convertFIRETimeline } from "../../utils/convert-data";
 import { TimelineTooltip } from "../../features/chart-tooltip";
 import { FIREColor } from "../../components/recharts/color-schemes";
 
-export const FIREChart = ({ assets, expenses }) => {
-  const convertedData = convertFIRETimeline(assets, expenses);
-
+export const FIREChart = ({ data }) => {
   return (
     <ResponsiveContainer width="100%" height={300}>
       <ComposedChart
-        data={convertedData}
+        data={data}
         margin={{ top: -2, right: 0, bottom: 0, left: 0 }}
         barCategoryGap="20%"
       >

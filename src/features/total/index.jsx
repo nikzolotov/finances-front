@@ -55,7 +55,9 @@ const formatDifference = (difference, absolute) => {
   const sign = difference > 0 ? "+" : "";
 
   if (absolute) {
-    return `${sign}${(difference / 1000).toFixed(0)}K`;
+    return difference > 1000
+      ? `${sign}${(difference / 1000).toFixed(0)}K`
+      : `${sign}${difference.toFixed(0)}`;
   } else {
     return `${sign}${difference.toLocaleString("ru-RU", {
       maximumFractionDigits: 2,

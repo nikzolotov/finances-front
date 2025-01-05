@@ -8,6 +8,7 @@ import { InvestIncomeChart } from "../../features/invest-income-chart";
 import { FIREChart } from "../../features/fire-chart";
 import { SavingsChart } from "../../features/savings-chart";
 import { CategoryChart } from "../../features/income-expenses-chart";
+import { convertFIRETimeline } from "../../utils/convert-data";
 import { calculateTotal, calculateAverage } from "../../utils/calc";
 import "../../components/recharts/recharts.css";
 
@@ -130,6 +131,11 @@ export const HomeRoute = () => {
     lastDate.getMonth() + 1
   );
 
+  // Конвертируем данные для графика FIRE, чтобы взять два последних значения для карточки
+  const FIREData = convertFIRETimeline(assets, expenses);
+  const FIREMonths = FIREData[FIREData.length - 1].months;
+  const monthAgoFIREMonths = FIREData[FIREData.length - 2].months;
+
   return (
     <>
       <h1>Все финансы</h1>
@@ -149,7 +155,14 @@ export const HomeRoute = () => {
             label="чем месяцем ранее"
           />
         </Total>
-        <Total value={0} title="FIRE в месяцах" />
+        <Total value={FIREMonths} title="FIRE в месяцах">
+          <Difference
+            value={FIREMonths}
+            comparisonValue={monthAgoFIREMonths}
+            label="чем месяцем ранее"
+            absolute
+          />
+        </Total>
         <Total value={averageLastYearInvestIncome} title="Инвестиционный доход">
           <p className="total__difference total__empty">
             Средний за {lastDate.getFullYear()} год
@@ -170,7 +183,7 @@ export const HomeRoute = () => {
       </div>
       <div className="card">
         <h2 className="first">FIRE в месяцах</h2>
-        <FIREChart assets={assets} expenses={expenses} />
+        <FIREChart data={FIREData} />
       </div>
       <div className="card">
         <h2 className="first">Процент сохранений</h2>

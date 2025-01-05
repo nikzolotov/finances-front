@@ -8,16 +8,18 @@ import {
   LabelList,
   ResponsiveContainer,
 } from "recharts";
-import { schemeObservable10, schemeTableau10 } from "d3";
 
 import { convertCategorizedTimeline } from "../../utils/convert-data";
 import { TimelineTooltip } from "../chart-tooltip";
+import {
+  incomeColor,
+  expensesColor,
+} from "../../components/recharts/color-schemes";
 
 export const CategoryChart = ({ data, categories, colorScheme }) => {
   const convertedData = convertCategorizedTimeline(data);
 
-  const colors =
-    colorScheme === "income" ? schemeObservable10 : schemeTableau10;
+  const colors = colorScheme === "income" ? incomeColor : expensesColor;
 
   return (
     <ResponsiveContainer width="100%" height={480}>
