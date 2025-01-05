@@ -15,6 +15,7 @@
 /* Shapes */
 .recharts-bg-bar {
   fill: var(--background-tertiary-light);
+  background: var(--background-tertiary-light);
 }
 
 /* Hover effects */
@@ -61,6 +62,7 @@
   /* Shapes */
   .recharts-bg-bar {
     fill: var(--background-tertiary-dark);
+    background: var(--background-tertiary-dark);
   }
   .recharts-area,
   .recharts-bar-rectangle {

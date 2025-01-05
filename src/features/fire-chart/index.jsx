@@ -1,6 +1,7 @@
 import {
-  LineChart,
+  ComposedChart,
   Line,
+  Bar,
   XAxis,
   YAxis,
   Tooltip,
@@ -17,9 +18,10 @@ export const FIREChart = ({ assets, expenses }) => {
 
   return (
     <ResponsiveContainer width="100%" height={300}>
-      <LineChart
+      <ComposedChart
         data={convertedData}
         margin={{ top: -2, right: 0, bottom: 0, left: 0 }}
+        barCategoryGap="20%"
       >
         <CartesianGrid vertical={false} />
         <XAxis
@@ -35,6 +37,7 @@ export const FIREChart = ({ assets, expenses }) => {
           }}
         />
         <YAxis
+          yAxisId="left"
           padding={{ top: 16 }}
           dataKey="months"
           domain={[0, 300]}
@@ -42,12 +45,31 @@ export const FIREChart = ({ assets, expenses }) => {
           tickLine={false}
           tickFormatter={(value) => (value === 0 ? "" : value)}
         />
+        <YAxis
+          yAxisId="right"
+          orientation="right"
+          padding={{ top: 16 }}
+          dataKey="averageExpensesLTM"
+          axisLine={false}
+          tickLine={false}
+          tickFormatter={(value) =>
+            value === 0 ? "" : `${(value / 1000).toFixed(0)}K`
+          }
+        />
         <Tooltip
           offset={16}
           position={{ y: 4 }}
           content={<TimelineTooltip />}
         />
+        <Bar
+          yAxisId="right"
+          dataKey="averageExpensesLTM"
+          name="Средние расходы"
+          className="recharts-bg-bar"
+          radius={4}
+        />
         <Line
+          yAxisId="left"
           type="monotone"
           dataKey="months"
           name="Накопили месяцев"
@@ -56,7 +78,7 @@ export const FIREChart = ({ assets, expenses }) => {
           strokeWidth={2}
           dot={false}
         />
-      </LineChart>
+      </ComposedChart>
     </ResponsiveContainer>
   );
 };

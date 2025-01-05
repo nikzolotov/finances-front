@@ -59,7 +59,7 @@ export const SavingsTooltip = ({ active, payload, label }) => {
             item={{
               name: incomeItem.name,
               value: incomeItem.value,
-              fillClass: "tooltip__bg-bar", // чтобы цвет менялся в зависимости от темы
+              className: "tooltip__bg-bar", // чтобы цвет менялся в зависимости от темы
             }}
           />
           <TooltipLine
@@ -67,7 +67,7 @@ export const SavingsTooltip = ({ active, payload, label }) => {
             item={{
               name: expensesItem.name,
               value: expensesItem.value,
-              fillClass: "tooltip__bg-bar", // чтобы цвет менялся в зависимости от темы
+              className: "tooltip__bg-bar", // чтобы цвет менялся в зависимости от темы
             }}
           />
           <TooltipLine
@@ -147,7 +147,7 @@ const TooltipLine = ({ item, hideEmpty = false }) => {
         <span className="tooltip__label">
           <span
             className={
-              "tooltip__color" + (item.fillClass ? " " + item.fillClass : "")
+              "tooltip__color" + (item.className ? " " + item.className : "")
             }
             style={{
               background: item.fill,

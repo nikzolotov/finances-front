@@ -47,6 +47,14 @@ export const convertTotalsTimeline = (data) => {
   }));
 };
 
+/**
+ * Конвертирует данные из Strapi в формат для графиков Recharts
+ * Возвращает массив с датами, средними расходами за 12 месяцев, предшествующих текущему
+ * и количеством накопленных месяцев жизни (FIRE в средних месячных расходах)
+ * @param {Array<{date:string, category:{name:string}, sum:number}>} assets - данные из Strapi
+ * @param {Array<{date:string, category:{name:string}, sum:number}>} expenses - данные из Strapi
+ * @returns {Array<{date:string, averageExpensesLTM:number, months:number}>} - данные в формате для Recharts
+ */
 export const convertFIRETimeline = (assets, expenses) => {
   const newData = {};
 
