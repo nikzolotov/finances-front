@@ -26,7 +26,7 @@ export const CategoryChart = ({ data, categories, colorScheme }) => {
       <BarChart
         data={convertedData}
         margin={{ top: -2, right: 0, bottom: 0, left: 0 }}
-        barCategoryGap="20%"
+        barCategoryGap="25%"
       >
         <CartesianGrid vertical={false} />
         <XAxis

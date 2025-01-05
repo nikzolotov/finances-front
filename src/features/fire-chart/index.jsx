@@ -18,7 +18,7 @@ export const FIREChart = ({ data }) => {
       <ComposedChart
         data={data}
         margin={{ top: -2, right: 0, bottom: 0, left: 0 }}
-        barCategoryGap="20%"
+        barCategoryGap="25%"
       >
         <CartesianGrid vertical={false} />
         <XAxis
