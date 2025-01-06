@@ -75,13 +75,13 @@ export const convertFIRETimeline = (assets, expenses) => {
   });
 
   Object.entries(newData).forEach(([key, item]) => {
-    // Считаем средние расходы за 12 месяцев, предшествующих текущему
-    const twelveMonthsAgo = new Date(key);
-    twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
-    const twelveMonthsAgoString = twelveMonthsAgo.toISOString().slice(0, 10);
+    // Считаем средние расходы за 12 месяцев, включая текущий
+    const LTMDate = new Date(key);
+    LTMDate.setMonth(LTMDate.getMonth() - 11);
+    const LTMDateString = LTMDate.toISOString().slice(0, 10);
 
     const expensesLTM = expenses.filter(
-      (expense) => expense.date >= twelveMonthsAgoString && expense.date < key
+      (expense) => expense.date >= LTMDateString && expense.date < key
     );
     let monthsDifference = Math.min(
       12,
