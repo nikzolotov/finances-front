@@ -56,6 +56,7 @@ export const CategoryChart = ({ data, categories, colorScheme }) => {
             dataKey={category.name}
             stackId="1"
             fill={colors[category.id - 1]}
+            isAnimationActive={false}
           >
             <LabelList
               position="top"

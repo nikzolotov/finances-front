@@ -68,6 +68,7 @@ export const SavingsChart = ({ income, expenses }) => {
           name="Доходы"
           className="recharts-bg-bar"
           radius={4}
+          isAnimationActive={false}
         />
         <Bar
           xAxisId={1}
@@ -75,8 +76,15 @@ export const SavingsChart = ({ income, expenses }) => {
           name="Расходы"
           className="recharts-bg-bar"
           radius={4}
+          isAnimationActive={false}
         />
-        <Bar xAxisId={2} dataKey="savings" name="Сохранили" shape={SavingsBar}>
+        <Bar
+          xAxisId={2}
+          dataKey="savings"
+          name="Сохранили"
+          shape={SavingsBar}
+          isAnimationActive={false}
+        >
           <LabelList dataKey="savingsRate" content={SavingsRateLabel} />
         </Bar>
       </BarChart>

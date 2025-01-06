@@ -64,6 +64,7 @@ export const FIREChart = ({ data }) => {
           name="Средние расходы"
           className="recharts-bg-bar"
           radius={4}
+          isAnimationActive={false}
         />
         <Line
           yAxisId="left"
@@ -74,6 +75,7 @@ export const FIREChart = ({ data }) => {
           fill={FIREColor}
           strokeWidth={2}
           dot={false}
+          isAnimationActive={false}
         />
       </ComposedChart>
     </ResponsiveContainer>
