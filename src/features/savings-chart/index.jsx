@@ -33,6 +33,7 @@ export const SavingsChart = ({ income, expenses }) => {
           axisLine={false}
           tickLine={false}
           tickMargin={4}
+          interval={0}
           tickFormatter={(date) => {
             const dateObject = new Date(date);
             const month = dateObject.getMonth();
