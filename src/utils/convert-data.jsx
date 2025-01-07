@@ -81,20 +81,15 @@ export const convertFIRETimeline = (assets, expenses) => {
     const LTMDateString = LTMDate.toISOString().slice(0, 10);
 
     const expensesLTM = expenses.filter(
-      (expense) => expense.date >= LTMDateString && expense.date < key
-    );
-    let monthsDifference = Math.min(
-      12,
-      calculateMonthsDiff(firstDate, new Date(key))
+      (expense) => expense.date >= LTMDateString && expense.date <= key
     );
 
-    // Если нет данных за предыдущие месяцы, считаем, что предудущие расходы равны последнему месяцу
-    if (expensesLTM.length > 0) {
-      item.averageExpensesLTM = calculateTotal(expensesLTM) / monthsDifference;
-    } else {
-      const monthExpenses = expenses.filter((expense) => expense.date === key);
-      item.averageExpensesLTM = calculateTotal(monthExpenses);
-    }
+    let monthsDifference = Math.min(
+      12,
+      calculateMonthsDiff(firstDate, new Date(key)) + 1
+    );
+
+    item.averageExpensesLTM = calculateTotal(expensesLTM) / monthsDifference;
 
     // Считаем общую сумму инвестиционных активов за текущий месяц,
     // делим на средние расходы за 12 месяцев
