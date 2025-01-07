@@ -7,6 +7,7 @@ import {
   CartesianGrid,
   LabelList,
   ResponsiveContainer,
+  Brush,
 } from "recharts";
 
 import { convertCategorizedTimeline } from "../../utils/convert-data";
@@ -51,6 +52,23 @@ export const CategoryChart = ({ data, categories, colorScheme }) => {
           }
         />
         <Tooltip offset={28} content={<TimelineTooltip />} />
+        <Brush
+          dataKey="date"
+          startIndex={convertedData.length - 24}
+          height={24}
+          fill="none"
+          stroke="none"
+          tickFormatter={(date) => {
+            const dateObject = new Date(date);
+            const monthName = new Intl.DateTimeFormat("ru", {
+              month: "long",
+            }).format(dateObject);
+            const capitalizedMonthName =
+              monthName.charAt(0).toUpperCase() + monthName.slice(1);
+            const year = dateObject.getFullYear();
+            return `${capitalizedMonthName} ${year}`;
+          }}
+        />
         {categories.map((category, index) => (
           <Bar
             key={category.id}

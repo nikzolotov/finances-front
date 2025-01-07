@@ -9,6 +9,7 @@ import {
   LabelList,
   ReferenceLine,
   ResponsiveContainer,
+  Brush,
 } from "recharts";
 
 import { convertSavingsTimeline } from "../../utils/convert-data";
@@ -63,6 +64,23 @@ export const SavingsChart = ({ income, expenses }) => {
         />
         <Tooltip content={<SavingsTooltip />} />
         <ReferenceLine y={0} />
+        <Brush
+          dataKey="date"
+          startIndex={convertedData.length - 24}
+          height={24}
+          fill="none"
+          stroke="none"
+          tickFormatter={(date) => {
+            const dateObject = new Date(date);
+            const monthName = new Intl.DateTimeFormat("ru", {
+              month: "long",
+            }).format(dateObject);
+            const capitalizedMonthName =
+              monthName.charAt(0).toUpperCase() + monthName.slice(1);
+            const year = dateObject.getFullYear();
+            return `${capitalizedMonthName} ${year}`;
+          }}
+        />
         <Bar
           xAxisId={0}
           dataKey="income"

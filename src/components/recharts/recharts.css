@@ -46,6 +46,23 @@
   fill: var(--text-secondary-light);
 }
 
+/* Brush */
+.recharts-brush-slide {
+  fill: var(--background-tertiary-light);
+  fill-opacity: 1;
+}
+.recharts-brush-traveller rect {
+  fill: var(--button-primary-light);
+  rx: 2;
+}
+.recharts-brush-traveller line {
+  stroke: none;
+}
+.recharts-brush .recharts-text {
+  font-size: var(--body-2);
+  fill: var(--text-secondary-light);
+}
+
 @media (prefers-color-scheme: dark) {
   /* Grid & Axis */
   .recharts-cartesian-grid line {
@@ -89,6 +106,17 @@
     fill: var(--text-red-dark);
   }
   .recharts-sankey-label__value {
+    fill: var(--text-secondary-dark);
+  }
+
+  /* Brush */
+  .recharts-brush-slide {
+    fill: var(--background-tertiary-dark);
+  }
+  .recharts-brush-traveller rect {
+    fill: var(--button-primary-dark);
+  }
+  .recharts-brush .recharts-text {
     fill: var(--text-secondary-dark);
   }
 }
