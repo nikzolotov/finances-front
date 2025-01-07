@@ -168,14 +168,17 @@ export const convertSavingsTimeline = (income, expenses) => {
  * @returns {Array<{id:number, name:string, sum:number}>} - данные в формате для Recharts
  */
 export const convertCategories = (data, budgetData) => {
-  return data.map((item) => ({
-    id: item.category.id,
-    name: item.category.name,
-    sum: item.sum,
-    budget: budgetData.filter(
-      (budgetItem) => budgetItem.category.id === item.category.id
-    )[0].sum,
-  }));
+  return data.map((item) => {
+    const budgetItem = budgetData.find(
+      (budget) => budget.category.id === item.category.id
+    );
+    return {
+      id: item.category.id,
+      name: item.category.name,
+      sum: item.sum,
+      budget: budgetItem ? budgetItem.sum : 0,
+    };
+  });
 };
 
 /**
