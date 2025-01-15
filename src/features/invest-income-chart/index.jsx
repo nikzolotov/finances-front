@@ -1,6 +1,6 @@
 import {
-  LineChart,
-  Line,
+  BarChart,
+  Bar,
   XAxis,
   YAxis,
   Tooltip,
@@ -18,9 +18,10 @@ export const InvestIncomeChart = ({ data }) => {
 
   return (
     <ResponsiveContainer width="100%" height={300}>
-      <LineChart
+      <BarChart
         data={convertedData}
         margin={{ top: -2, right: 0, bottom: 0, left: 0 }}
+        barCategoryGap="25%"
       >
         <CartesianGrid vertical={false} />
         <XAxis
@@ -49,15 +50,13 @@ export const InvestIncomeChart = ({ data }) => {
           position={{ y: 4 }}
           content={<TimelineTooltip />}
         />
-        <Line
-          type="monotone"
+        <Bar
           dataKey="value"
-          stroke={investIncomeColor}
-          strokeWidth={2}
-          dot={false}
+          fill={investIncomeColor}
+          radius={4}
           isAnimationActive={false}
         />
-      </LineChart>
+      </BarChart>
     </ResponsiveContainer>
   );
 };
