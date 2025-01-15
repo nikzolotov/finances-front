@@ -1,7 +1,7 @@
 import { Sankey, Layer, Rectangle, ResponsiveContainer } from "recharts";
 
-import { convertAnnualSankey } from "../../utils/convert-data";
-import { sankeyColor } from "../../components/recharts/color-schemes";
+import { convertAnnualSankey } from "@/utils/convert-data";
+import { sankeyColor } from "@/components/recharts/color-schemes";
 
 export const MoneyFlowChart = ({ income, expenses }) => {
   const convertedData = convertAnnualSankey(income, expenses);

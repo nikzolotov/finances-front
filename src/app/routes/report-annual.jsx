@@ -1,12 +1,12 @@
 import { useLoaderData } from "react-router-dom";
 import qs from "qs";
 
-import { Total, Difference } from "../../features/total";
-import { MonthLinks } from "../../features/report-links";
-import { MoneyFlowChart } from "../../features/money-flow-chart";
-import { BudgetChart } from "../../features/budget-chart";
-import { calculateTotal } from "../../utils/calc";
-import "../../components/recharts/recharts.css";
+import { Total, Difference } from "@/features/total";
+import { MonthLinks } from "@/features/report-links";
+import { MoneyFlowChart } from "@/features/money-flow-chart";
+import { BudgetChart } from "@/features/budget-chart";
+import { calculateTotal } from "@/utils/calc";
+import "@/components/recharts/recharts.css";
 
 export const AnnualReportLoader = async ({ params }) => {
   const query = qs.stringify({

@@ -1,11 +1,11 @@
 import { useLoaderData } from "react-router-dom";
 import qs from "qs";
 
-import { Total, Difference } from "../../features/total";
-import { BlogText } from "../../features/blog-text";
-import { BudgetChart } from "../../features/budget-chart";
-import { calculateTotal, calculateAverage } from "../../utils/calc";
-import "../../components/recharts/recharts.css";
+import { Total, Difference } from "@/features/total";
+import { BlogText } from "@/features/blog-text";
+import { BudgetChart } from "@/features/budget-chart";
+import { calculateTotal, calculateAverage } from "@/utils/calc";
+import "@/components/recharts/recharts.css";
 
 export const MonthlyReportLoader = async ({ params }) => {
   const query = qs.stringify({

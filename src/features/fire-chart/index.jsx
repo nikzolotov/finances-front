@@ -9,8 +9,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-import { TimelineTooltip } from "../../features/chart-tooltip";
-import { FIREColor } from "../../components/recharts/color-schemes";
+import { TimelineTooltip } from "@/features/chart-tooltip";
+import { FIREColor } from "@/components/recharts/color-schemes";
 
 export const FIREChart = ({ data }) => {
   return (

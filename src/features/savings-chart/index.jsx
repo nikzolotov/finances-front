@@ -12,9 +12,9 @@ import {
   Brush,
 } from "recharts";
 
-import { convertSavingsTimeline } from "../../utils/convert-data";
-import { savingsColor } from "../../components/recharts/color-schemes";
-import { SavingsTooltip } from "../chart-tooltip";
+import { convertSavingsTimeline } from "@/utils/convert-data";
+import { savingsColor } from "@/components/recharts/color-schemes";
+import { SavingsTooltip } from "@/features/chart-tooltip";
 
 export const SavingsChart = ({ income, expenses }) => {
   const convertedData = convertSavingsTimeline(income, expenses);

@@ -13,9 +13,9 @@ import {
 import {
   convertCategories,
   convertCategoriesAverages,
-} from "../../utils/convert-data";
-import { budgetColor } from "../../components/recharts/color-schemes";
-import { CategoryTooltip } from "../chart-tooltip";
+} from "@/utils/convert-data";
+import { budgetColor } from "@/components/recharts/color-schemes";
+import { CategoryTooltip } from "@/features/chart-tooltip";
 
 export const BudgetChart = ({ data, budgetData, annual = false }) => {
   const convertedData = annual

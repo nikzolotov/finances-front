@@ -8,9 +8,9 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-import { convertTotalsTimeline } from "../../utils/convert-data";
-import { TimelineTooltip } from "../../features/chart-tooltip";
-import { investIncomeColor } from "../../components/recharts/color-schemes";
+import { convertTotalsTimeline } from "@/utils/convert-data";
+import { TimelineTooltip } from "@/features/chart-tooltip";
+import { investIncomeColor } from "@/components/recharts/color-schemes";
 
 export const InvestIncomeChart = ({ data }) => {
   const filteredData = data.filter((item) => item.category.isInvest);

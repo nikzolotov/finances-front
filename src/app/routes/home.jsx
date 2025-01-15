@@ -1,16 +1,16 @@
 import { useLoaderData } from "react-router-dom";
 import qs from "qs";
 
-import { Total, Difference } from "../../features/total";
-import { YearLinks } from "../../features/report-links";
-import { AssetsChart } from "../../features/assets-chart";
-import { InvestIncomeChart } from "../../features/invest-income-chart";
-import { FIREChart } from "../../features/fire-chart";
-import { SavingsChart } from "../../features/savings-chart";
-import { CategoryChart } from "../../features/income-expenses-chart";
-import { convertFIRETimeline } from "../../utils/convert-data";
-import { calculateTotal, calculateAverage } from "../../utils/calc";
-import "../../components/recharts/recharts.css";
+import { Total, Difference } from "@/features/total";
+import { YearLinks } from "@/features/report-links";
+import { AssetsChart } from "@/features/assets-chart";
+import { InvestIncomeChart } from "@/features/invest-income-chart";
+import { FIREChart } from "@/features/fire-chart";
+import { SavingsChart } from "@/features/savings-chart";
+import { CategoryChart } from "@/features/income-expenses-chart";
+import { convertFIRETimeline } from "@/utils/convert-data";
+import { calculateTotal, calculateAverage } from "@/utils/calc";
+import "@/components/recharts/recharts.css";
 
 export const homeLoader = async ({ params }) => {
   const query = qs.stringify({

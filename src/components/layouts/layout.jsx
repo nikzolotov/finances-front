@@ -1,10 +1,10 @@
 import { Link, useParams } from "react-router-dom";
 
 import "./layout.css";
-import logo from "../../assets/logo.svg";
-import nik from "../../assets/nikita.jpg";
-import nastya from "../../assets/nastya.jpg";
-import lev from "../../assets/lev.jpg";
+import logo from "@/assets/logo.svg";
+import nik from "@/assets/nikita.jpg";
+import nastya from "@/assets/nastya.jpg";
+import lev from "@/assets/lev.jpg";
 
 export const Layout = ({ children }) => {
   return (

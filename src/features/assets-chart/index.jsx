@@ -1,8 +1,8 @@
 import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer } from "recharts";
 
-import { convertCategorizedTimeline } from "../../utils/convert-data";
-import { assetColors } from "../../components/recharts/color-schemes";
-import { TimelineTooltip } from "../../features/chart-tooltip";
+import { convertCategorizedTimeline } from "@/utils/convert-data";
+import { assetColors } from "@/components/recharts/color-schemes";
+import { TimelineTooltip } from "@/features/chart-tooltip";
 
 export const AssetsChart = ({ data, categories }) => {
   const convertedData = convertCategorizedTimeline(data);

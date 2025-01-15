@@ -1,7 +1,4 @@
-import {
-  budgetColor,
-  savingsColor,
-} from "../../components/recharts/color-schemes";
+import { budgetColor, savingsColor } from "@/components/recharts/color-schemes";
 import "./chart-tooltip.css";
 
 export const TimelineTooltip = ({ active, payload, label }) => {

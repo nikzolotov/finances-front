@@ -10,12 +10,12 @@ import {
   Brush,
 } from "recharts";
 
-import { convertCategorizedTimeline } from "../../utils/convert-data";
-import { TimelineTooltip } from "../chart-tooltip";
+import { convertCategorizedTimeline } from "@/utils/convert-data";
+import { TimelineTooltip } from "@/features/chart-tooltip";
 import {
   incomeColor,
   expensesColor,
-} from "../../components/recharts/color-schemes";
+} from "@/components/recharts/color-schemes";
 
 export const CategoryChart = ({ data, categories, colorScheme }) => {
   const convertedData = convertCategorizedTimeline(data);
