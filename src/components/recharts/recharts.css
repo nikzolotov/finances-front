@@ -52,7 +52,7 @@
   fill-opacity: 1;
 }
 .recharts-brush-traveller rect {
-  fill: var(--button-primary-light);
+  fill: var(--button-secondary-light);
   rx: 2;
 }
 .recharts-brush-traveller line {
@@ -114,7 +114,7 @@
     fill: var(--background-tertiary-dark);
   }
   .recharts-brush-traveller rect {
-    fill: var(--button-primary-dark);
+    fill: var(--button-secondary-dark);
   }
   .recharts-brush .recharts-text {
     fill: var(--text-secondary-dark);
