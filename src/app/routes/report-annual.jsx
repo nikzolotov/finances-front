@@ -1,7 +1,8 @@
 import { useLoaderData } from "react-router-dom";
 import qs from "qs";
 
-import { Total, Difference } from "@/features/total";
+import { Total, Difference } from "@/features/totals";
+import { Card } from "@/features/card";
 import { MonthLinks } from "@/features/report-links";
 import { MoneyFlowChart } from "@/features/money-flow-chart";
 import { BudgetChart } from "@/features/budget-chart";
@@ -126,7 +127,7 @@ export const AnnualReportRoute = () => {
   return (
     <>
       <h1 className="first">{year} год</h1>
-      <div className="cards">
+      <div className="totals">
         <Total value={totalIncome} title="Доходы">
           <Difference
             value={totalIncome}
@@ -162,16 +163,13 @@ export const AnnualReportRoute = () => {
           />
         </Total>
       </div>
-      <div className="card">
-        <h2 className="first">Денежные потоки</h2>
+      <Card title="Денежные потоки">
         <MoneyFlowChart income={income} expenses={expenses} />
-      </div>
-      <h2>Месячные отчеты</h2>
-      <MonthLinks year={year} />
-      <div className="card">
-        <h2 className="first">Бюджет</h2>
+      </Card>
+      <MonthLinks title="Месячные отчеты" year={year} />
+      <Card title="Бюджет">
         <BudgetChart data={expenses} budgetData={expensesBudget} annual />
-      </div>
+      </Card>
     </>
   );
 };

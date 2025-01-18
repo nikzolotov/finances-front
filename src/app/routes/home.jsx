@@ -4,7 +4,8 @@ import qs from "qs";
 
 import { SegmentedControl } from "@/components/segmented-control";
 
-import { Total, Difference } from "@/features/total";
+import { Total, Difference } from "@/features/totals";
+import { Card, CardHeader } from "@/features/card";
 import { YearLinks } from "@/features/report-links";
 import { AssetsChart } from "@/features/assets-chart";
 import { InvestIncomeChart } from "@/features/invest-income-chart";
@@ -145,7 +146,7 @@ export const HomeRoute = () => {
   return (
     <>
       <h1>Все финансы</h1>
-      <div className="cards">
+      <div className="totals">
         <Total value={totalAssets} title="Активы">
           <Difference
             value={totalAssets}
@@ -175,54 +176,47 @@ export const HomeRoute = () => {
           </p>
         </Total>
       </div>
-      <div className="card">
-        <h2 className="first">Классы активов</h2>
-        <div className="card__cutoff">
-          <AssetsChart data={assets} categories={assetCategories} />
-        </div>
-      </div>
-      <h2>Годовые отчеты</h2>
-      <YearLinks />
-      <div className="card">
-        <h2 className="first">Инвестиционный доход</h2>
-        <SegmentedControl
-          value={investIncomeTab}
-          onChange={setInvestIncomeTab}
-          items={[
-            { label: "Средний", value: "average" },
-            { label: "Ежемесячный", value: "monthly" },
-          ]}
-        />
+      <Card title={"Классы активов"} cutoff>
+        <AssetsChart data={assets} categories={assetCategories} />
+      </Card>
+      <YearLinks title="Годовые отчеты" />
+      <Card>
+        <CardHeader title="Инвестиционный доход">
+          <SegmentedControl
+            value={investIncomeTab}
+            onChange={setInvestIncomeTab}
+            items={[
+              { label: "Средний", value: "average" },
+              { label: "Ежемесячный", value: "monthly" },
+            ]}
+          />
+        </CardHeader>
         {investIncomeTab === "average" ? (
           <InvestIncomeChart data={income} average />
         ) : (
           <InvestIncomeChart data={income} />
         )}
-      </div>
-      <div className="card">
-        <h2 className="first">FIRE в месяцах</h2>
+      </Card>
+      <Card title="FIRE в месяцах">
         <FIREChart data={FIREData} />
-      </div>
-      <div className="card">
-        <h2 className="first">Процент сохранений</h2>
+      </Card>
+      <Card title="Процент сохранений">
         <SavingsChart income={income} expenses={expenses} />
-      </div>
-      <div className="card">
-        <h2 className="first">Доходы</h2>
+      </Card>
+      <Card title="Доходы">
         <CategoryChart
           data={income}
           categories={incomeCategories}
           colorScheme="income"
         />
-      </div>
-      <div className="card">
-        <h2 className="first">Расходы</h2>
+      </Card>
+      <Card title="Расходы">
         <CategoryChart
           data={expenses}
           categories={expensesCategories}
           colorScheme="expenses"
         />
-      </div>
+      </Card>
     </>
   );
 };

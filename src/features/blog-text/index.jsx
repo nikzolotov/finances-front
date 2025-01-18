@@ -9,8 +9,7 @@ export const BlogText = ({
   savingsRate,
 }) => {
   return (
-    <div className="blog-text card">
-      <h2 className="blog-text__title2">Текст для блога</h2>
+    <div className="blog-text">
       <h3 className="blog-text__title3">
         Расходы — {totalExpenses.toLocaleString("ru-RU")} ₽
       </h3>

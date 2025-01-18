@@ -39,26 +39,6 @@ footer {
   margin-left: calc(var(--spacing-xs) * -1);
 }
 
-.card {
-  flex-grow: 1;
-  flex-basis: 0;
-  margin-bottom: var(--spacing-s);
-  padding: var(--spacing-s);
-  border-radius: var(--border-radius-s);
-  background: var(--background-secondary-light);
-}
-.card__cutoff {
-  margin: 0 calc(var(--spacing-s) * -1) calc(var(--spacing-s) * -1)
-    calc(var(--spacing-s) * -1);
-  border-radius: var(--border-radius-s);
-  overflow: hidden;
-}
-
-.cards {
-  display: flex;
-  gap: var(--spacing-s);
-}
-
 .breadcrumbs {
   width: 100%;
   display: flex;
@@ -93,9 +73,6 @@ footer {
 @media (prefers-color-scheme: dark) {
   footer {
     color: var(--text-secondary-dark);
-  }
-  .card {
-    background: var(--background-secondary-dark);
   }
   .breadcrumbs {
     color: var(--text-secondary-dark);

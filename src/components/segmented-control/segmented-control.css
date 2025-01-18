@@ -15,6 +15,7 @@
 .segmented-control__item-active {
   background: var(--button-inverted-light);
   transition: background var(--animation-medium);
+  cursor: default;
 }
 
 @media (prefers-color-scheme: dark) {

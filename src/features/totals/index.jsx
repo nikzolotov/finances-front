@@ -1,4 +1,4 @@
-import "./total.css";
+import "./totals.css";
 
 export const Total = ({ title, value, percent = false, children }) => {
   const updatedValue = Number.isNaN(value) ? 0 : value;
