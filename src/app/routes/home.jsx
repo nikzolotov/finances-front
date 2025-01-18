@@ -1,5 +1,8 @@
+import * as React from "react";
 import { useLoaderData } from "react-router-dom";
 import qs from "qs";
+
+import { SegmentedControl } from "@/components/segmented-control";
 
 import { Total, Difference } from "@/features/total";
 import { YearLinks } from "@/features/report-links";
@@ -12,7 +15,7 @@ import { convertFIRETimeline } from "@/utils/convert-data";
 import { calculateTotal, calculateAverage } from "@/utils/calc";
 import "@/components/recharts/recharts.css";
 
-export const homeLoader = async ({ params }) => {
+export const homeLoader = async () => {
   const query = qs.stringify({
     fields: ["date", "sum"],
     populate: "category",
@@ -136,6 +139,9 @@ export const HomeRoute = () => {
   const FIREMonths = FIREData[FIREData.length - 1].months;
   const monthAgoFIREMonths = FIREData[FIREData.length - 2].months;
 
+  // Стейт для графика инвестиционного дохода
+  const [investIncomeTab, setInvestIncomeTab] = React.useState("average");
+
   return (
     <>
       <h1>Все финансы</h1>
@@ -179,7 +185,19 @@ export const HomeRoute = () => {
       <YearLinks />
       <div className="card">
         <h2 className="first">Инвестиционный доход</h2>
-        <InvestIncomeChart data={income} />
+        <SegmentedControl
+          value={investIncomeTab}
+          onChange={setInvestIncomeTab}
+          items={[
+            { label: "Средний", value: "average" },
+            { label: "Ежемесячный", value: "monthly" },
+          ]}
+        />
+        {investIncomeTab === "average" ? (
+          <InvestIncomeChart data={income} average />
+        ) : (
+          <InvestIncomeChart data={income} />
+        )}
       </div>
       <div className="card">
         <h2 className="first">FIRE в месяцах</h2>

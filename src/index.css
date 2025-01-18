@@ -25,10 +25,12 @@
   --text-link: #4080ff;
   --text-link-hover: #7d4eff;
 
-  --button-primary-light: #d8deeb;
-  --button-primary-dark: #424d59;
-  --button-primary-hover: #662fff;
-  --button-primary-active: #1d395c;
+  --button-secondary-light: #d8deeb;
+  --button-secondary-dark: #424d59;
+  --button-secondary-hover: #662fff;
+  --button-secondary-active: #1d395c;
+  --button-inverted-light: #fff;
+  --button-inverted-dark: #1a1e23;
 
   --title-1: 32px;
   --title-1-lh: 40px;
@@ -141,6 +143,9 @@ table {
 td,
 th {
   vertical-align: baseline;
+}
+button {
+  all: unset;
 }
 
 @media (prefers-color-scheme: dark) {

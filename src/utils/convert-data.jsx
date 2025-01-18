@@ -49,6 +49,32 @@ export const convertTotalsTimeline = (data) => {
 
 /**
  * Конвертирует данные из Strapi в формат для графиков Recharts
+ * Возвращает массив с годами и средними значениями общей суммы для всех категорий
+ * @param {Array<{date:string, category:{name:string}, sum:number}>} data - данные из Strapi
+ * @returns {Array<{date:string, value:number}>} - данные в формате для Recharts
+ */
+export const convertAnnualAverages = (data) => {
+  const newData = data.reduce((acc, item) => {
+    const key = item.date.substring(0, 4);
+
+    if (!acc[key]) {
+      acc[key] = { sum: 0, months: new Set() };
+    }
+
+    acc[key].sum += Number(item.sum);
+    acc[key].months.add(item.date.substring(5, 7));
+
+    return acc;
+  }, {});
+
+  return Object.entries(newData).map(([key, { sum, months }]) => ({
+    date: key,
+    value: sum / months.size,
+  }));
+};
+
+/**
+ * Конвертирует данные из Strapi в формат для графиков Recharts
  * Возвращает массив с датами, средними расходами за 12 месяцев, предшествующих текущему
  * и количеством накопленных месяцев жизни (FIRE в средних месячных расходах)
  * @param {Array<{date:string, category:{name:string}, sum:number}>} assets - данные из Strapi

@@ -16,24 +16,24 @@
   justify-content: center;
   align-items: center;
   padding: var(--spacing-s) var(--spacing-s);
-  background-color: var(--button-primary-light);
+  background-color: var(--button-secondary-light);
   border-radius: var(--border-radius-xs);
   line-height: var(--body-3-lh);
   color: var(--text-primary-light);
 }
 .button:hover {
-  background-color: var(--button-primary-hover);
+  background-color: var(--button-secondary-hover);
   color: var(--text-inverted);
   transition: background-color var(--animation-medium);
 }
 .button:active {
-  background-color: var(--button-primary-active);
+  background-color: var(--button-secondary-active);
   transition: background-color var(--animation-fast);
 }
 
 @media (prefers-color-scheme: dark) {
   .button {
-    background-color: var(--button-primary-dark);
+    background-color: var(--button-secondary-dark);
     color: var(--text-primary-dark);
   }
 }

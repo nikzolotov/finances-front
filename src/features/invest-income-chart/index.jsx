@@ -5,16 +5,27 @@ import {
   YAxis,
   Tooltip,
   CartesianGrid,
+  LabelList,
   ResponsiveContainer,
 } from "recharts";
 
-import { convertTotalsTimeline } from "@/utils/convert-data";
-import { TimelineTooltip } from "@/features/chart-tooltip";
+import {
+  convertTotalsTimeline,
+  convertAnnualAverages,
+} from "@/utils/convert-data";
+
+import {
+  TimelineTooltip,
+  AnnualAveragesTooltip,
+} from "@/features/chart-tooltip";
+
 import { investIncomeColor } from "@/components/recharts/color-schemes";
 
-export const InvestIncomeChart = ({ data }) => {
+export const InvestIncomeChart = ({ data, average }) => {
   const filteredData = data.filter((item) => item.category.isInvest);
-  const convertedData = convertTotalsTimeline(filteredData);
+  const convertedData = average
+    ? convertAnnualAverages(filteredData)
+    : convertTotalsTimeline(filteredData);
 
   return (
     <ResponsiveContainer width="100%" height={300}>
@@ -47,15 +58,22 @@ export const InvestIncomeChart = ({ data }) => {
         />
         <Tooltip
           offset={16}
-          position={{ y: 4 }}
-          content={<TimelineTooltip />}
+          content={average ? <AnnualAveragesTooltip /> : <TimelineTooltip />}
         />
         <Bar
           dataKey="value"
           fill={investIncomeColor}
           radius={4}
           isAnimationActive={false}
-        />
+        >
+          <LabelList
+            position="top"
+            offset={8}
+            valueAccessor={(entry) =>
+              average ? (entry.value / 1000).toFixed(0) : ""
+            }
+          />
+        </Bar>
       </BarChart>
     </ResponsiveContainer>
   );

@@ -1,0 +1,27 @@
+.segmented-control {
+  display: inline-flex;
+  padding: 3px;
+  background: var(--background-tertiary-light);
+  border-radius: calc(var(--border-radius-xxs) + 3px);
+}
+.segmented-control__item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-xxxs) var(--spacing-xs);
+  border-radius: var(--border-radius-xxs);
+  cursor: pointer;
+}
+.segmented-control__item-active {
+  background: var(--button-inverted-light);
+  transition: background var(--animation-medium);
+}
+
+@media (prefers-color-scheme: dark) {
+  .segmented-control {
+    background: var(--background-tertiary-dark);
+  }
+  .segmented-control__item-active {
+    background: var(--button-inverted-dark);
+  }
+}

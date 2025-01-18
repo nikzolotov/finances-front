@@ -29,6 +29,21 @@ export const TimelineTooltip = ({ active, payload, label }) => {
   return null;
 };
 
+export const AnnualAveragesTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="tooltip">
+        <h3 className="tooltip__title capitalize">{label} год</h3>
+        <ul className="tooltip__items">
+          <TooltipLine item={payload[0]} />
+        </ul>
+      </div>
+    );
+  }
+
+  return null;
+};
+
 export const SavingsTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     const date = new Date(label);
