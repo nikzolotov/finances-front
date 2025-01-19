@@ -4,7 +4,7 @@ import qs from "qs";
 
 import { SegmentedControl } from "@/components/segmented-control";
 
-import { Total, Difference } from "@/features/totals";
+import { Totals, Total, Difference } from "@/features/totals";
 import { Card, CardHeader } from "@/features/card";
 import { YearLinks } from "@/features/report-links";
 import { AssetsChart } from "@/features/assets-chart";
@@ -146,7 +146,7 @@ export const HomeRoute = () => {
   return (
     <>
       <h1>Все финансы</h1>
-      <div className="totals">
+      <Totals>
         <Total value={totalAssets} title="Активы">
           <Difference
             value={totalAssets}
@@ -175,7 +175,7 @@ export const HomeRoute = () => {
             Средний за {lastDate.getFullYear()} год
           </p>
         </Total>
-      </div>
+      </Totals>
       <Card title={"Классы активов"} cutoff>
         <AssetsChart data={assets} categories={assetCategories} />
       </Card>

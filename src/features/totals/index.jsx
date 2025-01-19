@@ -1,5 +1,9 @@
 import "./totals.css";
 
+export const Totals = ({ children }) => {
+  return <div className="totals">{children}</div>;
+};
+
 export const Total = ({ title, value, percent = false, children }) => {
   const updatedValue = Number.isNaN(value) ? 0 : value;
 

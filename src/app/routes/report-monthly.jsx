@@ -1,7 +1,7 @@
 import { useLoaderData } from "react-router-dom";
 import qs from "qs";
 
-import { Total, Difference } from "@/features/totals";
+import { Totals, Total, Difference } from "@/features/totals";
 import { Card } from "@/features/card";
 import { BlogText } from "@/features/blog-text";
 import { BudgetChart } from "@/features/budget-chart";
@@ -188,7 +188,7 @@ export const MonthlyReportRoute = () => {
       <h1 className="first capitalize">
         {monthName} {year}
       </h1>
-      <div className="totals">
+      <Totals>
         <Total value={totalIncome} title="Доходы">
           <Difference
             value={totalIncome}
@@ -249,7 +249,7 @@ export const MonthlyReportRoute = () => {
             percent
           />
         </Total>
-      </div>
+      </Totals>
       <Card title="Бюджет">
         <BudgetChart data={expenses} budgetData={expensesBudget} />
       </Card>
