@@ -13,6 +13,7 @@ import {
 } from "recharts";
 
 import { convertSavingsTimeline } from "@/utils/convert-data";
+import { monthName } from "@/utils/ru";
 import { savingsColor } from "@/components/recharts/color-schemes";
 import { SavingsTooltip } from "@/features/chart-tooltip";
 
@@ -72,13 +73,13 @@ export const SavingsChart = ({ income, expenses }) => {
           stroke="none"
           tickFormatter={(date) => {
             const dateObject = new Date(date);
-            const monthName = new Intl.DateTimeFormat("ru", {
-              month: "long",
-            }).format(dateObject);
-            const capitalizedMonthName =
-              monthName.charAt(0).toUpperCase() + monthName.slice(1);
+            const monthNameNom = monthName(
+              dateObject.getMonth(),
+              "nominative",
+              true
+            );
             const year = dateObject.getFullYear();
-            return `${capitalizedMonthName} ${year}`;
+            return `${monthNameNom} ${year}`;
           }}
         />
         <Bar

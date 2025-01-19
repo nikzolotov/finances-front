@@ -1,12 +1,11 @@
 import { budgetColor, savingsColor } from "@/components/recharts/color-schemes";
+import { monthName } from "@/utils/ru";
 import "./chart-tooltip.css";
 
 export const TimelineTooltip = ({ active, payload, label, withTotal }) => {
   if (active && payload && payload.length) {
     const date = new Date(label);
-    const monthName = new Intl.DateTimeFormat("ru", {
-      month: "long",
-    }).format(date);
+    const monthNameNom = monthName(date.getMonth(), "nominative", true);
 
     const total = withTotal
       ? payload.reduce((acc, item) => acc + item.value, 0)
@@ -15,8 +14,8 @@ export const TimelineTooltip = ({ active, payload, label, withTotal }) => {
     return (
       <div className="tooltip">
         <div className="tooltip__header">
-          <h3 className="tooltip__title capitalize">
-            {monthName} {date.getFullYear()}
+          <h3 className="tooltip__title">
+            {monthNameNom} {date.getFullYear()}
           </h3>
           {withTotal && (
             <span className="tooltip__total">
@@ -46,7 +45,7 @@ export const AnnualAveragesTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
       <div className="tooltip">
-        <h3 className="tooltip__title capitalize">{label} год</h3>
+        <h3 className="tooltip__title">{label} год</h3>
         <ul className="tooltip__items">
           <TooltipLine item={payload[0]} />
         </ul>
@@ -60,9 +59,7 @@ export const AnnualAveragesTooltip = ({ active, payload, label }) => {
 export const SavingsTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     const date = new Date(label);
-    const monthName = new Intl.DateTimeFormat("ru", {
-      month: "long",
-    }).format(date);
+    const monthNameNom = monthName(date.getMonth(), "nominative", true);
 
     const incomeItem = payload.filter((item) => item.dataKey === "income")[0];
     const expensesItem = payload.filter(
@@ -75,8 +72,8 @@ export const SavingsTooltip = ({ active, payload, label }) => {
 
     return (
       <div className="tooltip">
-        <h3 className="tooltip__title capitalize">
-          {monthName} {date.getFullYear()}
+        <h3 className="tooltip__title">
+          {monthNameNom} {date.getFullYear()}
         </h3>
         <ul className="tooltip__items">
           <TooltipLine

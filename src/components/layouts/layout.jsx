@@ -1,5 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 
+import { monthName } from "@/utils/ru";
+
 import "./layout.css";
 import logo from "@/assets/logo.svg";
 import nik from "@/assets/nikita.jpg";
@@ -61,11 +63,8 @@ const Breadcrumbs = ({ year, month }) => {
   }
 
   if (month !== undefined) {
-    const monthName = new Intl.DateTimeFormat("ru", { month: "long" }).format(
-      new Date(year, month - 1)
-    );
     breadcrumbs.push({
-      title: monthName,
+      title: monthName(month - 1, "nominative", true),
       link: `/report/${year}/${month}`,
     });
   }
@@ -73,7 +72,7 @@ const Breadcrumbs = ({ year, month }) => {
   return (
     <ul className="breadcrumbs">
       {breadcrumbs.map(({ title, link }, index) => (
-        <li key={index} className="breadcrumbs__item capitalize">
+        <li key={index} className="breadcrumbs__item">
           {index === breadcrumbs.length - 1 ? (
             title
           ) : (

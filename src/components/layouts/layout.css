@@ -17,10 +17,6 @@ footer {
   margin-top: 0;
 }
 
-.capitalize::first-letter {
-  text-transform: capitalize;
-}
-
 .logo {
   display: block;
   width: 48px;

@@ -11,6 +11,7 @@ import {
 } from "recharts";
 
 import { convertCategorizedTimeline } from "@/utils/convert-data";
+import { monthName } from "@/utils/ru";
 import { TimelineTooltip } from "@/features/chart-tooltip";
 import {
   incomeColor,
@@ -60,13 +61,13 @@ export const CategoryChart = ({ data, categories, colorScheme }) => {
           stroke="none"
           tickFormatter={(date) => {
             const dateObject = new Date(date);
-            const monthName = new Intl.DateTimeFormat("ru", {
-              month: "long",
-            }).format(dateObject);
-            const capitalizedMonthName =
-              monthName.charAt(0).toUpperCase() + monthName.slice(1);
+            const monthNameNom = monthName(
+              dateObject.getMonth(),
+              "nominative",
+              true
+            );
             const year = dateObject.getFullYear();
-            return `${capitalizedMonthName} ${year}`;
+            return `${monthNameNom} ${year}`;
           }}
         />
         {categories.map((category, index) => (

@@ -6,6 +6,7 @@ import { Card } from "@/features/card";
 import { BlogText } from "@/features/blog-text";
 import { BudgetChart } from "@/features/budget-chart";
 import { calculateTotal, calculateAverage } from "@/utils/calc";
+import { monthName } from "@/utils/ru";
 import "@/components/recharts/recharts.css";
 
 export const MonthlyReportLoader = async ({ params }) => {
@@ -131,18 +132,16 @@ export const MonthlyReportRoute = () => {
     yearAgoIncome,
   } = useLoaderData();
 
-  const date = new Date(year, month - 1, 1);
-
-  const monthName = new Intl.DateTimeFormat("ru", {
-    month: "long",
-  }).format(date);
+  // Название текущего месяца в разных падежах
+  const monthNameNom = monthName(month - 1, "nominative", true);
+  const monthNamePrep = monthName(month - 1, "prepositional");
 
   // Записи отсортированы по дате. Берём последнюю дату, чтобы узнать общее количество месяцев,
   // за которые есть записи. Это понадобится для расчёта средних значений
   const lastDate =
     annualIncome.length > 0
       ? new Date(annualIncome[annualIncome.length - 1].date)
-      : date;
+      : new Date(year, month - 1, 1);
 
   // Считаем общие доходы и расходы за месяц
   const totalIncome = calculateTotal(income);
@@ -185,8 +184,8 @@ export const MonthlyReportRoute = () => {
 
   return (
     <>
-      <h1 className="first capitalize">
-        {monthName} {year}
+      <h1 className="first">
+        {monthNameNom} {year}
       </h1>
       <Totals>
         <Total value={totalIncome} title="Доходы">
@@ -255,6 +254,8 @@ export const MonthlyReportRoute = () => {
       </Card>
       <Card title="Текст для блога">
         <BlogText
+          year={year}
+          monthName={monthNamePrep}
           expenses={sortedExpenses}
           income={sortedIncome}
           totalIncome={totalIncome}

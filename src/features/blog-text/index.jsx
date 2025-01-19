@@ -1,6 +1,8 @@
 import "./blog-text.css";
 
 export const BlogText = ({
+  year,
+  monthName,
   expenses,
   income,
   totalIncome,
@@ -11,7 +13,7 @@ export const BlogText = ({
   return (
     <div className="blog-text">
       <h3 className="blog-text__title3">
-        Расходы — {totalExpenses.toLocaleString("ru-RU")} ₽
+        Расходы в {monthName} {year} — {totalExpenses.toLocaleString("ru-RU")} ₽
       </h3>
       <CategoryList data={expenses} />
       <h3 className="blog-text__title3">
@@ -55,6 +57,7 @@ export const TotalList = ({ savings, savingsRate }) => {
       <li className="blog-text__item">
         Cохранили&nbsp;— {savings.toLocaleString("ru-RU")}&nbsp;₽
       </li>
+      <li className="blog-text__item">Изменение активов за месяц&nbsp;— </li>
     </ul>
   );
 };
