@@ -68,6 +68,14 @@ export const MonthlyReportLoader = async ({ params }) => {
     },
   });
 
+  const allQuery = qs.stringify({
+    fields: ["date", "sum"],
+    sort: "date:asc",
+    pagination: {
+      pageSize: 10000,
+    },
+  });
+
   const [
     expensesResponse,
     expensesBudgetResponse,
@@ -76,6 +84,7 @@ export const MonthlyReportLoader = async ({ params }) => {
     annualIncomeResponse,
     yearAgoExpensesResponse,
     yearAgoIncomeResponse,
+    assetsResponse,
   ] = await Promise.all([
     fetch(`${import.meta.env.VITE_STRAPI_API_URL}expenses?${query}`),
     fetch(
@@ -86,6 +95,7 @@ export const MonthlyReportLoader = async ({ params }) => {
     fetch(`${import.meta.env.VITE_STRAPI_API_URL}incomes?${annualQuery}`),
     fetch(`${import.meta.env.VITE_STRAPI_API_URL}expenses?${yearAgoQuery}`),
     fetch(`${import.meta.env.VITE_STRAPI_API_URL}incomes?${yearAgoQuery}`),
+    fetch(`${import.meta.env.VITE_STRAPI_API_URL}assets?${allQuery}`),
   ]);
 
   const [
@@ -96,6 +106,7 @@ export const MonthlyReportLoader = async ({ params }) => {
     annualIncomeData,
     yearAgoExpensesData,
     yearAgoIncomeData,
+    assetsData,
   ] = await Promise.all([
     expensesResponse.json(),
     expensesBudgetResponse.json(),
@@ -104,6 +115,7 @@ export const MonthlyReportLoader = async ({ params }) => {
     annualIncomeResponse.json(),
     yearAgoExpensesResponse.json(),
     yearAgoIncomeResponse.json(),
+    assetsResponse.json(),
   ]);
 
   return {
@@ -116,6 +128,7 @@ export const MonthlyReportLoader = async ({ params }) => {
     annualIncome: annualIncomeData.data,
     yearAgoExpenses: yearAgoExpensesData.data,
     yearAgoIncome: yearAgoIncomeData.data,
+    assets: assetsData.data,
   };
 };
 
@@ -130,6 +143,7 @@ export const MonthlyReportRoute = () => {
     annualIncome,
     yearAgoExpenses,
     yearAgoIncome,
+    assets,
   } = useLoaderData();
 
   // Название текущего месяца в разных падежах
@@ -181,6 +195,30 @@ export const MonthlyReportRoute = () => {
   // Сортируем расходы и доходы для текста блога
   const sortedExpenses = [...expenses].sort((a, b) => b.sum - a.sum);
   const sortedIncome = [...income].sort((a, b) => b.sum - a.sum);
+
+  // Считаем разницу активов за месяц
+  const thisDate = new Date(year, month - 1, 1);
+  const monthAgoDate = new Date(thisDate);
+  monthAgoDate.setMonth(monthAgoDate.getMonth() - 1);
+
+  const thisAssets = assets.filter((asset) => {
+    const assetDate = new Date(asset.date);
+    return (
+      assetDate.getFullYear() === thisDate.getFullYear() &&
+      assetDate.getMonth() === thisDate.getMonth()
+    );
+  });
+  const totalAssets = calculateTotal(thisAssets);
+
+  const monthAgoAssets = assets.filter((asset) => {
+    const assetDate = new Date(asset.date);
+    return (
+      assetDate.getFullYear() === monthAgoDate.getFullYear() &&
+      assetDate.getMonth() === monthAgoDate.getMonth()
+    );
+  });
+  const monthAgoTotalAssets = calculateTotal(monthAgoAssets);
+  const assetsDifference = totalAssets - monthAgoTotalAssets;
 
   return (
     <>
@@ -262,6 +300,7 @@ export const MonthlyReportRoute = () => {
           totalExpenses={totalExpenses}
           savings={savings}
           savingsRate={savingsRate}
+          assetsDifference={assetsDifference}
         />
       </Card>
     </>

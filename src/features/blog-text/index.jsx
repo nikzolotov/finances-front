@@ -9,6 +9,7 @@ export const BlogText = ({
   totalExpenses,
   savings,
   savingsRate,
+  assetsDifference,
 }) => {
   return (
     <div className="blog-text">
@@ -21,7 +22,11 @@ export const BlogText = ({
       </h3>
       <CategoryList data={income} />
       <h3 className="blog-text__title3">Итого</h3>
-      <TotalList savings={savings} savingsRate={savingsRate} />
+      <TotalList
+        savings={savings}
+        savingsRate={savingsRate}
+        assetsDifference={assetsDifference}
+      />
     </div>
   );
 };
@@ -42,8 +47,9 @@ export const CategoryList = ({ data }) => {
   );
 };
 
-export const TotalList = ({ savings, savingsRate }) => {
+export const TotalList = ({ savings, savingsRate, assetsDifference }) => {
   const updatedSavingsRate = Number.isNaN(savingsRate) ? 0 : savingsRate;
+  const assetsDifferenceSign = assetsDifference > 0 ? "+" : "";
 
   return (
     <ul className="blog-text__list">
@@ -57,7 +63,11 @@ export const TotalList = ({ savings, savingsRate }) => {
       <li className="blog-text__item">
         Cохранили&nbsp;— {savings.toLocaleString("ru-RU")}&nbsp;₽
       </li>
-      <li className="blog-text__item">Изменение активов за месяц&nbsp;— </li>
+      <li className="blog-text__item">
+        Изменение активов за месяц&nbsp;— {assetsDifferenceSign}
+        {assetsDifference.toLocaleString("ru-RU", { maximumFractionDigits: 0 })}
+        &nbsp;₽
+      </li>
     </ul>
   );
 };

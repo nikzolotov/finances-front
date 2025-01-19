@@ -85,16 +85,17 @@ export const HomeRoute = () => {
       : new Date();
 
   // Формируем дату на месяц назад
-  const monthAgoDate = new Date(
-    lastDate.getFullYear(),
-    lastDate.getMonth() - 1,
-    "1"
-  );
+  const monthAgoDate = new Date(lastDate);
+  monthAgoDate.setMonth(monthAgoDate.getMonth() - 1);
 
   // Считаем общие активы за последний месяц
-  const lastAssets = assets.filter(
-    (asset) => asset.date === lastDate.toISOString().slice(0, 10)
-  );
+  const lastAssets = assets.filter((asset) => {
+    const assetDate = new Date(asset.date);
+    return (
+      assetDate.getFullYear() === lastDate.getFullYear() &&
+      assetDate.getMonth() === lastDate.getMonth()
+    );
+  });
   const totalAssets = calculateTotal(lastAssets);
 
   // Считаем общие активы за предыдущий месяц для сравнения
