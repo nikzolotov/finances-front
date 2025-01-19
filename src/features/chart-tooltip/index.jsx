@@ -1,18 +1,31 @@
 import { budgetColor, savingsColor } from "@/components/recharts/color-schemes";
 import "./chart-tooltip.css";
 
-export const TimelineTooltip = ({ active, payload, label }) => {
+export const TimelineTooltip = ({ active, payload, label, withTotal }) => {
   if (active && payload && payload.length) {
     const date = new Date(label);
     const monthName = new Intl.DateTimeFormat("ru", {
       month: "long",
     }).format(date);
 
+    const total = withTotal
+      ? payload.reduce((acc, item) => acc + item.value, 0)
+      : 0;
+
     return (
       <div className="tooltip">
-        <h3 className="tooltip__title capitalize">
-          {monthName} {date.getFullYear()}
-        </h3>
+        <div className="tooltip__header">
+          <h3 className="tooltip__title capitalize">
+            {monthName} {date.getFullYear()}
+          </h3>
+          {withTotal && (
+            <span className="tooltip__total">
+              {total.toLocaleString("ru-RU", {
+                maximumFractionDigits: 0,
+              })}
+            </span>
+          )}
+        </div>
         <ul
           className={`tooltip__items${
             payload.length > 10 ? " tooltip__items--long" : ""

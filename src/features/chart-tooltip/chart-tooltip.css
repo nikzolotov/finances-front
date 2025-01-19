@@ -4,8 +4,15 @@
   border-radius: var(--border-radius-s);
   box-shadow: var(--shadow-m);
 }
+.tooltip__header {
+  display: flex;
+  justify-content: space-between;
+}
 .tooltip__title {
   margin: 0;
+}
+.tooltip__total {
+  font-weight: 500;
 }
 .tooltip__items {
   margin: 0;

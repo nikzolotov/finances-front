@@ -51,7 +51,7 @@ export const CategoryChart = ({ data, categories, colorScheme }) => {
             value === 0 ? "" : `${(value / 1000).toFixed(0)}K`
           }
         />
-        <Tooltip offset={28} content={<TimelineTooltip />} />
+        <Tooltip offset={28} content={<TimelineTooltip withTotal />} />
         <Brush
           dataKey="date"
           startIndex={convertedData.length - 24}

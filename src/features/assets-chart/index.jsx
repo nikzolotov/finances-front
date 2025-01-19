@@ -30,7 +30,7 @@ export const AssetsChart = ({ data, categories }) => {
         <Tooltip
           offset={16}
           position={{ y: 4 }}
-          content={<TimelineTooltip />}
+          content={<TimelineTooltip withTotal />}
         />
       </AreaChart>
     </ResponsiveContainer>
