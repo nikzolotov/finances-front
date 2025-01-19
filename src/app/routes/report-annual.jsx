@@ -166,7 +166,7 @@ export const AnnualReportRoute = () => {
       <Card title="Денежные потоки">
         <MoneyFlowChart income={income} expenses={expenses} />
       </Card>
-      <MonthLinks title="Месячные отчеты" year={year} />
+      <MonthLinks title="Месячные отчеты" data={income} year={year} />
       <Card title="Бюджет">
         <BudgetChart data={expenses} budgetData={expensesBudget} annual />
       </Card>

@@ -179,7 +179,7 @@ export const HomeRoute = () => {
       <Card title={"Классы активов"} cutoff>
         <AssetsChart data={assets} categories={assetCategories} />
       </Card>
-      <YearLinks title="Годовые отчеты" />
+      <YearLinks title="Годовые отчеты" data={income} />
       <Card>
         <CardHeader title="Инвестиционный доход">
           <SegmentedControl

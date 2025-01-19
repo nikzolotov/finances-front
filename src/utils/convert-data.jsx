@@ -333,3 +333,31 @@ export const convertAnnualSankey = (income, expenses) => {
     ],
   };
 };
+
+/**
+ * Конвертирует данные из Strapi в массив с годами
+ * @param {Array<{date:string, category:{name:string}, sum:number}>} data - данные из Strapi
+ * @returns {Array<number>} - массив с годами
+ */
+export const convertYears = (data) => {
+  const years = new Set();
+  data.forEach((item) => {
+    const year = Number(item.date.slice(0, 4));
+    years.add(year);
+  });
+  return Array.from(years).sort();
+};
+
+/**
+ * Конвертирует данные из Strapi в массив с месяцами
+ * @param {Array<{date:string, category:{name:string}, sum:number}>} data - данные из Strapi за 1 год
+ * @returns {Array<string>} - массив с месяцами с ведущим нулём
+ */
+export const convertMonths = (data) => {
+  const months = new Set();
+  data.forEach((item) => {
+    const month = item.date.slice(5, 7);
+    months.add(month);
+  });
+  return Array.from(months).sort();
+};

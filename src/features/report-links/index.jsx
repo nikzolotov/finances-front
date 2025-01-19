@@ -1,21 +1,25 @@
 import { Link } from "react-router-dom";
 import "./report-links.css";
 
-// Просто выводит ссылки на 12 месяцев
-export const MonthLinks = ({ title, year }) => {
+import { convertYears, convertMonths } from "@/utils/convert-data";
+
+// Выводит ссылки на месяцы, за которые есть данные
+export const MonthLinks = ({ data, year, title }) => {
+  const months = convertMonths(data);
   return (
     <>
       {title && <h2>{title}</h2>}
-      <ul className="report-links">
-        {Array.from({ length: 12 }, (_, i) => (
-          <li key={i + 1} className="report-links__item">
-            <Link
-              to={`/report/${year}/${(i + 1).toString().padStart(2, "0")}`}
-              className="button"
-            >
+      <ul
+        className={`report-links${
+          months.length <= 4 ? " report-links-short" : ""
+        }`}
+      >
+        {months.map((month) => (
+          <li key={month} className="report-links__item">
+            <Link to={`/report/${year}/${month}`} className="button">
               <span className="capitalize">
                 {new Intl.DateTimeFormat("ru", { month: "long" }).format(
-                  new Date(year, i)
+                  new Date(year, Number(month) - 1)
                 )}
               </span>
             </Link>
@@ -26,22 +30,21 @@ export const MonthLinks = ({ title, year }) => {
   );
 };
 
-// Выводит ссылки на годы с 2017 по текущий
-export const YearLinks = ({ title }) => {
-  const firstYear = 2017;
-  const yearsSince2017 = new Date().getFullYear() - firstYear;
-
+// Выводит ссылки на годы, за которые есть данные
+export const YearLinks = ({ data, title }) => {
+  const years = convertYears(data);
   return (
     <>
       {title && <h2>{title}</h2>}
-      <ul className="report-links">
-        {Array.from({ length: yearsSince2017 + 1 }, (_, i) => (
-          <li key={i + firstYear} className="report-links__item">
-            <Link
-              to={`/report/${(i + firstYear).toString()}`}
-              className="button"
-            >
-              <span className="capitalize">{(i + firstYear).toString()}</span>
+      <ul
+        className={`report-links${
+          years.length <= 4 ? " report-links-short" : ""
+        }`}
+      >
+        {years.map((year) => (
+          <li key={year} className="report-links__item">
+            <Link to={`/report/${year}`} className="button">
+              {year}
             </Link>
           </li>
         ))}
